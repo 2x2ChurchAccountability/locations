@@ -1,0 +1,11 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+
+# Your rule content
+
+- project directory:  /home/david/dev/perp/locations
+- for python commands, this uses locations_venv
+- the fallback supabase schema is dev
