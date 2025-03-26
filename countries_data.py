@@ -4,7 +4,7 @@ countries = {
     'United States': {
         'name': 'United States',
         'states': [
-            'Oregon/South Idaho', 'Montana/North Wyoming', 'New York/New England', 'Ohio/West Virginia',
+            'Oregon/South Idaho', 'Oregon/Southern Idaho', 'Montana/North Wyoming', 'New York/New England', 'Ohio/West Virginia',
             'Pennsylvania/Ohio/West Virginia', 'PA/NY/New England/NJ/OH', 'PA/NY/New England/NJ',
             'Kentucky/Tennessee', 'Tennessee/Kentucky', 'Montana/Wyoming', 'Alabama/Mississippi', 'Kansas/Nebraska',
             'Maryland/Delaware', 'Colorado/Utah',
@@ -80,7 +80,11 @@ countries = {
             'Eagle Bend': 'Minnesota',
             'Eagle Bend 1': 'Minnesota',
             'Buttonwillow 2': 'California',
-            'Knoxville': 'Tennessee'
+            'Knoxville': 'Tennessee',
+            'Gilbert': 'Arizona',
+            'Anchorage': 'Alaska',
+            'Clover': 'South Carolina',
+            'Alma': 'Michigan'
         }
     },
     'Canada': {
@@ -89,7 +93,7 @@ countries = {
             'Quebec and Atlantic', 'Ontario/Quebec',
             'Manitoba/Northwest Ontario', 'Manitoba/Ontario', 'Saskatchewan/Manitoba/Northwest Ontario', 
             'Saskatchewan/Manitoba', 'Quebec/Atlantic', 'Calgary', 'Maritimes',
-            'Alberta', 'Atlantic', 'British Columbia', 'Manitoba', 'New Brunswick', 'Newfoundland and Labrador', 'Newfoundland',
+            'Alberta', 'Atlantic', 'British Columbia', 'Manitoba', 'New Brunswick', 'Newfoundland and Labrador',
             'Nova Scotia', 'Ontario', 'Prince Edward Island', 'Quebec', 'Saskatchewan',
             'Northwest Territories', 'Nunavut', 'Yukon'
         ],
@@ -104,6 +108,7 @@ countries = {
             'NS': 'Nova Scotia',
             'PE': 'Prince Edward Island',
             'NL': 'Newfoundland and Labrador',
+            'Newfoundland': 'Newfoundland and Labrador',
             'NT': 'Northwest Territories',
             'NU': 'Nunavut',
             'YT': 'Yukon'
@@ -111,7 +116,10 @@ countries = {
         'cities': {
             'Salmon Arm': 'Saskatchewan',
             'Portage': 'Manitoba',
-            'Prince George': 'British Columbia'
+            'Prince George': 'British Columbia',
+            'Irishtown': 'Newfoundland and Labrador',
+            'Glen Valley 2': 'British Columbia',
+            'Glen Valley': 'British Columbia'
         }
     },
     'Austria': {
@@ -315,8 +323,12 @@ countries = {
     },
     'Argentina': {
         'name': 'Argentina',
-        'states': ['Rio Cuarto'],
-        'cities': {}
+        'states': [],
+        'cities': {
+            'Rio Cuarto': '',
+            'San Rafael': '',
+            'Cipolletti': ''
+        }
     },
     'Italy': {
         'name': 'Italy',
