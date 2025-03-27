@@ -1,5 +1,9 @@
 import unittest
-from process_locations import handle_started_work, handle_workers_meeting, handle_special_meeting, handle_photo, get_state_country
+import process_locations
+
+process_locations.validate_mode = True
+
+from process_locations import handle_started_work, handle_workers_meeting, handle_special_meeting, handle_photo, handle_workers_list, handle_location_only, handle_convention, get_state_country
 from countries_data import countries
 
 class TestGetStateCountry(unittest.TestCase):
@@ -215,6 +219,17 @@ class TestGetStateCountry(unittest.TestCase):
         self.assertEqual(result['country'], 'Argentina')
         self.assertEqual(result['location'], 'San Rafael')
         self.assertEqual(result['line'], 'Special Meeting')
+
+    # Bangalore Convention
+    def test_bangalore_convention(self):
+        """Test bangalore_convention"""
+        line = "Bangalore Convention"
+        result = get_state_country(line, self.countries)
+        self.assertEqual(result['state'], '')
+        self.assertEqual(result['country'], 'India')
+        self.assertEqual(result['location'], 'Bangalore')
+        self.assertEqual(result['line'], 'Convention')
+
 
 
 
@@ -479,6 +494,432 @@ class TestGetStateCountry(unittest.TestCase):
         self.assertEqual(result['country'], 'Canada')
         self.assertEqual(result['location'], 'Glen Valley')
         self.assertEqual(result['note'], 'Staff Photo')
+
+
+
+
+
+    # Jul-Dec Alberta Workers List (West Africa)
+    def test_jul_dec_alberta_workers_list_west_africa(self):
+        """Test jul_dec_alberta_workers_list_west_africa"""
+        line = "Jul-Dec Alberta Workers List (West Africa)"
+        result = handle_workers_list(line, self.countries)
+        self.assertEqual(result['state'], 'Alberta')
+        self.assertEqual(result['country'], 'Canada')
+        self.assertEqual(result['location'], None)
+        self.assertEqual(result['note'], 'Workers List: Jul-Dec List, West Africa')
+
+    # July Alberta Canada Workers List (West Africa)
+    def test_july_alberta_canada_workers_list_west_africa(self):
+        """Test july_alberta_canada_workers_list_west_africa"""
+        line = "July Alberta Canada Workers List (West Africa)"
+        result = handle_workers_list(line, self.countries)
+        self.assertEqual(result['state'], 'Alberta')
+        self.assertEqual(result['country'], 'Canada')
+        self.assertEqual(result['location'], None)
+        self.assertEqual(result['note'], 'Workers List: July List, West Africa')
+
+    # British Columbia Canada Workers List (Chilliwack)
+    def test_british_columbia_canada_workers_list_chilliwack(self):
+        """Test british_columbia_canada_workers_list_chilliwack"""
+        line = "British Columbia Canada Workers List (Chilliwack)"
+        result = handle_workers_list(line, self.countries)
+        self.assertEqual(result['state'], 'British Columbia')
+        self.assertEqual(result['country'], 'Canada')
+        self.assertEqual(result['location'], None)
+        self.assertEqual(result['note'], 'Workers List: Chilliwack')
+
+    # British Columbia Canada Workers List (Kelowna) *Autumn*
+    def test_british_columbia_canada_workers_list_kelowna(self):
+        """Test british_columbia_canada_workers_list_kelowna"""
+        line = "British Columbia Canada Workers List (Kelowna) *Autumn*"
+        result = handle_workers_list(line, self.countries)
+        self.assertEqual(result['state'], 'British Columbia')
+        self.assertEqual(result['country'], 'Canada')
+        self.assertEqual(result['location'], None)
+        self.assertEqual(result['note'], 'Workers List: Kelowna, Autumn')
+
+    # Saskatchewan/Manitoba/NW Ontario Canada Workers List (Winnipeg East, Interlake MB) *Jul-Dec*
+    def test_saskatchewan_manitoba_nw_ontario_canada_workers_list_winnipeg_east_interlake_mb(self):
+        """Test saskatchewan_manitoba_nw_ontario_canada_workers_list_winnipeg_east_interlake_mb"""
+        line = "Saskatchewan/Manitoba/NW Ontario Canada Workers List (Winnipeg East, Interlake MB) *Jul-Dec*"
+        result = handle_workers_list(line, self.countries)
+        self.assertEqual(result['state'], 'Saskatchewan/Manitoba/Northwest Ontario')
+        self.assertEqual(result['country'], 'Canada')
+        self.assertEqual(result['location'], None)
+        self.assertEqual(result['note'], 'Workers List: Winnipeg East, Interlake MB, Jul-Dec')
+
+    # British Columbia Canada Workers List (N. Okanagan and Chase) *Winter/Spring*
+    def test_british_columbia_canada_workers_list_n_okanagan_and_chase(self):
+        """Test british_columbia_canada_workers_list_n_okanagan_and_chase"""
+        line = "British Columbia Canada Workers List (N. Okanagan and Chase) *Winter/Spring*"
+        result = handle_workers_list(line, self.countries)
+        self.assertEqual(result['state'], 'British Columbia')
+        self.assertEqual(result['country'], 'Canada')
+        self.assertEqual(result['location'], None)
+        self.assertEqual(result['note'], 'Workers List: N. Okanagan and Chase, Winter/Spring')
+
+    # Colorado/Utah Workers List (Southwest) overseer
+    def test_colorado_utah_workers_list_southwest_overseer(self):
+        """Test colorado_utah_workers_list_southwest_overseer"""
+        line = "Colorado/Utah Workers List (Southwest) overseer"
+        result = handle_workers_list(line, self.countries)
+        self.assertEqual(result['state'], 'Colorado/Utah')
+        self.assertEqual(result['country'], 'United States')
+        self.assertEqual(result['location'], None)
+        self.assertEqual(result['note'], 'Workers List: Southwest, overseer')
+
+    # Jan-Jul SK Workers List (Yorkton/Fort Qu’Appelle) with Merlin Affleck
+    def test_jan_jul_sk_workers_list_yorkton_fort_quappelle_with_merlin_affleck(self):
+        """Test jan_jul_sk_workers_list_yorkton_fort_quappelle_with_merlin_affleck"""
+        line = "Jan-Jul SK Workers List (Yorkton/Fort Qu’Appelle) with Merlin Affleck"
+        result = handle_workers_list(line, self.countries)
+        self.assertEqual(result['state'], 'Saskatchewan')
+        self.assertEqual(result['country'], 'Canada')
+        self.assertEqual(result['location'], None)
+        self.assertEqual(result['note'], 'Workers List: Jan-Jul List, Yorkton/Fort Qu’Appelle, With Merlin Affleck')
+
+    # Jul-Dec Alberta Workers List (Camrose/Stettler) w/Jack Reddekopp *First year in the work*
+    def test_jul_dec_alberta_workers_list_camrose_stettler_with_jack_reddekopp_first_year_in_the_work(self):
+        """Test jul_dec_alberta_workers_list_camrose_stettler_with_jack_reddekopp_first_year_in_the_work"""
+        line = "Jul-Dec Alberta Workers List (Camrose/Stettler) w/Jack Reddekopp *First year in the work*"
+        result = handle_workers_list(line, self.countries)
+        self.assertEqual(result['state'], 'Alberta')
+        self.assertEqual(result['country'], 'Canada')
+        self.assertEqual(result['location'], None)
+        self.assertEqual(result['note'], 'Workers List: Jul-Dec List, Camrose/Stettler, With Jack Reddekopp, First year in the work')
+
+
+
+
+
+
+
+    # Jan Changing Fields
+    def test_jan_changing_fields(self):
+        """Test jan_changing_fields"""
+        line = "Jan Changing Fields"
+        result = handle_location_only(line, self.countries)
+        self.assertEqual(result['state'], None)
+        self.assertEqual(result['country'], None)
+        self.assertEqual(result['location'], None)
+        self.assertEqual(result['note'], 'Jan Changing Fields')
+
+    # Olmos Peru Preps
+    def test_olmos_peru_preps(self):
+        """Test olmos_peru_preps"""
+        line = "Olmos Peru Preps"
+        result = handle_location_only(line, self.countries)
+        self.assertEqual(result['state'], 'Lambayeque')
+        self.assertEqual(result['country'], 'Peru')
+        self.assertEqual(result['location'], 'Olmos')
+        self.assertEqual(result['note'], 'Preps')
+
+    # Autumn (Alberta Pro Tem)
+    def test_autumn_alberta_pro_tem(self):
+        """Test autumn_alberta_pro_tem"""
+        line = "Autumn (Alberta Pro Tem)"
+        result = handle_location_only(line, self.countries)
+        self.assertEqual(result['state'], 'Alberta')
+        self.assertEqual(result['country'], 'Canada')
+        self.assertEqual(result['location'], None)
+        self.assertEqual(result['note'], 'Autumn (Pro Tem)')
+
+    # Ontario/Quebec (Guelph)
+    def test_ontario_quebec_guelph(self):
+        """Test ontario_quebec_guelph"""
+        line = "Ontario/Quebec (Guelph)"
+        result = handle_location_only(line, self.countries)
+        self.assertEqual(result['state'], 'Ontario/Quebec')
+        self.assertEqual(result['country'], 'Canada')
+        self.assertEqual(result['location'], None)
+        self.assertEqual(result['note'], '(Guelph)')
+
+    # Glen Valley 2 British Columbia Staff Photo (Absent)
+    def test_glen_valley_2_british_columbia_staff_photo(self):
+        """Test glen_valley_2_british_columbia_staff_photo"""
+        line = "Glen Valley 2 British Columbia Staff Photo (Absent)"
+        result = handle_location_only(line, self.countries)
+        self.assertEqual(result['state'], 'British Columbia')
+        self.assertEqual(result['country'], 'Canada')
+        self.assertEqual(result['location'], 'Glen Valley 2')
+        self.assertEqual(result['note'], 'Staff Photo (Absent)')
+
+    # December to 2022 New Year Vacation in Smyrna Beach Florida
+    def test_december_to_2022_new_year_vacation_in_smyrna_beach_florida(self):
+        """Test december_to_2022_new_year_vacation_in_smyrna_beach_florida"""
+        line = "December to 2022 New Year Vacation in Smyrna Beach Florida"
+        result = handle_location_only(line, self.countries)
+        self.assertEqual(result['state'], 'Florida')
+        self.assertEqual(result['country'], 'United States')
+        self.assertEqual(result['location'], None)
+        self.assertEqual(result['note'], 'December to 2022 New Year Vacation in Smyrna Beach')
+
+    # Pennsylvania (Erie/Falls Creek/Pittsburgh/Altoona)
+    def test_pennsylvania_erie_falls_creek_pittsburgh_altoona(self):
+        """Test pennsylvania_erie_falls_creek_pittsburgh_altoona"""
+        line = "Pennsylvania (Erie/Falls Creek/Pittsburgh/Altoona)"
+        result = handle_location_only(line, self.countries)
+        self.assertEqual(result['state'], 'Pennsylvania')
+        self.assertEqual(result['country'], 'United States')
+        self.assertEqual(result['location'], None)
+        self.assertEqual(result['note'], '(Erie/Falls Creek/Pittsburgh/Altoona)')
+
+    # Visited South Africa
+    def test_visited_south_africa(self):
+        """Test visited_south_africa"""
+        line = "Visited South Africa"
+        result = handle_location_only(line, self.countries)
+        self.assertEqual(result['state'], None)
+        self.assertEqual(result['country'], 'South Africa')
+        self.assertEqual(result['location'], None)
+        self.assertEqual(result['note'], "Visited")
+
+    # Quebec/Atlantic (Halifax NS) w/Albert Clark
+    def test_quebec_atlantic_halifax_ns_w_albert_clark(self):
+        """Test quebec_atlantic_halifax_ns_w_albert_clark"""
+        line = "Quebec/Atlantic (Halifax NS) w/Albert Clark"
+        result = handle_location_only(line, self.countries)
+        self.assertEqual(result['state'], 'Quebec/Atlantic')
+        self.assertEqual(result['country'], 'Canada')
+        self.assertEqual(result['location'], None)
+        self.assertEqual(result['note'], '(Halifax NS) With Albert Clark')
+
+    # La Paz, Ecuador
+    def test_la_paz_ecuador(self):
+        """Test la_paz_ecuador"""
+        line = "La Paz, Ecuador"
+        result = handle_location_only(line, self.countries)
+        self.assertEqual(result['state'], 'La Paz')
+        self.assertEqual(result['country'], 'Bolivia')
+        self.assertEqual(result['location'], None)
+        self.assertEqual(result['note'], 'Ecuador')
+
+    #was in New Zealand and walked the Routeburn Track (January)
+    def test_was_in_new_zealand_and_walked_the_routeburn_track_january(self):
+        """Test was_in_new_zealand_and_walked_the_routeburn_track_january"""
+        line = "was in New Zealand and walked the Routeburn Track (January)"
+        result = handle_location_only(line, self.countries)
+        self.assertEqual(result['state'], None)
+        self.assertEqual(result['country'], 'New Zealand')
+        self.assertEqual(result['location'], None)
+        self.assertEqual(result['note'], 'was in and walked the Routeburn Track (January)')
+
+
+
+
+
+
+
+
+    # Apopka Florida Convention (West Africa)
+    def test_apopka_florida_convention_west_africa(self):
+        """Test apopka_florida_convention_west_africa"""
+        line = "Apopka Florida Convention (West Africa)"
+        result = handle_convention(line, self.countries)
+        self.assertEqual(result['state'], 'Florida')
+        self.assertEqual(result['country'], 'United States')
+        self.assertEqual(result['location'], None)
+        self.assertEqual(result['note'], 'Apopka Convention. Visiting from West Africa')
+
+    # Olympia 2 Washington Convention (Aug 14-17) (Europe)
+    def test_olympia_2_washington_convention_aug_14_17_europe(self):
+        """Test olympia_2_washington_convention_aug_14_17_europe"""
+        line = "Olympia 2 Washington Convention (Aug 14-17) (Europe)"
+        result = handle_convention(line, self.countries)
+        self.assertEqual(result['state'], 'Washington')
+        self.assertEqual(result['country'], 'United States')
+        self.assertEqual(result['location'], None)
+        self.assertEqual(result['note'], 'Olympia 2 Convention - Aug 14-17. Visiting from Europe')
+
+    # Bangalore India Convention
+    def test_bangalore_india_convention(self):
+        """Test bangalore_india_convention"""
+        line = "Bangalore India Convention"
+        result = handle_convention(line, self.countries)
+        self.assertEqual(result['state'], None)
+        self.assertEqual(result['country'], 'India')
+        self.assertEqual(result['location'], 'Bangalore')
+        self.assertEqual(result['note'], 'Convention')
+
+    # Prince George Canada Convention Preps
+    def test_prince_george_canada_convention_preps(self):
+        """Test prince_george_canada_convention_preps"""
+        line = "Prince George Canada Convention Preps"
+        result = handle_convention(line, self.countries)
+        self.assertEqual(result['state'], 'British Columbia')
+        self.assertEqual(result['country'], 'Canada')
+        self.assertEqual(result['location'], 'Prince George')
+        self.assertEqual(result['note'], 'Convention Preps')
+
+    # Ales, France Convention (Aug 12)
+    def test_ales_france_convention_aug_12(self):
+        """Test ales_france_convention_aug_12"""
+        line = "Ales, France Convention (Aug 12)"
+        result = handle_convention(line, self.countries)
+        self.assertEqual(result['state'], None)
+        self.assertEqual(result['country'], 'France')
+        self.assertEqual(result['location'], None)
+        self.assertEqual(result['note'], 'Ales Convention - Aug 12')
+
+    # Salmon Arm Convention (Sk- Ukraine)
+    def test_salmon_arm_convention_sk_ukraine(self):
+        """Test salmon_arm_convention_sk_ukraine"""
+        line = "Salmon Arm Convention (Sk- Ukraine)"
+        result = handle_convention(line, self.countries)
+        self.assertEqual(result['state'], 'Saskatchewan')
+        self.assertEqual(result['country'], 'Canada')
+        self.assertEqual(result['location'], 'Salmon Arm')
+        self.assertEqual(result['note'], 'Convention. Visiting from Ukraine')
+
+    # Juneau Alaska Convention May 28-31
+    def test_juneau_alaska_convention_may_28_31(self):
+        """Test juneau_alaska_convention_may_28_31"""
+        line = "Juneau Alaska Convention May 28-31"
+        result = handle_convention(line, self.countries)
+        self.assertEqual(result['state'], 'Alaska')
+        self.assertEqual(result['country'], 'United States')
+        self.assertEqual(result['location'], None)
+        self.assertEqual(result['note'], 'Juneau Convention May 28-31')
+
+    # Tokyo Japan Convention
+    def test_tokyo_japan_convention(self):
+        """Test tokyo_japan_convention"""
+        line = "Tokyo Japan Convention"
+        result = handle_convention(line, self.countries)
+        self.assertEqual(result['state'], None)
+        self.assertEqual(result['country'], 'Japan')
+        self.assertEqual(result['location'], 'Tokyo')
+        self.assertEqual(result['note'], 'Convention')
+
+    # Manhattan 2 Montana Convention June 29-July2
+    def test_manhattan_2_montana_convention_june_29_july_2(self):
+        """Test manhattan_2_montana_convention_june_29_july_2"""
+        line = "Manhattan 2 Montana Convention June 29-July2"
+        result = handle_convention(line, self.countries)
+        self.assertEqual(result['state'], 'Montana')
+        self.assertEqual(result['country'], 'United States')
+        self.assertEqual(result['location'], None)
+        self.assertEqual(result['note'], 'Manhattan 2 Convention June 29-July2')
+
+    # Didsbury #2 Canada Convention (Montana Visiting Worker)
+    def test_didsbury_2_canada_convention_montana_visiting_worker(self):
+        """Test didsbury_2_canada_convention_montana_visiting_worker"""
+        line = "Didsbury #2 Canada Convention (Montana Visiting Worker)"
+        result = handle_convention(line, self.countries)
+        self.assertEqual(result['state'], None)
+        self.assertEqual(result['country'], 'Canada')
+        self.assertEqual(result['location'], None)
+        self.assertEqual(result['note'], 'Didsbury #2 Convention. Visiting from Montana')
+
+    # Alma Michigan Convention (CO)
+    def test_alma_michigan_convention_co(self):
+        """Test alma_michigan_convention_co"""
+        line = "Alma Michigan Convention (CO)"
+        result = handle_convention(line, self.countries)
+        self.assertEqual(result['state'], 'Michigan')
+        self.assertEqual(result['country'], 'United States')
+        self.assertEqual(result['location'], 'Alma')
+        self.assertEqual(result['note'], 'Convention. Visiting from Colorado')
+
+    # Theodore Canada Convention (TX)
+    def test_theodore_canada_convention_tx(self):
+        """Test theodore_canada_convention_tx"""
+        line = "Theodore Canada Convention (TX)"
+        result = handle_convention(line, self.countries)
+        self.assertEqual(result['state'], None)
+        self.assertEqual(result['country'], 'Canada')
+        self.assertEqual(result['location'], None)
+        self.assertEqual(result['note'], 'Theodore Convention. Visiting from Texas')
+
+    # Newry Pennsylvania Convention (NY/VT/NH)
+    def test_newry_pennsylvania_convention_ny_vt_nh(self):
+        """Test newry_pennsylvania_convention_ny_vt_nh"""
+        line = "Newry Pennsylvania Convention (NY/VT/NH)"
+        result = handle_convention(line, self.countries)
+        self.assertEqual(result['state'], 'Pennsylvania')
+        self.assertEqual(result['country'], 'United States')
+        self.assertEqual(result['location'], None)
+        self.assertEqual(result['note'], 'Newry Convention. Visiting from NY/VT/NH')
+
+    # Portage Convention (Manitoba Canada)
+    def test_portage_convention_manitoba_canada(self):
+        """Test portage_convention_manitoba_canada"""
+        line = "Portage Convention (Manitoba Canada)"
+        result = handle_convention(line, self.countries)
+        self.assertEqual(result['state'], 'Manitoba')
+        self.assertEqual(result['country'], 'Canada')
+        self.assertEqual(result['location'], 'Portage')
+        self.assertEqual(result['note'], 'Convention. Visiting from Manitoba Canada')
+
+    # Mountain Ranch 1 California Convention (sent back to S. Africa from this convention)
+    def test_mountain_ranch_1_california_convention_sent_back_to_s_africa(self):
+        """Test mountain_ranch_1_california_convention_sent_back_to_s_africa"""
+        line = "Mountain Ranch 1 California Convention (sent back to S. Africa from this convention)"
+        result = handle_convention(line, self.countries)
+        self.assertEqual(result['state'], 'California')
+        self.assertEqual(result['country'], 'United States')
+        self.assertEqual(result['location'], None)
+        self.assertEqual(result['note'], 'Mountain Ranch 1 Convention. Visiting from South Africa. Sent back to S. Africa from this convention')
+
+    def test_prince_george_canada_convention_preps(self):
+        """Test prince_george_canada_convention_preps"""
+        line = "Prince George Canada Convention Preps"
+        result = handle_convention(line, self.countries)
+        self.assertEqual(result['state'], 'British Columbia')
+        self.assertEqual(result['country'], 'Canada')
+        self.assertEqual(result['location'], 'Prince George')
+        self.assertEqual(result['note'], 'Convention Preps')
+
+    # Post Falls, Idaho Convention Jun 9-12
+    def test_post_falls_idaho_convention_jun_9_12(self):
+        """Test post_falls_idaho_convention_jun_9_12"""
+        line = "Post Falls, Idaho Convention Jun 9-12"
+        line = process_locations.text_fixes(line)
+        result = handle_convention(line, self.countries)
+        self.assertEqual(result['state'], 'Idaho')
+        self.assertEqual(result['country'], 'United States')
+        self.assertEqual(result['location'], 'Post Falls')
+        self.assertEqual(result['note'], 'Convention Jun 9-12')
+
+    # Insurgents Convention
+    def test_insurgents_mexico_convention(self):
+        """Test insurgents_mexico_convention"""
+        line = "Insurgents Mexico Convention"
+        line = process_locations.text_fixes(line)
+        result = handle_convention(line, self.countries)
+        self.assertEqual(result['state'], None)
+        self.assertEqual(result['country'], 'Mexico')
+        self.assertEqual(result['location'], 'Insurgentes')
+        self.assertEqual(result['note'], 'Convention')
+
+    # Ilocos Convention
+    def test_ilocos_convention(self):
+        """Test ilocos_convention"""
+        line = "Ilocos Convention"
+        line = process_locations.text_fixes(line)
+        result = handle_convention(line, self.countries)
+        self.assertEqual(result['state'], None)
+        self.assertEqual(result['country'], 'Philippines')
+        self.assertEqual(result['location'], 'Ilocos')
+        self.assertEqual(result['note'], 'Convention')
+
+    # Dunbarton 1 UK Convention
+    def test_dunbarton_1_uk_convention(self):
+        """Test dunbarton_1_uk_convention"""
+        line = "Dunbarton 1 UK Convention"
+        line = process_locations.text_fixes(line)
+        result = handle_convention(line, self.countries)
+        self.assertEqual(result['state'], None)
+        self.assertEqual(result['country'], 'United Kingdom')
+        self.assertEqual(result['location'], 'Dunbarton 1')
+        self.assertEqual(result['note'], 'Convention')
+
+
+
+
+
+
 
 if __name__ == '__main__':
     unittest.main() 

@@ -76,15 +76,128 @@ countries = {
         'cities': {
             'Picton': 'Oklahoma',
             'Anadarko': 'Oklahoma',
-            'Buttonwillow': 'California',
-            'Eagle Bend': 'Minnesota',
             'Eagle Bend 1': 'Minnesota',
+            'Eagle Bend 2': 'Minnesota',
+            'Eagle Bend': 'Minnesota',
+            'Buttonwillow 1': 'California',
             'Buttonwillow 2': 'California',
+            'Buttonwillow': 'California',
             'Knoxville': 'Tennessee',
             'Gilbert': 'Arizona',
             'Anchorage': 'Alaska',
             'Clover': 'South Carolina',
-            'Alma': 'Michigan'
+            'Alma': 'Michigan',
+            'Albuquerque': 'New Mexico',
+            'Altamont': 'New York',
+            'Apopka': 'Florida',
+            'Bakersfield': 'California',
+            'Bird City': 'Kansas',
+            'Black Hills': 'South Dakota',
+            'Blackwater': 'Missouri',
+            'Bonners Ferry': 'Idaho',
+            'Boring 1': 'Oregon',
+            'Boring 2': 'Oregon',
+            'Boring': 'Oregon',
+            'Boston': 'Virginia',
+            'Boyden': 'Iowa',
+            'Bradley': 'Oklahoma',
+            'Brownstown': 'Illinois',
+            'Bushnell': 'Florida',
+            'Cando': 'North Dakota',
+            'Carsonville': 'Michigan',
+            'Casa Grande 1': 'Arizona',
+            'Casa Grande 2': 'Arizona',
+            'Casa Grande': 'Arizona',
+            'Cassatt': 'South Carolina',
+            'Chelan': 'Washington',
+            'Chugwater': 'Wyoming',
+            'Clever': 'Missouri',
+            'Clyde': 'Ohio',
+            'Cody': 'Wyoming',
+            'Dagmar': 'Montana',
+            'Dells': 'Wisconsin',
+            'Demorest': 'Georgia',
+            'Denton': 'North Carolina',
+            'Devon': 'Montana',
+            'Downings': 'Virginia',
+            'Eaton': 'Ohio',
+            'Edgewood': 'New Mexico',
+            'Effie': 'Louisiana',
+            'Elizabeth 1': 'Colorado',
+            'Elizabeth 2': 'Colorado',
+            'Elizabeth': 'Colorado',
+            'Fosters': 'Alabama',
+            'Fosters': 'Alabama',
+            'Freedom': 'New York',
+            'Gastonia': 'North Carolina',
+            'Georgetown': 'Texas',
+            'Gilroy #1': 'California',
+            'Gilroy': 'California',
+            'Happy': 'Texas',
+            'Hector': 'Minnesota',
+            'Hermosa': 'South Dakota',
+            'Hotchkiss': 'Colorado',
+            'Hunter': 'North Dakota',
+            'Jackson': 'Mississippi',
+            'Juneau': 'Alaska',
+            'Lexington': 'Kentucky',
+            'lltown 1 Washington': 'Michigan',
+            'Madisonville': 'Kentucky',
+            'Malcom': 'Iowa',
+            'Mandan': 'North Dakota',
+            'Manhattan 2': 'Montana',
+            'Manhattan': 'Montana',
+            'Marion': 'Wisconsin',
+            'Marysville': 'Kansas',
+            'May Mountain Ranch': 'California',
+            'McCordsville': 'Indiana',
+            'Menomonie': 'Wisconsin',
+            'Metter': 'Georgia',
+            'Milford': 'New Hampshire', 
+            'Milltown 1': 'Washington',
+            'Milltown 2': 'Washington',
+            'Milltown': 'Washington',
+            'Mountain Peak': 'Texas',
+            'Mountain Ranch 1': 'California',
+            'Mountain Ranch 2': 'California',
+            'Mountain Ranch': 'California',
+            'Mountainair 1': 'New Mexico',
+            'Mountainair 2': 'New Mexico',
+            'Mountainair': 'New Mexico',
+            'Mt. Peak': 'Texas',
+            'Mt. Sterling': 'Illinois',
+            'Newry': 'Pennsylvania',
+            'Olympia 1': 'Washington',
+            'Olympia 2': 'Washington',
+            'Olympia': 'Washington',
+            'Orick': 'California',
+            'Parma': 'Idaho',
+            'Paris': 'Tennessee',
+            'Perry': 'Oklahoma',
+            'Post Falls': 'Idaho',
+            'Pulaski': 'Virginia',
+            'Quakertown': 'Pennsylvania',
+            'Riverton': 'Utah',
+            'Rogers': 'Arkansas',
+            'Ronan': 'Montana',
+            'Saginaw 1': 'Oregon',
+            'Saginaw 2': 'Oregon',
+            'Saginaw': 'Oregon',
+            'Salvisa': 'Kentucky',
+            'Santee': 'California',
+            'Seneca': 'Illinois',
+            'Sharon': 'Ohio',
+            'Shelby': 'North Carolina',
+            'Shelter Valley': 'California',
+            'Shoals': 'Indiana',
+            'Texarkana': 'Texas',
+            'Utica 2': 'South Dakota',
+            'Utica': 'South Dakota',
+            'Vanderbilt': 'Michigan',
+            'Walla Walla': 'Washington',
+            'Wasilla': 'Alaska',
+            'Yellow Springs': 'Ohio',
+            'York': 'Nebraska'
         }
     },
     'Canada': {
@@ -114,23 +227,61 @@ countries = {
             'YT': 'Yukon'
         },
         'cities': {
-            'Salmon Arm': 'Saskatchewan',
+            'Almonte': '',
+            'Antler': 'Saskatchewan',
+            'Aylesbury': 'Saskatchewan',
+            'Bowsman': '',
+            'Brigus': '',
+            'Didsbury': 'Alberta',
+            'Didsbury #2': 'Alberta',
+            'Didsbury 1': 'Alberta',
+            'Didsbury 2': 'Alberta',
+            'Didsbury 2': 'Alberta',
+            'Duncan': 'British Columbia',
+            'Dunnville': '',
+            'Ellershouse': '',
+            'Emo': '',
+            'Freedom': '',
+            'Freetown': 'Prince Edward Island',
+            'Freetown I': 'Prince Edward Island',
+            'Glen Valley 1': 'British Columbia',
+            'Glen Valley 2': 'British Columbia',
+            'Glen Valley': 'British Columbia',
+            'Greenshield': '',
+            'Harvey Station': '',
+            'Humber Village': 'Newfoundland and Labrador',
+            'Hythe': '',
+            'Irishtown': 'Newfoundland and Labrador',
+            'Iron Bridge': 'Ontario',
+            'Mellowdale': '',
+            'Napan': '',
             'Portage': 'Manitoba',
             'Prince George': 'British Columbia',
-            'Irishtown': 'Newfoundland and Labrador',
-            'Glen Valley 2': 'British Columbia',
-            'Glen Valley': 'British Columbia'
+            'Richmond': '',
+            'Salmon Arm': 'Saskatchewan',
+            'Seagrave': '',
+            'Silverdale 1': '',
+            'Silverdale 2': '',
+            'Smeaton': '',
+            'St. George': 'Newfoundland and Labrador',
+            'Strathroy': '',
+            'Theodore': 'Saskatchewan',
+            'Woodstock': ''
         }
     },
     'Austria': {
         'name': 'Austria',
         'states': [],
-        'cities': {}
+        'cities': {
+            'Vienna': ''
+        }
     },
     'Germany': {
         'name': 'Germany',
         'states': [],
-        'cities': {}
+        'cities': {
+            'Hulben': ''
+        }
     },
     'Orient': {
         'name': 'Orient',
@@ -141,12 +292,17 @@ countries = {
     'Nigeria': {
         'name': 'Nigeria',
         'states': [],
-        'cities': {}
+        'cities': {
+            'Ikorodu': ''
+        }
     },
     'Belgium': {
         'name': 'Belgium',
         'states': [],
-        'cities': {}
+        'cities': {
+            'Lillois': '',
+            'Sart-Dames-Avelines': ''
+        }
     },
     'Sri Lanka': {
         'name': 'Sri Lanka',
@@ -162,15 +318,20 @@ countries = {
     },
     'Peru': {
         'name': 'Peru',
-        'states': ['Olmos'],
+        'states': ['Lambayeque'],
         'special_location': 'Convention',
-        'cities': {}
+        'cities': {
+            'Olmos': 'Lambayeque',
+            'Coyunde': ''
+        }
     },
     'Bolivia': {
         'name': 'Bolivia',
-        'states': [],
+        'states': ['La Paz'],
         'special_location': 'Convention',
-        'cities': {}
+        'cities': {
+            'Cochabamba': ''
+        }
     },
     'Australia/Papua New Guinea': {
         'name': 'Australia/Papua New Guinea',
@@ -181,29 +342,80 @@ countries = {
         'name': 'Australia',
         'states': ['Victoria', 'Victoria and Tasmania', 'Tasmania', 'New South Wales', 'Queensland', 'South Australia', 'Western Australia', 'Northern Territory', 'Australian Capital Territory'],
         'variations': ['Australian'],
-        'cities': {}
+        'cities': {
+            'Biddeston': '',
+            'Chelona 2': '',
+            'Colac': 'Victoria',
+            'Drouin': 'Victoria',
+            'Glenco': '',
+            'Kapunda 1': '',
+            'Kapunda 2': '',
+            'Maroota 1': '',
+            'Maroota 2': '',
+            'Mudgee': 'New South Wales',
+            'Pilerwa #1': '',
+            'Pilerwa #2': '',
+            'Pilerwa 1': '',
+            'Rochedale': '',
+            'Speed': 'Victoria',
+            'Thoona': 'Victoria',
+            'Watta': 'New South Wales',
+            'Williams': '',
+            'Williams 1': '',
+            'Williams 2': '',
+            'Wilmington': ''
+        }
     },
     'New Zealand': {
         'name': 'New Zealand',
         'states': [],
-        'cities': {}
+        'cities': {
+            'Masterton 1': '',
+            'Masterton': '',
+            'Ngaere': '',
+            'Pukekone 2': '',
+            'Pukekohe': '',
+            'Winchester 1': ''
+        }
     },
     'United Kingdom': {
         'name': 'United Kingdom',
         'variations': ['UK'],
         'states': [],
-        'cities': {}
+        'cities': {
+            'Dunbarton 1': '',
+            'Gloucester 2': '',
+            'Lancashire': '',
+            'Yorkley 2': ''
+        }
     },
     'Ireland': {
         'name': 'Ireland',
         'states': [],
-        'cities': {}
+        'cities': {
+            'Carrick': '',
+            'Down': '',
+            'Fermanagh': '',
+            'Laois': '',
+            'Monaghan': ''
+        }
     },
     'South Africa': {
         'name': 'South Africa',
         'variations': ['S. Africa'],
         'states': ['Johannesburg'],
-        'cities': {}
+        'cities': {
+            'Bloemfontein': '',
+            'Cape 1': '',
+            'Cape 2': '',
+            'Cape Town': '',
+            'Durban': '',
+            'Gbetagbo': '',
+            'Port Elizabeth': '',
+            'Pretoria 1': '',
+            'Pretoria 2': '',
+            'Pretoria': ''
+        }
     },
     'West Africa': {
         'name': 'West Africa',
@@ -224,12 +436,16 @@ countries = {
     'Finland': {
         'name': 'Finland',
         'states': [],
-        'cities': {}
+        'cities': {
+            'Vaasa': ''
+        }
     },
     'Netherlands': {
         'name': 'Netherlands',
         'states': [],
-        'cities': {}
+        'cities': {
+            'Putten': ''
+        }
     },
     'Jamaica': {
         'name': 'Jamaica',
@@ -244,12 +460,22 @@ countries = {
     'Korea': {
         'name': 'Korea',
         'states': [],
-        'cities': {}
+        'cities': {
+            'Puchon': '',
+            'Seoul South': ''
+        }
     },
     'Philippines': {
         'name': 'Philippines',
         'states': [],
-        'cities': {}
+        'cities': {
+            'Baguio': '',
+            'Cavite': '',
+            'Iloilo': '',
+            'Ilocos': '',
+            'Ozamis': '',
+            'Rosales': ''
+        }
     },
     'Argentina/Paraguay/Uruguay': {
         'name': 'Argentina/Paraguay/Uruguay',
@@ -269,22 +495,35 @@ countries = {
     'Brazil': {
         'name': 'Brazil',
         'states': [],
-        'cities': {}
+        'cities': {
+            'Alegrete': '',
+            'Bel Horizonte': '',
+            'Gravati': '',
+            'Gravati': '',
+            'Panambi': '',
+            'Sao Jose dos Campos': '',
+            'Sao Paulo': ''
+        }
     },
     'Ecuador': {
         'name': 'Ecuador',
-        'states': ['La Paz', 'Galapagos'],
-        'cities': {}
+        'states': ['Galapagos'],
+        'cities': {
+            'El Cristal': ''
+        }
     },
     'India': {
         'name': 'India',
-        'states': ['Bangalore'],
-        'cities': {}
+        'states': [],
+        'cities': {'Bangalore': ''}
     },
     'Scotland': {
         'name': 'Scotland',
         'states': [],
-        'cities': {}
+        'cities': {
+            'Gartocharn 1': '',
+            'Gartocharn 2': ''
+        }
     },
     'Trinidad': {
         'name': 'Trinidad',
@@ -293,33 +532,46 @@ countries = {
     },
     'Japan': {
         'name': 'Japan',
-        'states': ['Tokyo'],
-        'cities': {}
+        'states': [],
+        'cities': {'Tokyo': ''}
     },
     'Guatemala': {
         'name': 'Guatemala',
         'states': [],
-        'cities': {}
+        'cities': {
+            'Malacation': ''
+        }
     },
     'Denmark': {
         'name': 'Denmark',
         'states': [],
-        'cities': {}
+        'cities': {
+            'Sonder Omme': ''
+        }
     },
     'Mexico': {
         'name': 'Mexico',
         'states': [],
-        'cities': {}
+        'cities': {
+            'Ebano': '',
+            'Insurgentes': '',
+            'Tanama': ''
+        }
     },
     'Spain': {
         'name': 'Spain',
         'states': [],
-        'cities': {}
+        'cities': {
+            'Madrid': ''
+        }
     },
     'Greece': {
         'name': 'Greece',
         'states': [],
-        'cities': {}
+        'cities': {
+            'Athens': '',
+            'Inoi': ''
+        }
     },
     'Argentina': {
         'name': 'Argentina',
@@ -333,17 +585,30 @@ countries = {
     'Italy': {
         'name': 'Italy',
         'states': [],
-        'cities': {}
+        'cities': {
+            'Petacciato': ''
+        }
     },
     'France': {
         'name': 'France',
-        'states': ['Paris'],
-        'cities': {}
+        'states': [],
+        'cities': {
+            'Ales': '',
+            'Chaintreauville': '',
+            'Chaintreauville': '',
+            'Chaintreauville': '',
+            'Chaintreauville': '',
+            'Foljuif': '',
+            'Foljuif': '',
+            'Paris': ''
+        }
     },
     'Romania': {
         'name': 'Romania',
         'states': [],
-        'cities': {}
+        'cities': {
+            'Sibiu 2': ''
+        }
     },
     'Sweden': {
         'name': 'Sweden',
@@ -353,7 +618,9 @@ countries = {
     'Norway': {
         'name': 'Norway',
         'states': [],
-        'cities': {}
+        'cities': {
+            'Stokke': ''
+        }
     },
     'Venezuela': {
         'name': 'Venezuela',
@@ -368,13 +635,17 @@ countries = {
     'Poland': {
         'name': 'Poland',
         'states': [],
-        'cities': {}
+        'cities': {
+            'Wista': ''
+        }
     },
     'Columbia': {
         'name': 'Columbia',
         'variations': ['Colombia'],
         'states': ['Ipiales'],
-        'cities': {}
+        'cities': {
+            'Bogota': ''
+        }
     },
     'Grand Cayman': {
         'name': 'Grand Cayman',
@@ -391,15 +662,12 @@ countries = {
         'states': [],
         'cities': {}
     },
-    'Hong Kong': {
-        'name': 'Hong Kong',
-        'states': [],
-        'cities': {}
-    },
     'China': {
         'name': 'China',
         'states': [],
-        'cities': {}
+        'cities': {
+            'Hong Kong': ''
+        }
     },
     'Saipan': {
         'name': 'Saipan',
@@ -410,7 +678,9 @@ countries = {
         'name': 'Dominican Republic',
         'variations': ['Republica Dominicana'],
         'states': [],
-        'cities': {}
+        'cities': {
+            'Bonao': ''
+        }
     },
     'Suriname': {
         'name': 'Suriname',
@@ -435,7 +705,9 @@ countries = {
     'Caribbean': {
         'name': 'Caribbean',
         'states': ['Antigua', 'Barbados', 'Cayman Islands', 'Dominican Republic', 'Grenada', 'Guadeloupe', 'Haiti', 'Jamaica', 'St. Kitts', 'St. Lucia', 'St. Vincent', 'Trinidad'],
-        'cities': {}
+        'cities': {
+            'Cabaret': 'Haiti'
+        }
     },
     'Cayman Islands': {
         'name': 'Cayman Islands',
