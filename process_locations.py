@@ -130,6 +130,7 @@ def get_state_country(line: str, countries: Dict) -> Optional[Dict]:
         return result
 
     print_debug(f"\n\nBOB STATE COUNTRY 0.0 - Line: {line}")
+    
     line = re.sub(r'\bN\.?\s+', 'North ', line)
     line = re.sub(r'\bS\.?\s+', 'South ', line)
     line = re.sub(r'\bW\.?\s+', 'West ', line)
@@ -138,6 +139,34 @@ def get_state_country(line: str, countries: Dict) -> Optional[Dict]:
     line = re.sub(r'\bSW\.?\s+', 'Southwest ', line)
     line = re.sub(r'\bSE\.?\s+', 'Southeast ', line)
 
+    # First check if there's a state name in the input string
+    earliest_state_pos = float('inf')
+    found_state = None
+    found_state_country = None
+    
+    for country_name, country_info in countries.items():
+        # Check for exact state matches
+        for state in country_info.get('states', []):
+            if state and re.search(r'\b' + re.escape(state) + r'\b', line):  # Skip empty strings
+                pos = line.find(state)
+                if pos != -1 and pos < earliest_state_pos:
+                    earliest_state_pos = pos
+                    found_state = state
+                    found_state_country = country_name
+
+        # Check state variations
+        if 'state_variations' in country_info:
+            for variation, full_state in country_info['state_variations'].items():
+                if variation and re.search(r'\b' + re.escape(variation) + r'\b', line):  # Skip empty strings
+                    pos = line.find(variation)
+                    if pos != -1 and pos < earliest_state_pos:
+                        earliest_state_pos = pos
+                        found_state = full_state
+                        found_state_country = country_name
+
+    print_debug(f"\n\nBOB SC 0.0 - found_state: {found_state}")
+    print_debug(f"BOB SC 0.1 - found_state_country: {found_state_country}")
+
     # First check if any word in the line is a city
     words = line.split()
     for i in range(len(words)):
@@ -145,30 +174,43 @@ def get_state_country(line: str, countries: Dict) -> Optional[Dict]:
         for word_count in range(3, 0, -1):
             if i + word_count <= len(words):
                 potential_city = ' '.join(words[i:i + word_count])
-                for country, info in countries.items():
-                    if 'cities' in info and potential_city in info['cities']:  # Remove check for info['cities'][potential_city]
+
+                # If we found a state earlier, only check cities in that state's country
+                countries_to_check = {found_state_country: countries[found_state_country]} if found_state_country else countries
+                
+                for country_name, country_info in countries_to_check.items():
+                    if 'cities' in country_info and potential_city in country_info['cities']:
+                        # If this city is part of a state name we found earlier, skip it
+                        if found_state and potential_city in found_state:
+                            continue
+
                         # Found a city, get its state (may be None)
-                        state = info['cities'][potential_city]
+                        state = country_info['cities'][potential_city]
+                        
+                        # If we found a state earlier, only use cities that belong to that state
+                        if found_state and state != found_state:
+                            continue
+
                         result['state'] = state
-                        result['country'] = country
+                        result['country'] = country_name
                         # Remove the state and country from the line
                         if state:  # Only remove state if it exists
                             line = line.replace(state, '').strip()
-                        line = line.replace(country, '').strip()
+                        line = line.replace(country_name, '').strip()
                         line = line.replace(potential_city, '').strip()
                         # Remove any state variations
-                        if 'state_variations' in info:
-                            for variation in info['state_variations'].keys():
-                                line = line.replace(variation, '').strip()
+                        if 'state_variations' in country_info:
+                            for variation in country_info['state_variations'].keys():
+                                line = re.sub(r'\b' + re.escape(variation) + r'\b', '', line).strip()
                         # Set location to city name
-                        print_debug(f"BOB - Location: {potential_city}")
+                        print_debug(f"BOB SC 0.2 - Location: {potential_city}")
                         result['location'] = potential_city
                         # Keep the remaining text in the line field
-                        print_debug(f"BOB - Line: {line}")
+                        print_debug(f"BOB SC 0.3 - Line: {line}")
                         result['line'] = line
                         return result
 
-    print_debug(f"\n\nBOB 1.0 - Line: {line}")
+    print_debug(f"BOB SC 1.0 - Line: {line}")
     # First check for combined country names
     for country, info in countries.items():
         if '/' in country and country in line:
@@ -198,7 +240,7 @@ def get_state_country(line: str, countries: Dict) -> Optional[Dict]:
             result['line'] = clean_line(line)
             return result
 
-    print_debug(f"BOB 2.0 - Line: {line}")
+    print_debug(f"BOB SC 2.0 - Line: {line}")
     # Then look for states in any country
     # Track the earliest position of any state match
     earliest_state_pos = float('inf')
@@ -213,7 +255,7 @@ def get_state_country(line: str, countries: Dict) -> Optional[Dict]:
             
         # Check for exact state matches
         for state in info.get('states', []):
-            if state and state in line:  # Skip empty strings
+            if state and re.search(r'\b' + re.escape(state) + r'\b', line):  # Skip empty strings
                 pos = line.find(state)
                 if pos != -1 and pos < earliest_state_pos:
                     earliest_state_pos = pos
@@ -224,7 +266,7 @@ def get_state_country(line: str, countries: Dict) -> Optional[Dict]:
         # Check state variations
         if 'state_variations' in info:
             for variation, full_state in info['state_variations'].items():
-                if variation and variation in line:  # Skip empty strings
+                if variation and re.search(r'\b' + re.escape(variation) + r'\b', line):  # Skip empty strings
                     pos = line.find(variation)
                     if pos != -1 and pos < earliest_state_pos:
                         earliest_state_pos = pos
@@ -232,25 +274,26 @@ def get_state_country(line: str, countries: Dict) -> Optional[Dict]:
                         earliest_country = country
                         earliest_state_text = variation
 
-    print_debug(f"BOB 2.1 - earliest_state_pos: {earliest_state_pos}")
-    print_debug(f"BOB 2.2 - earliest_state: {earliest_state}")
-    print_debug(f"BOB 2.3 - earliest_country: {earliest_country}")
-    print_debug(f"BOB 2.4 - earliest_state_text: {earliest_state_text}")
-    print_debug(f"BOB 2.5 - line: {line}")
+    print_debug(f"BOB SC 2.1 - earliest_state_pos: {earliest_state_pos}")
+    print_debug(f"BOB SC 2.2 - earliest_state: {earliest_state}")
+    print_debug(f"BOB SC 2.3 - earliest_country: {earliest_country}")
+    print_debug(f"BOB SC 2.4 - earliest_state_text: {earliest_state_text}")
+    print_debug(f"BOB SC 2.5 - line: {line}")
+    
     # If we found a state, use the earliest one
     if earliest_state is not None:
         result['state'] = earliest_state
         result['country'] = earliest_country
         # Remove the state and country from the line
         line = line.replace(earliest_state_text, '').strip()
-        print_debug(f"BOB 2.6 - line: {line}")
+        print_debug(f"BOB SC 2.6 - line: {line}")
         line = line.replace(earliest_country, '').strip()
-        print_debug(f"BOB 2.7 - line: {line}")
+        print_debug(f"BOB SC 2.7 - line: {line}")
         result['line'] = clean_line(line)
-        print_debug(f"BOB 2.8 - result(line): {result['line']}")
+        print_debug(f"BOB SC 2.8 - result(line): {result['line']}")
         return result
 
-    print_debug(f"BOB 3.0 - Line: {line}")
+    print_debug(f"BOB SC 3.0 - Line: {line}")
     # Then look for exact country matches
     for country, info in countries.items():
         # Skip combined country names
@@ -309,7 +352,7 @@ def get_state_country(line: str, countries: Dict) -> Optional[Dict]:
             result['line'] = clean_line(line)
             return result
     
-    print_debug(f"BOB 4.0 - Line: {line}")
+    print_debug(f"BOB SC 4.0 - Line: {line}")
     # Finally look for country matches including variations
     for country, info in countries.items():
         # Skip combined country names
@@ -349,7 +392,7 @@ def get_state_country(line: str, countries: Dict) -> Optional[Dict]:
                     result['line'] = clean_line(line)
                     return result
 
-    print_debug(f"BOB 5.0 - Line: {line}")
+    print_debug(f"BOB SC 5.0 - Line: {line}")
     # If no state or country found, return the original line
     result['line'] = clean_line(line)
     return result
@@ -592,8 +635,8 @@ def handle_special_meeting(line: str, countries: Dict) -> Optional[Dict]:
 
 def add_to_note_list(current_note: str, addition: str) -> str:
     """Add text to a note, handling the special case of 'Workers List:'."""
-    if current_note == 'Workers List:':
-        return f"{current_note} {addition}"
+    if current_note == 'Workers List':
+        return f"{current_note}: {addition}"
     return f"{current_note}, {addition}"
 
 def handle_workers_list(line: str, countries: Dict) -> Optional[Dict]:
@@ -649,7 +692,7 @@ def handle_workers_list(line: str, countries: Dict) -> Optional[Dict]:
         'country': None,
         'state': None,
         'location': None,
-        'note': 'Workers List:'
+        'note': 'Workers List'
     }
     
     # Find the position of "Workers List" and split the line
@@ -666,8 +709,8 @@ def handle_workers_list(line: str, countries: Dict) -> Optional[Dict]:
     print_debug(f"BOB WL 1.1 - text_after: {text_after}")
     # Remove month names and their variations first
 
-    single_month_pattern = r'(Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|Jun(?:e)?|Jul(?:y)?|Aug(?:ust)?|Sep(?:tember)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?)'
-    range_month_pattern = r'(Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|Jun(?:e)?|Jul(?:y)?|Aug(?:ust)?|Sep(?:tember)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?)\s*-\s*(Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|Jun(?:e)?|Jul(?:y)?|Aug(?:ust)?|Sep(?:tember)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?)'
+    single_month_pattern = r'\b(Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|Jun(?:e)?|Jul(?:y)?|Aug(?:ust)?|Sep(?:tember)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?)\b'
+    range_month_pattern = r'\b(Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|Jun(?:e)?|Jul(?:y)?|Aug(?:ust)?|Sep(?:tember)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?)\s*-\s*(Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|Jun(?:e)?|Jul(?:y)?|Aug(?:ust)?|Sep(?:tember)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?)\b'
 
     range_month_match = re.match(range_month_pattern, text_before, flags=re.IGNORECASE)
     if range_month_match:
@@ -851,7 +894,10 @@ def handle_started_work(line: str, countries: Dict) -> Optional[Dict]:
         result['country'] = state_country_info['country']
     if state_country_info['state']:
         result['state'] = state_country_info['state']
-    result['location'] = state_country_info['line']
+    if state_country_info['location']:
+        result['location'] = state_country_info['location']
+    if state_country_info['line']:
+        result['note'] = result['note'] + ': ' + state_country_info['line']
 
     return result
 
