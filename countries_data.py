@@ -1,728 +1,1329 @@
 """Data structure containing country information including states, variations, and cities."""
 
 countries = {
-    'United States': {
-        'name': 'United States',
-        'states': [
-            'Oregon/South Idaho', 'Oregon/Southern Idaho', 'Montana/North Wyoming', 'New York/New England', 'Ohio/West Virginia',
-            'Pennsylvania/Ohio/West Virginia', 'PA/NY/New England/NJ/OH', 'PA/NY/New England/NJ',
-            'Kentucky/Tennessee', 'Tennessee/Kentucky', 'Montana/Wyoming', 'Alabama/Mississippi', 'Kansas/Nebraska',
-            'Maryland/Delaware', 'Colorado/Utah',
-            'Alabama', 'Alaska', 'Arizona', 'Arkansas', 'Chino California', 'California', 'Colorado', 'Connecticut', 
-            'Delaware', 'Florida', 'Georgia', 'Hawaii', 'Idaho', 'Illinois', 'Indiana', 'Iowa', 
-            'Kansas', 'Kentucky', 'Louisiana', 'Maine', 'Maryland', 'Massachusetts', 'Michigan', 
-            'Minnesota', 'Mississippi', 'Missouri', 'Montana', 'Nebraska', 'Nevada', 'New Hampshire', 
-            'New Jersey', 'New Mexico', 'New York', 'North Carolina', 'North Dakota', 'Ohio', 
-            'Oklahoma', 'Oregon', 'Pennsylvania', 'Rhode Island', 'South Carolina', 'South Dakota', 
-            'Tennessee', 'Texas', 'Utah', 'Vermont', 'Virginia', 'Washington', 'West Virginia', 
-            'Wisconsin', 'Wyoming'
-        ],
-        'state_variations': {
-            'New Dakota': 'North Dakota',
-            'Virgina': 'Virginia',
-            'Washing': 'Washington',
-            'Kanasa': 'Kansas',
-            'AL': 'Alabama',
-            'AK': 'Alaska',
-            'AZ': 'Arizona',
-            'AR': 'Arkansas',
-            'CA': 'California',
-            'CO': 'Colorado',
-            'CT': 'Connecticut',
-            'DE': 'Delaware',
-            'FL': 'Florida',
-            'GA': 'Georgia',
-            'HI': 'Hawaii',
-            'ID': 'Idaho',
-            'IL': 'Illinois',
-            'IN': 'Indiana',
-            'IA': 'Iowa',
-            'KS': 'Kansas',
-            'KY': 'Kentucky',
-            'LA': 'Louisiana',
-            'ME': 'Maine',
-            'MD': 'Maryland',
-            'MA': 'Massachusetts',
-            'MI': 'Michigan',
-            'MN': 'Minnesota',
-            'MS': 'Mississippi',
-            'MO': 'Missouri',
-            'MT': 'Montana',
-            'NE': 'Nebraska',
-            'NV': 'Nevada',
-            'NH': 'New Hampshire',
-            'NJ': 'New Jersey',
-            'NM': 'New Mexico',
-            'NY': 'New York',
-            'NC': 'North Carolina',
-            'ND': 'North Dakota',
-            'OH': 'Ohio',
-            'OK': 'Oklahoma',
-            'OR': 'Oregon',
-            'PA': 'Pennsylvania',
-            'RI': 'Rhode Island',
-            'SC': 'South Carolina',
-            'SD': 'South Dakota',
-            'TN': 'Tennessee',
-            'TX': 'Texas',
-            'UT': 'Utah',
-            'VT': 'Vermont',
-            'VA': 'Virginia',
-            'WA': 'Washington',
-            'WV': 'West Virginia',
-            'WI': 'Wisconsin',
-            'WY': 'Wyoming'
-        },
-        'cities': {
-            'Picton': 'Oklahoma',
-            'Anadarko': 'Oklahoma',
-            'Eagle Bend 1': 'Minnesota',
-            'Eagle Bend 2': 'Minnesota',
-            'Eagle Bend': 'Minnesota',
-            'Buttonwillow 1': 'California',
-            'Buttonwillow 2': 'California',
-            'Buttonwillow': 'California',
-            'Knoxville': 'Tennessee',
-            'Gilbert': 'Arizona',
-            'Anchorage': 'Alaska',
-            'Clover': 'South Carolina',
-            'Alma': 'Michigan',
-            'Albuquerque': 'New Mexico',
-            'Altamont': 'New York',
-            'Apopka': 'Florida',
-            'Bakersfield': 'California',
-            'Bird City': 'Kansas',
-            'Black Hills': 'South Dakota',
-            'Blackwater': 'Missouri',
-            'Bonners Ferry': 'Idaho',
-            'Boring 1': 'Oregon',
-            'Boring 2': 'Oregon',
-            'Boring': 'Oregon',
-            'Boston': 'Virginia',
-            'Boyden': 'Iowa',
-            'Bradley': 'Oklahoma',
-            'Brownstown': 'Illinois',
-            'Bushnell': 'Florida',
-            'Cando': 'North Dakota',
-            'Carsonville': 'Michigan',
-            'Casa Grande 1': 'Arizona',
-            'Casa Grande 2': 'Arizona',
-            'Casa Grande': 'Arizona',
-            'Cassatt': 'South Carolina',
-            'Chelan': 'Washington',
-            'Chugwater': 'Wyoming',
-            'Clever': 'Missouri',
-            'Clyde': 'Ohio',
-            'Cody': 'Wyoming',
-            'Dagmar': 'Montana',
-            'Dells': 'Wisconsin',
-            'Demorest': 'Georgia',
-            'Denton': 'North Carolina',
-            'Devon': 'Montana',
-            'Downings': 'Virginia',
-            'Eaton': 'Ohio',
-            'Edgewood': 'New Mexico',
-            'Effie': 'Louisiana',
-            'Elizabeth 1': 'Colorado',
-            'Elizabeth 2': 'Colorado',
-            'Elizabeth': 'Colorado',
-            'Fosters': 'Alabama',
-            'Fosters': 'Alabama',
-            'Freedom': 'New York',
-            'Gastonia': 'North Carolina',
-            'Georgetown': 'Texas',
-            'Gilroy #1': 'California',
-            'Gilroy': 'California',
-            'Happy': 'Texas',
-            'Hector': 'Minnesota',
-            'Hermosa': 'South Dakota',
-            'Hotchkiss': 'Colorado',
-            'Hunter': 'North Dakota',
-            'Jackson': 'Mississippi',
-            'Juneau': 'Alaska',
-            'Lexington': 'Kentucky',
-            'lltown 1 Washington': 'Michigan',
-            'Madisonville': 'Kentucky',
-            'Malcom': 'Iowa',
-            'Mandan': 'North Dakota',
-            'Manhattan 2': 'Montana',
-            'Manhattan': 'Montana',
-            'Marion': 'Wisconsin',
-            'Marysville': 'Kansas',
-            'May Mountain Ranch': 'California',
-            'McCordsville': 'Indiana',
-            'Menomonie': 'Wisconsin',
-            'Metter': 'Georgia',
-            'Milford': 'New Hampshire', 
-            'Milltown 1': 'Washington',
-            'Milltown 2': 'Washington',
-            'Milltown': 'Washington',
-            'Mountain Peak': 'Texas',
-            'Mountain Ranch 1': 'California',
-            'Mountain Ranch 2': 'California',
-            'Mountain Ranch': 'California',
-            'Mountainair 1': 'New Mexico',
-            'Mountainair 2': 'New Mexico',
-            'Mountainair': 'New Mexico',
-            'Mt. Peak': 'Texas',
-            'Mt. Sterling': 'Illinois',
-            'Newry': 'Pennsylvania',
-            'Olympia 1': 'Washington',
-            'Olympia 2': 'Washington',
-            'Olympia': 'Washington',
-            'Orick': 'California',
-            'Parma': 'Idaho',
-            'Paris': 'Tennessee',
-            'Perry': 'Oklahoma',
-            'Post Falls': 'Idaho',
-            'Pulaski': 'Virginia',
-            'Quakertown': 'Pennsylvania',
-            'Riverton': 'Utah',
-            'Rogers': 'Arkansas',
-            'Ronan': 'Montana',
-            'Saginaw 1': 'Oregon',
-            'Saginaw 2': 'Oregon',
-            'Saginaw': 'Oregon',
-            'Salvisa': 'Kentucky',
-            'Santee': 'California',
-            'Seneca': 'Illinois',
-            'Sharon': 'Ohio',
-            'Shelby': 'North Carolina',
-            'Shelter Valley': 'California',
-            'Shoals': 'Indiana',
-            'Texarkana': 'Texas',
-            'Utica 2': 'South Dakota',
-            'Utica': 'South Dakota',
-            'Vanderbilt': 'Michigan',
-            'Walla Walla': 'Washington',
-            'Wasilla': 'Alaska',
-            'Yellow Springs': 'Ohio',
-            'York': 'Nebraska'
-        }
-    },
-    'Canada': {
-        'name': 'Canada',
-        'states': [
-            'Quebec and Atlantic', 'Ontario/Quebec',
-            'Manitoba/Northwest Ontario', 'Manitoba/Ontario', 'Saskatchewan/Manitoba/Northwest Ontario', 
-            'Saskatchewan/Manitoba', 'Quebec/Atlantic', 'Calgary', 'Maritimes',
-            'Alberta', 'Atlantic', 'British Columbia', 'Manitoba', 'New Brunswick', 'Newfoundland and Labrador',
-            'Nova Scotia', 'Ontario', 'Prince Edward Island', 'Quebec', 'Saskatchewan',
-            'Northwest Territories', 'Nunavut', 'Yukon'
-        ],
-        'state_variations': {
-            'SK': 'Saskatchewan',
-            'BC': 'British Columbia',
-            'AB': 'Alberta',
-            'MB': 'Manitoba',
-            'ON': 'Ontario',
-            'QC': 'Quebec',
-            'NB': 'New Brunswick',
-            'NS': 'Nova Scotia',
-            'PE': 'Prince Edward Island',
-            'NL': 'Newfoundland and Labrador',
-            'Newfoundland': 'Newfoundland and Labrador',
-            'NT': 'Northwest Territories',
-            'NU': 'Nunavut',
-            'YT': 'Yukon'
-        },
-        'cities': {
-            'Almonte': '',
-            'Antler': 'Saskatchewan',
-            'Aylesbury': 'Saskatchewan',
-            'Bowsman': '',
-            'Brigus': '',
-            'Didsbury': 'Alberta',
-            'Didsbury #2': 'Alberta',
-            'Didsbury 1': 'Alberta',
-            'Didsbury 2': 'Alberta',
-            'Didsbury 2': 'Alberta',
-            'Duncan': 'British Columbia',
-            'Dunnville': '',
-            'Ellershouse': '',
-            'Emo': '',
-            'Freedom': '',
-            'Freetown': 'Prince Edward Island',
-            'Freetown I': 'Prince Edward Island',
-            'Glen Valley 1': 'British Columbia',
-            'Glen Valley 2': 'British Columbia',
-            'Glen Valley': 'British Columbia',
-            'Greenshield': '',
-            'Harvey Station': '',
-            'Humber Village': 'Newfoundland and Labrador',
-            'Hythe': '',
-            'Irishtown': 'Newfoundland and Labrador',
-            'Iron Bridge': 'Ontario',
-            'Mellowdale': '',
-            'Napan': '',
-            'Portage': 'Manitoba',
-            'Prince George': 'British Columbia',
-            'Richmond': '',
-            'Salmon Arm': 'Saskatchewan',
-            'Seagrave': '',
-            'Silverdale 1': '',
-            'Silverdale 2': '',
-            'Smeaton': '',
-            'St. George': 'Newfoundland and Labrador',
-            'Strathroy': '',
-            'Theodore': 'Saskatchewan',
-            'Woodstock': ''
-        }
-    },
-    'Austria': {
-        'name': 'Austria',
-        'states': [],
-        'cities': {
-            'Vienna': ''
-        }
-    },
-    'Germany': {
-        'name': 'Germany',
-        'states': [],
-        'cities': {
-            'Hulben': ''
-        }
-    },
-    'Orient': {
-        'name': 'Orient',
-        'states': [],
-        'special_location': 'Convention',
-        'cities': {}
-    },
-    'Nigeria': {
-        'name': 'Nigeria',
-        'states': [],
-        'cities': {
-            'Ikorodu': ''
-        }
-    },
-    'Belgium': {
-        'name': 'Belgium',
-        'states': [],
-        'cities': {
-            'Lillois': '',
-            'Sart-Dames-Avelines': ''
-        }
-    },
-    'Sri Lanka': {
-        'name': 'Sri Lanka',
-        'states': [],
-        'special_location': 'Convention',
-        'cities': {}
-    },
-    'Guam': {
-        'name': 'Guam',
-        'states': [],
-        'special_location': 'Convention',
-        'cities': {}
-    },
-    'Peru': {
-        'name': 'Peru',
-        'states': ['Lambayeque'],
-        'special_location': 'Convention',
-        'cities': {
-            'Olmos': 'Lambayeque',
-            'Coyunde': ''
-        }
-    },
-    'Bolivia': {
-        'name': 'Bolivia',
-        'states': ['La Paz'],
-        'special_location': 'Convention',
-        'cities': {
-            'Cochabamba': ''
-        }
-    },
-    'Australia/Papua New Guinea': {
-        'name': 'Australia/Papua New Guinea',
-        'states': ['Tasmania'],
-        'cities': {}
-    },
-    'Australia': {
-        'name': 'Australia',
-        'states': ['Victoria', 'Victoria and Tasmania', 'Tasmania', 'New South Wales', 'Queensland', 'South Australia', 'Western Australia', 'Northern Territory', 'Australian Capital Territory'],
-        'variations': ['Australian'],
-        'cities': {
-            'Biddeston': '',
-            'Chelona 2': '',
-            'Colac': 'Victoria',
-            'Drouin': 'Victoria',
-            'Glenco': '',
-            'Kapunda 1': '',
-            'Kapunda 2': '',
-            'Maroota 1': '',
-            'Maroota 2': '',
-            'Mudgee': 'New South Wales',
-            'Pilerwa #1': '',
-            'Pilerwa #2': '',
-            'Pilerwa 1': '',
-            'Rochedale': '',
-            'Speed': 'Victoria',
-            'Thoona': 'Victoria',
-            'Watta': 'New South Wales',
-            'Williams': '',
-            'Williams 1': '',
-            'Williams 2': '',
-            'Wilmington': ''
-        }
-    },
-    'New Zealand': {
-        'name': 'New Zealand',
-        'states': [],
-        'cities': {
-            'Masterton 1': '',
-            'Masterton': '',
-            'Ngaere': '',
-            'Pukekone 2': '',
-            'Pukekohe': '',
-            'Winchester 1': ''
-        }
-    },
-    'United Kingdom': {
-        'name': 'United Kingdom',
-        'variations': ['UK'],
-        'states': [],
-        'cities': {
-            'Dunbarton 1': '',
-            'Gloucester 2': '',
-            'Lancashire': '',
-            'Yorkley 2': ''
-        }
-    },
-    'Ireland': {
-        'name': 'Ireland',
-        'states': [],
-        'cities': {
-            'Carrick': '',
-            'Down': '',
-            'Fermanagh': '',
-            'Laois': '',
-            'Monaghan': ''
-        }
-    },
-    'South Africa': {
-        'name': 'South Africa',
-        'variations': ['S. Africa'],
-        'states': ['Johannesburg'],
-        'cities': {
-            'Bloemfontein': '',
-            'Cape 1': '',
-            'Cape 2': '',
-            'Cape Town': '',
-            'Durban': '',
-            'Gbetagbo': '',
-            'Port Elizabeth': '',
-            'Pretoria 1': '',
-            'Pretoria 2': '',
-            'Pretoria': ''
-        }
-    },
-    'West Africa': {
-        'name': 'West Africa',
-        'variations': ['W. Africa'],
-        'states': [],
-        'cities': {}
-    },
-    'Africa': {
-        'name': 'Africa',
-        'states': [],
-        'cities': {}
-    },
-    'South America': {
-        'name': 'South America',
-        'states': [],
-        'cities': {}
-    },
-    'Finland': {
-        'name': 'Finland',
-        'states': [],
-        'cities': {
-            'Vaasa': ''
-        }
-    },
-    'Netherlands': {
-        'name': 'Netherlands',
-        'states': [],
-        'cities': {
-            'Putten': ''
-        }
-    },
-    'Jamaica': {
-        'name': 'Jamaica',
-        'states': [],
-        'cities': {}
-    },
-    'Haiti': {
-        'name': 'Haiti',
-        'states': [],
-        'cities': {}
-    },
-    'Korea': {
-        'name': 'Korea',
-        'states': [],
-        'cities': {
-            'Puchon': '',
-            'Seoul South': ''
-        }
-    },
-    'Philippines': {
-        'name': 'Philippines',
-        'states': [],
-        'cities': {
-            'Baguio': '',
-            'Cavite': '',
-            'Iloilo': '',
-            'Ilocos': '',
-            'Ozamis': '',
-            'Rosales': ''
-        }
-    },
-    'Argentina/Paraguay/Uruguay': {
-        'name': 'Argentina/Paraguay/Uruguay',
-        'states': [],
-        'cities': {}
-    },
-    'Argentina/Paraguay': {
-        'name': 'Argentina/Paraguay',
-        'states': [],
-        'cities': {}
-    },
-    'Brazil and Uruguay': {
-        'name': 'Brazil and Uruguay',
-        'states': [],
-        'cities': {}
-    },
-    'Brazil': {
-        'name': 'Brazil',
-        'states': [],
-        'cities': {
-            'Alegrete': '',
-            'Bel Horizonte': '',
-            'Gravati': '',
-            'Gravati': '',
-            'Panambi': '',
-            'Sao Jose dos Campos': '',
-            'Sao Paulo': ''
-        }
-    },
-    'Ecuador': {
-        'name': 'Ecuador',
-        'states': ['Galapagos'],
-        'cities': {
-            'El Cristal': ''
-        }
-    },
-    'India': {
-        'name': 'India',
-        'states': [],
-        'cities': {'Bangalore': ''}
-    },
-    'Scotland': {
-        'name': 'Scotland',
-        'states': [],
-        'cities': {
-            'Gartocharn 1': '',
-            'Gartocharn 2': ''
-        }
-    },
-    'Trinidad': {
-        'name': 'Trinidad',
-        'states': [],
-        'cities': {}
-    },
-    'Japan': {
-        'name': 'Japan',
-        'states': [],
-        'cities': {'Tokyo': ''}
-    },
-    'Guatemala': {
-        'name': 'Guatemala',
-        'states': [],
-        'cities': {
-            'Malacation': ''
-        }
-    },
-    'Denmark': {
-        'name': 'Denmark',
-        'states': [],
-        'cities': {
-            'Sonder Omme': ''
-        }
-    },
-    'Mexico': {
-        'name': 'Mexico',
-        'states': [],
-        'cities': {
-            'Ebano': '',
-            'Insurgentes': '',
-            'Tanama': ''
-        }
-    },
-    'Spain': {
-        'name': 'Spain',
-        'states': [],
-        'cities': {
-            'Madrid': ''
-        }
-    },
-    'Greece': {
-        'name': 'Greece',
-        'states': [],
-        'cities': {
-            'Athens': '',
-            'Inoi': ''
-        }
-    },
-    'Argentina': {
-        'name': 'Argentina',
-        'states': [],
-        'cities': {
-            'Rio Cuarto': '',
-            'San Rafael': '',
-            'Cipolletti': ''
-        }
-    },
-    'Italy': {
-        'name': 'Italy',
-        'states': [],
-        'cities': {
-            'Petacciato': ''
-        }
-    },
-    'France': {
-        'name': 'France',
-        'states': [],
-        'cities': {
-            'Ales': '',
-            'Chaintreauville': '',
-            'Chaintreauville': '',
-            'Chaintreauville': '',
-            'Chaintreauville': '',
-            'Foljuif': '',
-            'Foljuif': '',
-            'Paris': ''
-        }
-    },
-    'Romania': {
-        'name': 'Romania',
-        'states': [],
-        'cities': {
-            'Sibiu 2': ''
-        }
-    },
-    'Sweden': {
-        'name': 'Sweden',
-        'states': ['Stockholm'],
-        'cities': {}
-    },
-    'Norway': {
-        'name': 'Norway',
-        'states': [],
-        'cities': {
-            'Stokke': ''
-        }
-    },
-    'Venezuela': {
-        'name': 'Venezuela',
-        'states': ['Caracas', 'Barquisimeto'],
-        'cities': {}
-    },
-    'Taiwan': {
-        'name': 'Taiwan',
-        'states': [],
-        'cities': {}
-    },
-    'Poland': {
-        'name': 'Poland',
-        'states': [],
-        'cities': {
-            'Wista': ''
-        }
-    },
-    'Columbia': {
-        'name': 'Columbia',
-        'variations': ['Colombia'],
-        'states': ['Ipiales'],
-        'cities': {
-            'Bogota': ''
-        }
-    },
-    'Grand Cayman': {
-        'name': 'Grand Cayman',
-        'states': [],
-        'cities': {}
-    },
-    'Barbados': {
-        'name': 'Barbados',
-        'states': [],
-        'cities': {}
-    },
-    'Guyana': {
-        'name': 'Guyana',
-        'states': [],
-        'cities': {}
-    },
-    'China': {
-        'name': 'China',
-        'states': [],
-        'cities': {
-            'Hong Kong': ''
-        }
-    },
-    'Saipan': {
-        'name': 'Saipan',
-        'states': [],
-        'cities': {}
-    },
-    'Dominican Republic': {
-        'name': 'Dominican Republic',
-        'variations': ['Republica Dominicana'],
-        'states': [],
-        'cities': {
-            'Bonao': ''
-        }
-    },
-    'Suriname': {
-        'name': 'Suriname',
-        'states': [],
-        'cities': {}
-    },
-    'Nevis': {
-        'name': 'Nevis',
-        'states': [],
-        'cities': {}
-    },
-    'St. Kitts': {
-        'name': 'St. Kitts',
-        'states': [],
-        'cities': {}
-    },
-    'Antigua': {
-        'name': 'Antigua',
-        'states': [],
-        'cities': {}
-    },
-    'Caribbean': {
-        'name': 'Caribbean',
-        'states': ['Antigua', 'Barbados', 'Cayman Islands', 'Dominican Republic', 'Grenada', 'Guadeloupe', 'Haiti', 'Jamaica', 'St. Kitts', 'St. Lucia', 'St. Vincent', 'Trinidad'],
-        'cities': {
-            'Cabaret': 'Haiti'
-        }
-    },
-    'Cayman Islands': {
-        'name': 'Cayman Islands',
-        'states': [],
-        'variations': ['Cayman Brac'],
-        'cities': {}
-    },
-    'Zimbabwe': {
-        'name': 'Zimbabwe',
-        'states': ['Serial'],
-        'cities': {}
-    },
-    'Pakistan': {
-        'name': 'Pakistan',
-        'states': ['Mirpur Khas'],
-        'cities': {}
-    }
-} 
+   'Argentina/Paraguay/Uruguay/Brazil': {
+      'name': 'Argentina/Paraguay/Uruguay/Brazil',
+      'states': [
+        'Rio Grande do Sul',
+      ],
+      'cities': {
+        'Porto Alegre, Cachoeirinha, Gravatai': ['Rio Grande do Sul'],
+      },
+      'state_variations': {
+        'Rio Grande Do Sul': 'Rio Grande do Sul'
+      }
+   },
+   'Australia/Papua New Guinea': {
+      'name': 'Australia/Papua New Guinea',
+      'states': [
+        '--No State--',
+        'Tasmania',
+      ],
+      'cities': {
+        'Victoria, Tasmania, Balranald and Swan Hill': ['--No State--'],
+        'Tasmania, Northwest Coast': ['--No State--'],
+        'Victoria, Warrnanbool, Portland': ['--No State--'],
+        'Tasmania': ['--No State--'],
+      },
+   },
+   'Brazil and Uruguay': {
+      'name': 'Brazil and Uruguay',
+      'states': [
+        '--No State--',
+      ],
+      'cities': {
+        'POA, Cachoeirinha, Gravati, Igrejinha': ['--No State--'],
+      },
+   },
+   'Argentina/Paraguay': {
+      'name': 'Argentina/Paraguay',
+      'states': [
+      ],
+      'cities': {
+      },
+   },
+   'Cayman Islands': {
+      'name': 'Cayman Islands',
+      'states': [
+      ],
+      'cities': {
+      },
+      'variations': [
+        'Cayman Brac'
+      ],
+   },
+   'Dominican Republic': {
+      'name': 'Dominican Republic',
+      'states': [
+        '--No State--',
+      ],
+      'cities': {
+        'Bonao': ['--No State--'],
+      },
+      'variations': [
+        'Republica Dominicana'
+      ],
+   },
+   'Grand Cayman': {
+      'name': 'Grand Cayman',
+      'states': [
+      ],
+      'cities': {
+      },
+   },
+   'New Zealand': {
+      'name': 'New Zealand',
+      'states': [
+        '--No State--',
+      ],
+      'cities': {
+        'Masterton 1': ['--No State--'],
+        'Pukekone 2': ['--No State--'],
+        'Winchester 1': ['--No State--'],
+        'Masterton': ['--No State--'],
+        'Ngaere': ['--No State--'],
+        'Pukekohe': ['--No State--'],
+      },
+   },
+   'South Africa': {
+      'name': 'South Africa',
+      'states': [
+        '--No State--',
+        'Johannesburg',
+        'Zimbabwe',
+        'Zambia, Zimbabwe'
+      ],
+      'cities': {
+        'Irene, West End, Pretoria North': ['--No State--'],
+        'Kempton Park, Alberton and Germinston': ['--No State--'],
+        'Bethal, Ermelo, White River': ['--No State--'],
+        'Cape Town Northern Suburbs': ['--No State--'],
+        'Cape Town and District': ['--No State--'],
+        'East London and District': ['--No State--'],
+        'Gokwe to Bulawayo Francistown': ['--No State--'],
+        'Port Elizabeth and District': ['--No State--'],
+        'Pretoria North and Central': ['--No State--'],
+        'Bloemfontein and District': ['--No State--'],
+        'Bloemfontein to Tweespruit': ['--No State--'],
+        'Cape Town Dist': ['--No State--'],
+        'East London District': ['--No State--'],
+        'Kimberly, Koffiefontein, District': ['--No State--'],
+        'Natal North Coast': ['--No State--'],
+        'Rand and District': ['--No State--'],
+        'Zimbabwe including Francistown': ['Zimbabwe'],
+        '--Not Specified--': ['--No State--'],
+        'Cape 1': ['--No State--'],
+        'Cape 2': ['--No State--'],
+        'Cape Town': ['--No State--'],
+        'Limpopo Province': ['--No State--'],
+        'Northern Transvaal': ['--No State--'],
+        'Port Elizabeth': ['--No State--'],
+        'Pretoria 1': ['--No State--'],
+        'Pretoria 2': ['--No State--'],
+        'Pretoria Central': ['--No State--'],
+        'Rand Central': ['--No State--'],
+        'South America': ['--No State--'],
+        'Zambia, Zimbabwe': ['Zambia, Zimbabwe'],
+        'Bloemfontein': ['--No State--'],
+        'Durban': ['--No State--'],
+        'Gbetagbo': ['--No State--'],
+        'Johannesburg': ['--No State--'],
+        'Pretoria': ['--No State--'],
+        'Zimbabwe': ['Zimbabwe'],
+      },
+      'variations': [
+        'S. Africa'
+      ],
+   },
+   'South America': {
+      'name': 'South America',
+      'states': [
+      ],
+      'cities': {
+      },
+   },
+   'Sri Lanka': {
+      'name': 'Sri Lanka',
+      'states': [
+      ],
+      'cities': {
+      },
+      'special_location': 'Convention',
+   },
+   'St. Kitts': {
+      'name': 'St. Kitts',
+      'states': [
+      ],
+      'cities': {
+      },
+   },
+   'United Kingdom': {
+      'name': 'United Kingdom',
+      'states': [
+        '--No State--',
+      ],
+      'cities': {
+        'Dunbarton 1': ['--No State--'],
+        'Gloucester 2': ['--No State--'],
+        'Yorkley 2': ['--No State--'],
+        'Lancashire': ['--No State--'],
+      },
+      'variations': [
+        'UK'
+      ],
+   },
+   'United States': {
+      'name': 'United States',
+      'states': [
+        'PA/NY/New England/NJ/OH',
+        'Delaware/Maryland/Virginia/South Carolina', 'Delaware/Virginia/Maryland/North Carolina', 'PA/NY/New England/NJ',
+        'New York/New England', 'Pennsylvania/New Jersey/Delaware', 'Pennsylvania/Ohio/West Virginia',
+        'Montana and Wyoming', 'Montana/North Wyoming', 'Ohio/West Virginia', 'Oregon/South Idaho', 'Oregon/Southern Idaho', 'Virginia/Maryland/Delaware',
+        'Alabama/Mississippi', 'Colorado/Utah', 'Indiana/Illinois', 'Kansas/Nebraska', 'Kentucky/Tennessee', 'Maryland/Delaware', 'Montana/Wyoming',
+        'New Hampshire', 'New Jersey', 'New Mexico', 'New York', 'North Carolina', 'North Dakota', 'North Idaho',
+        'Rhode Island', 'South Carolina', 'South Dakota', 'Tennessee/Kentucky', 'Virginia/Maryland', 'West Virginia',
+        'Alabama', 'Alaska', 'Arizona', 'Arkansas', 'California', 'Colorado', 'Connecticut',
+        'Delaware', 'Florida', 'Georgia', 'Hawaii', 'Idaho', 'Illinois', 'Indiana',
+        'Iowa', 'Kansas', 'Kentucky', 'Louisiana', 'Maine', 'Maryland', 'Massachusetts',
+        'Michigan', 'Minnesota', 'Mississippi', 'Missouri', 'Montana', 'Nebraska', 'Nevada',
+        'Ohio', 'Oklahoma', 'Oregon', 'Pennsylvania', 'Tennessee', 'Texas', 'Utah',
+        'Vermont', 'Virginia', 'Washington', 'Wisconsin', 'Wyoming',
+      ],
+      'cities': {
+        'Blacksburg, VA, Eden, Mt. Airy, NC Princeton, WV': ['Maryland/Delaware'],
+        'Charlotte, Denton, Lexington, Mooresville, NC, Rock Hill, SC': ['Delaware/Maryland/Virginia/South Carolina'],
+        'Erie, Falls Creek, Pittsburgh, Altoona': ['Pennsylvania'],
+        'Coast of Louisiana and South Mississippi': ['Alabama/Mississippi'],
+        'East Pennsylvania, South NJ, North Delaware': ['Pennsylvania/New Jersey/Delaware'],
+        'Knoxville, Kingsport, Johnson City, Mountain City': ['Tennessee'],
+        'New Port Richey, Apopka, Daytona Beach': ['Florida'],
+        'Southeast Ohio and Western West Virginia': ['Ohio/West Virginia'],
+        'Great Falls, Fort Benton, Shelby': ['Montana'],
+        'Hagerstown, Glen Burnie, Hanover, Rockville': ['Delaware/Virginia/Maryland/North Carolina'],
+        'Madison, Racine, Prairie Du Sac': ['Wisconsin'],
+        'Ashland, Mt. Sterling, Hebron': ['Tennessee'],
+        'Ashland, Pikeville, East Tennessee': ['Kentucky/Tennessee'],
+        'Buffalo, North Falls Freedom': ['New York/New England'],
+        'Buffalo, North Falls, Freedom': ['New York/New England'],
+        'Cheyenne, Pine Bluffs, Albin': ['Wyoming'],
+        'Corpus Christi, Ingleside, Victoria': ['Texas'],
+        'Crossville, Knoxville, East TN': ['Tennessee'],
+        'Great Falls, Fort Benton': ['Montana'],
+        'Lexington and North Kentucky': ['Kentucky'],
+        'Memphis, Ethridge, Leoma, Shelbyville': ['Kentucky/Tennessee'],
+        'Middletown, Washington DC, Winchester': ['Virginia/Maryland/Delaware'],
+        'Nashville, Shelbyville, Cookeville, Chattanooga': ['Tennessee'],
+        'Nashville, Shelbyville, Dickson, Paris': ['Tennessee'],
+        'North Central New York': ['New York/New England'],
+        'Northeast Texas, Southwest Arkansas': ['Texas'],
+        'Platteville, Prairie Du Sac': ['Wisconsin'],
+        'South Alabama, South Mississippi': ['Alabama/Mississippi'],
+        'South Houston, Lake Jackson': ['Texas'],
+        'South Seattle, Kent, Renton': ['Washington'],
+        'Tri Cities, Walla Walla': ['Washington'],
+        'Ames, Fort Dodge': ['Iowa'],
+        'Bay City, Harrisville': ['Michigan'],
+        'Casa Grande 1': ['Arizona'],
+        'Casa Grande 2': ['Arizona'],
+        'Chattanooga, Central TN': ['Tennessee'],
+        'Chattanooga, North GA': ['Tennessee'],
+        "Coeur d'Alene": ['Idaho'],
+        'Colville, Deer Park': ['Washington'],
+        'Corpus Christi, Ingleside': ['Texas'],
+        'Corpus Christi, Victoria': ['Texas'],
+        'Downings, Southeast Virginia': ['Virginia'],
+        'Eagle Bend 1': ['Minnesota'],
+        'Eagle Bend 2': ['Minnesota'],
+        'Erie, Falls Creek': ['Pennsylvania'],
+        'Fayetteville, Macon, Valdosta': ['Georgia'],
+        'Fond Du Lac': ['Wisconsin'],
+        'Gresham The Dalles': ['Oregon'],
+        'Las Vegas, Kingman': ['Nevada'],
+        'Lexington, Winston-Salem, Greensboro': ['North Carolina'],
+        'Lincoln, Grand Island': ['Nebraska'],
+        'Madison, Beaver Dam': ['Wisconsin'],
+        'Maryland and Delaware': ['Maryland'],
+        'May Mountain Ranch': ['California'],
+        'Mesa, Apache Junction': ['Arizona'],
+        'Missoula, Bitterroot Valley': ['Montana and Wyoming'],
+        'Moscow, Pullman, Lewiston': ['North Idaho'],
+        'Mountain Ranch 1': ['California'],
+        'Mountain Ranch 2': ['California'],
+        'North and Elko': ['Colorado/Utah'],
+        'Northeast New York': ['New York'],
+        'Olympia, Grays Harbor': ['Washington'],
+        'Orlando, Daytona Beach': ['Florida'],
+        'Prairie Du Sac': ['Wisconsin'],
+        'Round Rock, Austin': ['Texas'],
+        'Santa Cruz Co': ['California'],
+        'South and Ely': ['Colorado'],
+        'St. Petersburg, Naples': ['Florida'],
+        'West Central Ohio': ['Ohio/West Virginia'],
+        'Winterville, Commerce, Lawrenceville': ['Georgia'],
+        'Wolf Point Area': ['Montana/Wyoming'],
+        '--Not Specified--': ['Georgia'],
+        'Anchorage, Fairbanks': ['Alaska'],
+        'Appleton, Seymour': ['Wisconsin'],
+        'Baton Rouge': ['Louisiana'],
+        'Bay City': ['Michigan'],
+        'Billings, Bridger': ['Montana'],
+        'Bird City': ['Kansas'],
+        'Black Hills': ['South Dakota'],
+        'Bonners Ferry': ['Idaho'],
+        'Boring 1': ['Oregon'],
+        'Boring 2': ['Oregon'],
+        'Bozeman, Manhattan': ['Montana'],
+        'Brunswick, Columbus': ['Georgia'],
+        'Buttonwillow 1': ['California'],
+        'Buttonwillow 2': ['California'],
+        'Casa Grande': ['Arizona'],
+        'Casper, Torrington': ['Wyoming'],
+        'Central TX': ['Texas'],
+        'Chicago-North Illinois': ['Illinois'],
+        'Cody, Riverton': ['Wyoming'],
+        "Coeur d'Alene": ['Idaho'],
+        'Colorado Springs': ['Colorado'],
+        'Council Bluffs': ['Iowa'],
+        'Cowlitz Co.': ['Washington'],
+        'Denver North': ['Colorado/Utah'],
+        'Denver Southeast': ['Colorado'],
+        'Denver Southwest': ['Colorado/Utah'],
+        'Des Moines': ['Iowa'],
+        'Detroit, Flint': ['Michigan'],
+        'Eagle Bend': ['Minnesota'],
+        'Eastern PA': ['Pennsylvania'],
+        'Eau Claire': ['Wisconsin'],
+        'Elizabeth 1': ['Colorado'],
+        'Elizabeth 2': ['Colorado'],
+        'Escondido, Ramona': ['California'],
+        'Fort Dodge': ['Iowa'],
+        'Gallatin Valley': ['Montana/North Wyoming'],
+        'Gig Harbor': ['Washington'],
+        'Gilroy #1': ['California'],
+        'Grand Junction': ['Colorado'],
+        'Grand Rapids': ['Michigan'],
+        'Grant Co.': ['Washington'],
+        'Green Bay': ['Wisconsin'],
+        'Huntsville, Hamilton': ['Alabama/Mississippi'],
+        'Kenai, Soldotna': ['Alaska'],
+        'Kimball, Ogallala': ['Nebraska'],
+        'Lake Charles': ['Louisiana'],
+        'Las Vegas': ['Nevada'],
+        'Los Angeles': ['California'],
+        'Manhattan 2': ['Montana'],
+        'Maryland, Delaware': ['Maryland/Delaware'],
+        'Miami, Bradenton': ['Florida'],
+        'Miami, Jupiter': ['Florida'],
+        'Milltown 1': ['Washington'],
+        'Milltown 2': ['Washington'],
+        'Mission, Pierre': ['South Dakota'],
+        'Missoula, Bitterroot': ['Montana'],
+        'Mountain Peak': ['Texas'],
+        'Mountain Ranch': ['California'],
+        'Mountainair 1': ['New Mexico'],
+        'Mountainair 2': ['New Mexico'],
+        'Mt. Peak': ['Texas'],
+        'Mt. Sterling': ['Illinois', 'Kentucky/Tennessee'],
+        'Mt. Vernon': ['Washington'],
+        'New York': ['PA/NY/New England/NJ/OH'],
+        'North Central': ['Colorado/Utah'],
+        'North Denver': ['Colorado'],
+        'North East': ['Colorado/Utah'],
+        'North Houston': ['Texas'],
+        'North Seattle': ['Washington'],
+        'North, Northeast': ['Colorado'],
+        'Northeast Ohio': ['Ohio/West Virginia'],
+        'Northwest Kansas': ['Kansas'],
+        'Northwest Missouri': ['Missouri'],
+        'Northwest Ohio': ['Ohio/West Virginia'],
+        'Northwest Tennessee': ['Kentucky/Tennessee'],
+        'Olympia 1': ['Washington'],
+        'Olympia 2': ['Washington'],
+        'Olympia, McCleary': ['Washington'],
+        'Orlando, Jupiter': ['Florida'],
+        'Pierre, Winner': ['South Dakota'],
+        'Post Falls': ['Idaho'],
+        'Provo, Vernal': ['Colorado/Utah'],
+        'Safford, Nogales': ['Arizona'],
+        'Saginaw 1': ['Oregon'],
+        'Saginaw 2': ['Oregon'],
+        'Salmon, Idaho': ['Montana/North Wyoming'],
+        'Santa Maria': ['California'],
+        'Scottsbluff, Alliance': ['Nebraska'],
+        'Shelter Valley': ['California'],
+        'Sioux City': ['Iowa'],
+        'Sisseton, Watertown': ['South Dakota'],
+        'South Central': ['Iowa'],
+        'South Georgia': ['Georgia'],
+        'South Houston': ['Texas'],
+        'South Seattle': ['Washington'],
+        'Southeast Kansas': ['Kansas'],
+        'Southwest Kansas': ['Kansas'],
+        'Tacoma, Puyallup': ['Washington'],
+        'Tampa-St. Pete': ['Florida'],
+        'Upper Peninsula': ['Michigan'],
+        'Utica 2': ['South Dakota'],
+        "Valentine, O'Neill": ['Nebraska'],
+        'Van Nuys': ['California'],
+        'Walla Walla': ['Washington'],
+        'West Central': ['Colorado'],
+        'West Kansas': ['Kansas'],
+        'Wolf Point': ['Montana/Wyoming'],
+        'Worland, WY': ['Montana/North Wyoming'],
+        'Yankton, Huron': ['South Dakota'],
+        'Yellow Springs': ['Ohio'],
+        'Albuquerque': ['New Mexico'],
+        'Alliance': ['Nebraska'],
+        'Alma': ['Michigan'],
+        'Altamont': ['New York'],
+        'Anaconda': ['Montana/North Wyoming'],
+        'Anadarko': ['Oklahoma'],
+        'Anaheim': ['California'],
+        'Anchorage': ['Alaska'],
+        'Apopka': ['Florida'],
+        'Arlington': ['Texas'],
+        'Atlanta': ['Georgia'],
+        'Austin': ['Texas'],
+        'Bakersfield': ['California'],
+        'Baltimore': ['Maryland'],
+        'Bellflower': ['California'],
+        'Bellingham': ['Washington'],
+        'Billings': ['Montana'],
+        'Blackwater': ['Missouri'],
+        'Boise': ['Idaho'],
+        'Boring': ['Oregon'],
+        'Boston': ['Virginia'],
+        'Boyden': ['Iowa'],
+        'Bozeman': ['Montana'],
+        'Bradley': ['Oklahoma'],
+        'Bremerton': ['Washington'],
+        'Brownstown': ['Illinois'],
+        'Bushnell': ['Florida'],
+        'Buttonwillow': ['California'],
+        'Cando': ['North Dakota'],
+        'Carsonville': ['Michigan'],
+        'Cassatt': ['South Carolina'],
+        'Central': ['Colorado/Utah'],
+        'Chelan': ['Washington'],
+        'Chico': ['California'],
+        'Chino': ['California'],
+        'Chugwater': ['Wyoming'],
+        'Citra-Brooksville': ['Florida'],
+        'Clever': ['Missouri'],
+        'Clover': ['South Carolina'],
+        'Clyde': ['Ohio'],
+        'Cody': ['Wyoming'],
+        'Creston': ['Iowa'],
+        'Dagmar': ['Montana'],
+        'Dallas': ['Texas'],
+        'Dells': ['Wisconsin'],
+        'Demorest': ['Georgia'],
+        'Denton': ['North Carolina'],
+        'Denver': ['Colorado'],
+        'Detroit': ['Michigan'],
+        'Devon': ['Montana'],
+        'Downey': ['California'],
+        'Downings': ['Virginia'],
+        'Eaton': ['Ohio'],
+        'Edgewood': ['New Mexico'],
+        'Effie': ['Louisiana'],
+        'Elizabeth': ['Colorado'],
+        'Eureka': ['California'],
+        'Everett': ['Washington'],
+        'Fairbanks': ['Alaska'],
+        'Fosters': ['Alabama'],
+        'Fredericksburg': ['Virginia'],
+        'Freedom': ['New York'],
+        'Gastonia': ['North Carolina'],
+        'Georgetown': ['Texas'],
+        'Gilbert': ['Arizona'],
+        'Gilroy': ['California'],
+        'Glendale': ['Arizona'],
+        'Grinnell': ['Iowa'],
+        'Happy': ['Texas'],
+        'Havre': ['Montana/Wyoming'],
+        'Hayward': ['California'],
+        'Hector': ['Minnesota'],
+        'Helena': ['Montana'],
+        'Hermosa': ['South Dakota'],
+        'Hillsborough': ['North Carolina'],
+        'Hotchkiss': ['Colorado'],
+        'Hunter': ['North Dakota'],
+        'Indianapolis': ['Indiana/Illinois'],
+        'Indo': ['California'],
+        'Iowa': ['Wisconsin'],
+        'Jackson': ['Mississippi'],
+        'Juneau': ['Alaska'],
+        'Kalispell': ['Montana/North Wyoming'],
+        'Kenai': ['Alaska'],
+        'Kennewick': ['Washington'],
+        'Kent': ['Washington'],
+        'Ketchikan': ['Alaska'],
+        'Knoxville': ['Tennessee'],
+        'LaGrande': ['Oregon'],
+        'Lansing': ['Michigan'],
+        'Lexington': ['Kentucky'],
+        'Madison': ['Wisconsin'],
+        'Madisonville': ['Kentucky'],
+        'Malcom': ['Iowa'],
+        'Mandan': ['North Dakota'],
+        'Manhattan': ['Montana'],
+        'Marion': ['Wisconsin'],
+        'Marysville': ['Kansas'],
+        'Mayer': ['Arizona'],
+        'McCordsville': ['Indiana'],
+        'Medford': ['Oregon/South Idaho'],
+        'Menomonie': ['Wisconsin'],
+        'Mesa': ['Arizona'],
+        'Metter': ['Georgia'],
+        'Middletown': ['Virginia/Maryland/Delaware'],
+        'Milford': ['New Hampshire'],
+        'Milltown': ['Washington'],
+        'Missoula': ['Montana'],
+        'Modesto': ['California'],
+        'Mountainair': ['New Mexico'],
+        'Napa': ['California'],
+        'Newry': ['Pennsylvania'],
+        'Norfolk': ['Nebraska'],
+        'North': ['Louisiana'],
+        'Northeast': ['Iowa'],
+        'Northwest': ['Iowa'],
+        'Olympia': ['Washington'],
+        'Omaha': ['Nebraska'],
+        'Orick': ['California'],
+        'Oroville': ['Washington'],
+        'Ottumwa': ['Iowa'],
+        'Paris': ['Tennessee'],
+        'Parma': ['Idaho'],
+        'Pennsylvania': ['New York/New England'],
+        'Perry': ['Oklahoma'],
+        'Phoenix': ['Arizona'],
+        'Picton': ['Oklahoma'],
+        'Pocatello': ['Oregon/South Idaho'],
+        'Pulaski': ['Virginia'],
+        'Quakertown': ['Pennsylvania'],
+        'Riverton': ['Utah'],
+        'Rogers': ['Arkansas'],
+        'Ronan': ['Montana'],
+        'Roseville': ['Ohio/West Virginia'],
+        'Saginaw': ['Oregon'],
+        'Salina': ['Nebraska'],
+        'Salinas': ['California'],
+        'Salvisa': ['Kentucky'],
+        'Santee': ['California'],
+        'Scottsbluff': ['Nebraska'],
+        'Seneca': ['Illinois'],
+        'Sharon': ['Ohio'],
+        'Shelby': ['North Carolina'],
+        'Sheridan': ['Montana/North Wyoming'],
+        'Shoals': ['Indiana'],
+        'Southeast': ['Colorado/Utah'],
+        'Southwest': ['Iowa'],
+        'Spokane': ['Washington'],
+        'Tacoma': ['Washington'],
+        'Texarkana': ['Texas'],
+        'Utica': ['South Dakota'],
+        'Vanderbilt': ['Michigan'],
+        'Washington': ['Virginia/Maryland'],
+        'Wasilla': ['Alaska'],
+        'Waupun': ['Wisconsin'],
+        'Wausau': ['Wisconsin'],
+        'Willmar': ['Minnesota'],
+        'Wyoming': ['Montana/North Wyoming'],
+        'Yakima': ['Washington'],
+        'York': ['Nebraska'],
+      },
+      'state_variations': {
+        'AK': 'Alaska',
+        'AL': 'Alabama',
+        'AR': 'Arkansas',
+        'AZ': 'Arizona',
+        'CA': 'California',
+        'CO': 'Colorado',
+        'CT': 'Connecticut',
+        'DE': 'Delaware',
+        'FL': 'Florida',
+        'GA': 'Georgia',
+        'HI': 'Hawaii',
+        'IA': 'Iowa',
+        'ID': 'Idaho',
+        'IL': 'Illinois',
+        'IN': 'Indiana',
+        'KS': 'Kansas',
+        'KY': 'Kentucky',
+        'Kanasa': 'Kansas',
+        'LA': 'Louisiana',
+        'MA': 'Massachusetts',
+        'MD': 'Maryland',
+        'ME': 'Maine',
+        'MI': 'Michigan',
+        'MN': 'Minnesota',
+        'MO': 'Missouri',
+        'MS': 'Mississippi',
+        'MT': 'Montana',
+        'NC': 'North Carolina',
+        'ND': 'North Dakota',
+        'NE': 'Nebraska',
+        'NH': 'New Hampshire',
+        'NJ': 'New Jersey',
+        'NM': 'New Mexico',
+        'NV': 'Nevada',
+        'NY': 'New York',
+        'New Dakota': 'North Dakota',
+        'OH': 'Ohio',
+        'OK': 'Oklahoma',
+        'OR': 'Oregon',
+        'PA': 'Pennsylvania',
+        'RI': 'Rhode Island',
+        'SC': 'South Carolina',
+        'SD': 'South Dakota',
+        'TN': 'Tennessee',
+        'TX': 'Texas',
+        'UT': 'Utah',
+        'VA': 'Virginia',
+        'VT': 'Vermont',
+        'Virgina': 'Virginia',
+        'WA': 'Washington',
+        'WI': 'Wisconsin',
+        'WV': 'West Virginia',
+        'WY': 'Wyoming',
+        'Washing': 'Washington'
+      },
+   },
+   'West Africa': {
+      'name': 'West Africa',
+      'states': [
+      ],
+      'cities': {
+      },
+      'variations': [
+        'W. Africa'
+      ],
+   },
+   'Africa': {
+      'name': 'Africa',
+      'states': [
+      ],
+      'cities': {
+      },
+   },
+   'Antigua': {
+      'name': 'Antigua',
+      'states': [
+      ],
+      'cities': {
+      },
+   },
+   'Argentina': {
+      'name': 'Argentina',
+      'states': [
+        '--No State--',
+      ],
+      'cities': {
+        'Rio Cuarto': ['--No State--'],
+        'San Rafael': ['--No State--'],
+        'Cipolletti': ['--No State--'],
+      },
+   },
+   'Australia': {
+      'name': 'Australia',
+      'states': [
+        'Australian Capital Territory', 'New South Wales', 'Victoria and Tasmania',
+        '--No State--', 'Northern Territory', 'South Australia', 'Western Australia',
+        'Queensland', 'Tasmania', 'Victoria',
+      ],
+      'cities': {
+        'Central North Victoria': ['Victoria'],
+        '--Not Specified--': ['Victoria and Tasmania'],
+        'Chelona 2': ['--No State--'],
+        'Geelong, Colac': ['Victoria'],
+        'Kapunda 1': ['--No State--'],
+        'Kapunda 2': ['--No State--'],
+        'Maroota 1': ['--No State--'],
+        'Maroota 2': ['--No State--'],
+        'Pilerwa #1': ['--No State--'],
+        'Pilerwa #2': ['--No State--'],
+        'Pilerwa 1': ['--No State--'],
+        'Williams 1': ['--No State--'],
+        'Williams 2': ['--No State--'],
+        'Aspley': ['Queensland'],
+        'Biddeston': ['--No State--'],
+        'Colac': ['Victoria'],
+        'Drouin': ['Victoria'],
+        'Glenco': ['--No State--'],
+        'Mudgee': ['New South Wales'],
+        'Rochedale': ['--No State--'],
+        'Speed': ['Victoria'],
+        'Thoona': ['Victoria'],
+        'Watta': ['New South Wales'],
+        'Williams': ['--No State--'],
+        'Wilmington': ['--No State--'],
+      },
+      'variations': [
+        'Australian'
+      ],
+   },
+   'Austria': {
+      'name': 'Austria',
+      'states': [
+        '--No State--',
+      ],
+      'cities': {
+        'Vienna': ['--No State--'],
+      },
+   },
+   'Barbados': {
+      'name': 'Barbados',
+      'states': [
+      ],
+      'cities': {
+      },
+   },
+   'Belgium': {
+      'name': 'Belgium',
+      'states': [
+        '--No State--',
+      ],
+      'cities': {
+        'Lillois': ['--No State--'],
+        'Sart-Dames-Avelines': ['--No State--'],
+      },
+   },
+   'Bolivia': {
+      'name': 'Bolivia',
+      'states': [
+        '--No State--', 'La Paz',
+      ],
+      'cities': {
+        'Santa Cruz': ['--No State--'],
+        'Cochabamba': ['--No State--'],
+      },
+      'special_location': 'Convention',
+   },
+   'Brazil': {
+      'name': 'Brazil',
+      'states': [
+        '--No State--',
+      ],
+      'cities': {
+        'Sao Jose dos Campos': ['--No State--'],
+        'Bel Horizonte': ['--No State--'],
+        'Sao Paulo': ['--No State--'],
+        'Alegrete': ['--No State--'],
+        'Gravati': ['--No State--'],
+        'Panambi': ['--No State--'],
+      },
+   },
+   'Canada': {
+      'name': 'Canada',
+      'states': [
+        'Saskatchewan/Manitoba/Northwest Ontario',
+        'Manitoba/Northwest Ontario', 'Newfoundland and Labrador', 'Prince Edward Island', 'Quebec and Atlantic',
+        '--No State--', 'British Columbia', 'Manitoba/Ontario', 'New Brunswick', 'Northwest Territories', 'Nova Scotia', 'Ontario/Quebec',
+        'Quebec/Atlantic', 'Saskatchewan/Manitoba',
+        'Alberta', 'Atlantic', 'Calgary', 'Manitoba', 'Maritimes', 'Nunavut', 'Ontario',
+        'Quebec', 'Saskatchewan', 'Yukon',
+      ],
+      'cities': {
+        'Ft. Macleod, P. Creek West & South': ['Alberta'],
+        'Prince George, Northeast and 100 Mile': ['British Columbia'],
+        'North Island and Powell River': ['British Columbia'],
+        'North Island, Nanaimo, Powell River': ['British Columbia'],
+        'Prince George, South and East': ['British Columbia'],
+        'Saint John, Saint Stephens NB': ['Quebec/Atlantic'],
+        'St. John, St. Stephen NB': ['Atlantic'],
+        "West'd Albert and East Kings": ['New Brunswick'],
+        'Williams Lake, Barriere and North': ['British Columbia'],
+        'Delta, White Rock, Tsawwassen': ['British Columbia'],
+        "Fort Qu'Appelle, Pilot Butte": ['Saskatchewan/Manitoba/Northwest Ontario'],
+        'Ft. St. John, Yorkton': ['Alberta'],
+        'Ft. St. John, Yukon': ['Alberta'],
+        'Halifax, Cape Breton NS': ['Quebec/Atlantic'],
+        'High River, Pincher Creek': ['Alberta'],
+        'Interlake, East of Winnipeg': ['Manitoba/Northwest Ontario'],
+        'Kamloops, Merritt, Lillooet, Barriere': ['British Columbia'],
+        'New Minas, Bridgewater NS': ['Quebec/Atlantic'],
+        'Newbrook East & North': ['Alberta'],
+        'North Island, Powell River': ['British Columbia'],
+        'North Okanagan and Chase': ['British Columbia'],
+        'North and West Winnipeg': ['Manitoba/Northwest Ontario'],
+        'Prince Albert and West': ['Saskatchewan'],
+        'Rainy River Valley, Dryden': ['Manitoba/Northwest Ontario'],
+        'South and East Winnipeg': ['Manitoba/Northwest Ontario'],
+        'Stony Plain and West': ['Alberta'],
+        'Thunder Bay and Dryden': ['Saskatchewan/Manitoba/Northwest Ontario'],
+        'West Kootenays and Penticton': ['British Columbia'],
+        'Winnipeg East, Interlake': ['Saskatchewan/Manitoba/Northwest Ontario'],
+        'Barrhead, Elk Point': ['Alberta'],
+        'Barrhead, Ft. McMurray': ['Alberta'],
+        'Brooks and North': ['Alberta'],
+        'Brooks, Medicine Hat': ['Alberta'],
+        'Bruce, Huron Co': ['Ontario/Quebec'],
+        'Exshaw, High River': ['Alberta'],
+        'Fredericton NB, Woodstock': ['Quebec/Atlantic'],
+        'Fredericton, Woodstock NB': ['Quebec/Atlantic'],
+        'Glen Valley 1': ['British Columbia'],
+        'Glen Valley 2': ['British Columbia'],
+        'Hardisty and North': ['Alberta'],
+        'High River, Claresholm': ['Alberta'],
+        'High River, Lethbridge': ['Alberta'],
+        'Langley, East Surrey': ['British Columbia'],
+        'Lethbridge, Medicine Hat': ['Alberta'],
+        'Lethbridge, Pincher Creek': ['Alberta'],
+        'Middlesex, Brant, Huron': ['Ontario/Quebec'],
+        'North Battleford, Kindersley': ['Saskatchewan'],
+        'North Central Calgary': ['Alberta'],
+        'North Vancouver Island': ['British Columbia'],
+        "North'd and Glouc.": ['New Brunswick'],
+        'Oshawa, Lindsay, Peterborough': ['Ontario/Quebec'],
+        'Prince Albert-Big River': ['Saskatchewan'],
+        'Prince Edward Island': ['Prince Edward Island'],
+        'Rainy River Valley': ['Manitoba/Ontario'],
+        'Regina, Moose Jaw': ['Saskatchewan'],
+        'Saskatoon and North': ['Saskatchewan'],
+        'Selkirk, Pine Falls': ['Manitoba/Northwest Ontario'],
+        'Southeast and Golden': ['British Columbia'],
+        'Southwest Manitoba, Virden': ['Manitoba/Northwest Ontario'],
+        'Stony Plain, West': ['Alberta'],
+        'Swan River Valley': ['Manitoba/Ontario'],
+        'Swift Current, Kindersley': ['Saskatchewan'],
+        'Upper Fraser Valley': ['British Columbia'],
+        'Vanderhoof and West': ['British Columbia'],
+        'Vermilion and North': ['Alberta'],
+        'Vermilion, Elk Point': ['Alberta'],
+        "Yorkton, Fort Qu'Appelle": ['Saskatchewan'],
+        '--Not Specified--': ['Alberta'],
+        'Big River': ['Saskatchewan'],
+        'Brooks, North': ['Alberta'],
+        'Bruce Co.': ['Ontario/Quebec'],
+        'Cambridge, Kitchener': ['Ontario/Quebec'],
+        'Camrose, Stettler': ['Alberta'],
+        'Camrose, Wainwright': ['Alberta'],
+        'Central Island': ['British Columbia'],
+        'Central Okanagan': ['British Columbia'],
+        'Coquitlam, Mission': ['British Columbia'],
+        'Didsbury #2': ['Alberta'],
+        'Didsbury 1': ['Alberta'],
+        'Didsbury 2': ['Alberta'],
+        'East Calgary': ['Alberta'],
+        'East Centre': ['Alberta'],
+        'East Edmonton': ['Alberta'],
+        'East NL': ['Quebec/Atlantic'],
+        'Elk Point': ['Alberta'],
+        "Fort Qu'Appelle": ['Saskatchewan/Manitoba'],
+        'Freetown I': ['Prince Edward Island'],
+        'Glen Valley': ['British Columbia'],
+        'Grand Prairie': ['Alberta'],
+        'Grande Prairie': ['Alberta'],
+        'Grey, Bruce': ['Quebec/Atlantic'],
+        'Halifax NS': ['Quebec/Atlantic'],
+        'Hamilton, Brant': ['Ontario/Quebec'],
+        'Harvey Station': ['--No State--'],
+        'Hon Mention': ['Alberta'],
+        'Humber Village': ['Newfoundland and Labrador'],
+        'Huron Co.': ['Ontario/Quebec'],
+        'Iron Bridge': ['Ontario'],
+        'Kelowna East': ['British Columbia'],
+        'Kelvinton, Margo': ['Saskatchewan'],
+        'Kootenays, Penticton': ['British Columbia'],
+        'Lacombe, Rimbey': ['Alberta'],
+        'Lambton, Essex': ['Ontario/Quebec'],
+        'London, Brantford': ['Ontario/Quebec'],
+        'Medicine Hat': ['Alberta'],
+        'Merritt, Pemberton': ['British Columbia'],
+        'Mid Island': ['British Columbia'],
+        'Moose Jaw': ['Saskatchewan'],
+        'Niagara District': ['Ontario/Quebec'],
+        'Nipissing, Sudbury': ['Ontario/Quebec'],
+        'North Battleford': ['Saskatchewan'],
+        'North Calgary': ['Alberta'],
+        'North Edmonton': ['Alberta'],
+        'North Island': ['British Columbia'],
+        'North Okanagan': ['British Columbia'],
+        'Northeast Calgary': ['Alberta'],
+        'Northeast Edmonton': ['Alberta'],
+        'Northern BC': ['British Columbia'],
+        'Northern Manitoba': ['Manitoba/Northwest Ontario'],
+        'Northwest Calgary': ['Alberta'],
+        'Northwest Edmonton': ['Alberta'],
+        'Northwest Winnipeg': ['Manitoba/Ontario'],
+        'Nova Scotia': ['Quebec/Atlantic'],
+        'Pincher Creek': ['Alberta'],
+        'Prince Albert': ['Saskatchewan'],
+        'Prince George': ['British Columbia'],
+        'Red Deer': ['Alberta'],
+        'Renfrew, Lanark': ['Ontario/Quebec'],
+        'Salmon Arm': ['Saskatchewan'],
+        'Saskatchewan, MB': ['British Columbia'],
+        'Silverdale 1': ['--No State--'],
+        'Silverdale 2': ['--No State--'],
+        'Simcoe Co.': ['Ontario/Quebec'],
+        'South Calgary': ['Alberta'],
+        'South East': ['British Columbia'],
+        'South Edmonton': ['Alberta'],
+        'South Island': ['British Columbia'],
+        'Southeast, Golden': ['British Columbia'],
+        'Southwest Edmonton': ['Alberta'],
+        'Southwest Manitoba': ['Manitoba/Northwest Ontario'],
+        'St. George': ['Newfoundland and Labrador'],
+        'St. Paul': ['Alberta'],
+        'Stony Plain': ['Alberta'],
+        'Summerland, Penticton': ['British Columbia'],
+        'Surrey, Langley': ['British Columbia'],
+        'Swift Current': ['Saskatchewan'],
+        'Thunder Bay': ['Manitoba/Northwest Ontario'],
+        'Toronto West': ['Ontario/Quebec'],
+        'Vancouver, Pemberton': ['British Columbia'],
+        'Vermilion, Wainwright': ['Alberta'],
+        'Vermillion, Wainwright': ['Alberta'],
+        'Weyburn, Assiniboia': ['Saskatchewan'],
+        'Yorkton, Saskatchewan': ['Saskatchewan/Manitoba/Northwest Ontario'],
+        'Alberta': ['British Columbia'],
+        'Almonte': ['--No State--'],
+        'Antler': ['Saskatchewan'],
+        'Assiniboia': ['Saskatchewan'],
+        'Aylesbury': ['Saskatchewan'],
+        'Barrhead': ['Alberta'],
+        'Bowsman': ['--No State--'],
+        'Brigus': ['--No State--'],
+        'Calgary': ['Alberta'],
+        'Camrose': ['Alberta'],
+        'Chilliwack': ['British Columbia'],
+        'Coquitlam': ['British Columbia'],
+        'Didsbury': ['Alberta'],
+        'Duncan': ['British Columbia'],
+        'Dunnville': ['--No State--'],
+        'East': ['Newfoundland and Labrador'],
+        'Edson': ['Alberta'],
+        'Ellershouse': ['--No State--'],
+        'Emo': ['--No State--'],
+        'Freedom': ['--No State--'],
+        'Freetown': ['Prince Edward Island'],
+        'Greenshield': ['--No State--'],
+        'Guelph': ['Ontario/Quebec'],
+        'Hythe': ['--No State--'],
+        'Irishtown': ['Newfoundland and Labrador'],
+        'Kamloops': ['British Columbia'],
+        'Kelowna': ['British Columbia'],
+        'Kelvington': ['Saskatchewan'],
+        'Kindersley': ['Saskatchewan'],
+        'Lacombe': ['Alberta'],
+        'Leduc': ['Alberta'],
+        'Lethbridge': ['Alberta'],
+        'Melfort': ['Saskatchewan'],
+        'Mellowdale': ['--No State--'],
+        'Moosomin': ['Saskatchewan'],
+        'Napan': ['--No State--'],
+        'Nipawin': ['Saskatchewan'],
+        'Northeast': ['British Columbia'],
+        'Northwest': ['British Columbia'],
+        'Okanagan': ['British Columbia'],
+        'Penticton': ['British Columbia'],
+        'Peterborough': ['Ontario/Quebec'],
+        'Portage': ['Manitoba'],
+        'Regina': ['Saskatchewan'],
+        'Renfrew': ['Ontario/Quebec'],
+        'Richmond': ['Quebec'],
+        'Rimbey': ['Alberta'],
+        'Saskatchewan': ['British Columbia'],
+        'Saskatoon': ['Saskatchewan'],
+        'Seagrave': ['--No State--'],
+        'Smeaton': ['--No State--'],
+        'Southeast': ['British Columbia'],
+        'Stettler': ['Alberta'],
+        'Strathroy': ['--No State--'],
+        'Surrey': ['British Columbia'],
+        'Theodore': ['Saskatchewan'],
+        'Tisdale': ['Saskatchewan'],
+        'Vancouver': ['British Columbia'],
+        'Vermilion': ['Alberta'],
+        'Vermillion-Wainwright': ['Alberta'],
+        'Victoria': ['British Columbia'],
+        'West': ['Newfoundland and Labrador'],
+        'Winnipeg': ['Manitoba'],
+        'Woodstock': ['--No State--'],
+        'Yorkton': ['Saskatchewan'],
+      },
+      'state_variations': {
+        'AB': 'Alberta',
+        'BC': 'British Columbia',
+        'MB': 'Manitoba',
+        'NB': 'New Brunswick',
+        'NL': 'Newfoundland and Labrador',
+        'NS': 'Nova Scotia',
+        'NT': 'Northwest Territories',
+        'NU': 'Nunavut',
+        'Newfoundland': 'Newfoundland and Labrador',
+        'ON': 'Ontario',
+        'PE': 'Prince Edward Island',
+        'QC': 'Quebec',
+        'SK': 'Saskatchewan',
+        'YT': 'Yukon'
+      },
+   },
+   'Caribbean': {
+      'name': 'Caribbean',
+      'states': [
+        'Cayman Islands', 'Dominican Republic', 'St. Kitts', 'St. Lucia', 'St. Vincent',
+        'Antigua', 'Barbados', 'Grenada', 'Guadeloupe', 'Haiti', 'Jamaica', 'Trinidad',
+        'Suriname', 'Guyana', 'Nevis'
+      ],
+      'cities': {
+        'Cabaret': ['Haiti'],
+      },
+   },
+   'China': {
+      'name': 'China',
+      'states': [
+        '--No State--',
+      ],
+      'cities': {
+        'Hong Kong': ['--No State--'],
+      },
+   },
+   'Columbia': {
+      'name': 'Columbia',
+      'states': [
+        '--No State--',
+        'Ipiales',
+      ],
+      'cities': {
+        'Bogota': ['--No State--'],
+      },
+      'variations': [
+        'Colombia'
+      ],
+   },
+   'Denmark': {
+      'name': 'Denmark',
+      'states': [
+        '--No State--',
+      ],
+      'cities': {
+        'Sonder Omme': ['--No State--'],
+      },
+   },
+   'Ecuador': {
+      'name': 'Ecuador',
+      'states': [
+        '--No State--',
+        'Galapagos',
+      ],
+      'cities': {
+        'El Cristal': ['--No State--'],
+      },
+   },
+   'Finland': {
+      'name': 'Finland',
+      'states': [
+        '--No State--',
+      ],
+      'cities': {
+        'Vaasa': ['--No State--'],
+      },
+   },
+   'France': {
+      'name': 'France',
+      'states': [
+        '--No State--',
+      ],
+      'cities': {
+        'Ales': ['--No State--'],
+        'Chaintreauville': ['--No State--'],
+        'Foljuif': ['--No State--'],
+        'Paris': ['--No State--'],
+      },
+   },
+   'Germany': {
+      'name': 'Germany',
+      'states': [
+        '--No State--',
+      ],
+      'cities': {
+        'Hulben': ['--No State--'],
+      },
+   },
+   'Greece': {
+      'name': 'Greece',
+      'states': [
+        '--No State--',
+      ],
+      'cities': {
+        '--Not Specified--': ['--No State--'],
+        'Athens': ['--No State--'],
+        'Inoi': ['--No State--'],
+      },
+   },
+   'Guam': {
+      'name': 'Guam',
+      'states': [
+      ],
+      'cities': {
+      },
+      'special_location': 'Convention',
+   },
+   'Guatemala': {
+      'name': 'Guatemala',
+      'states': [
+        '--No State--',
+      ],
+      'cities': {
+        'Malacation': ['--No State--'],
+      },
+   },
+   'Guyana': {
+      'name': 'Guyana',
+      'states': [
+      ],
+      'cities': {
+      },
+   },
+   'Haiti': {
+      'name': 'Haiti',
+      'states': [
+      ],
+      'cities': {
+      },
+   },
+   'India': {
+      'name': 'India',
+      'states': [
+        '--No State--',
+      ],
+      'cities': {
+        'Bangalore': ['--No State--'],
+      },
+   },
+   'Ireland': {
+      'name': 'Ireland',
+      'states': [
+        '--No State--',
+      ],
+      'cities': {
+        'Carrick': ['--No State--'],
+        'Down': ['--No State--'],
+        'Fermanagh': ['--No State--'],
+        'Laois': ['--No State--'],
+        'Monaghan': ['--No State--'],
+      },
+   },
+   'Italy': {
+      'name': 'Italy',
+      'states': [
+        '--No State--',
+      ],
+      'cities': {
+        'Emilla Romagna, Toscana': ['--No State--'],
+        'Petacciato': ['--No State--'],
+      },
+   },
+   'Jamaica': {
+      'name': 'Jamaica',
+      'states': [
+      ],
+      'cities': {
+      },
+   },
+   'Japan': {
+      'name': 'Japan',
+      'states': [
+        '--No State--',
+        'Tokyo',
+      ],
+      'cities': {
+        'Chigasaki': ['Tokyo'],
+      },
+   },
+   'Korea': {
+      'name': 'Korea',
+      'states': [
+        '--No State--',
+      ],
+      'cities': {
+        'Seoul South': ['--No State--'],
+        'Puchon': ['--No State--'],
+      },
+   },
+   'Mexico': {
+      'name': 'Mexico',
+      'states': [
+        '--No State--',
+      ],
+      'cities': {
+        'Ebano': ['--No State--'],
+        'Insurgentes': ['--No State--'],
+        'Tanama': ['--No State--'],
+      },
+   },
+   'Netherlands': {
+      'name': 'Netherlands',
+      'states': [
+        '--No State--',
+      ],
+      'cities': {
+        'Putten': ['--No State--'],
+      },
+   },
+   'Nevis': {
+      'name': 'Nevis',
+      'states': [
+      ],
+      'cities': {
+      },
+   },
+   'Nigeria': {
+      'name': 'Nigeria',
+      'states': [
+        '--No State--',
+      ],
+      'cities': {
+        'Ikorodu': ['--No State--'],
+      },
+   },
+   'Norway': {
+      'name': 'Norway',
+      'states': [
+        '--No State--',
+      ],
+      'cities': {
+        'Stokke': ['--No State--'],
+      },
+   },
+   'Orient': {
+      'name': 'Orient',
+      'states': [
+      ],
+      'cities': {
+      },
+      'special_location': 'Convention',
+   },
+   'Pakistan': {
+      'name': 'Pakistan',
+      'states': [
+        'Mirpur Khas',
+      ],
+      'cities': {
+      },
+   },
+   'Peru': {
+      'name': 'Peru',
+      'states': [
+        '--No State--',
+        'Lambayeque',
+      ],
+      'cities': {
+        '--Not Specified--': ['--No State--'],
+        'Cusco, Puno': ['--No State--'],
+        'companion later': ['--No State--'],
+        'Ancash': ['--No State--'],
+        'Cajamarca': ['--No State--'],
+        'Coyunde': ['--No State--'],
+        'Cusco': ['--No State--'],
+        'Olmos': ['Lambayeque'],
+      },
+      'special_location': 'Convention',
+   },
+   'Philippines': {
+      'name': 'Philippines',
+      'states': [
+        '--No State--',
+      ],
+      'cities': {
+        'Baguio': ['--No State--'],
+        'Cavite': ['--No State--'],
+        'Ilocos': ['--No State--'],
+        'Iloilo': ['--No State--'],
+        'Ozamis': ['--No State--'],
+        'Rosales': ['--No State--'],
+      },
+   },
+   'Poland': {
+      'name': 'Poland',
+      'states': [
+        '--No State--',
+      ],
+      'cities': {
+        'Wista': ['--No State--'],
+      },
+   },
+   'Romania': {
+      'name': 'Romania',
+      'states': [
+        '--No State--',
+      ],
+      'cities': {
+        'Sibiu 2': ['--No State--'],
+      },
+   },
+   'Saipan': {
+      'name': 'Saipan',
+      'states': [
+      ],
+      'cities': {
+      },
+   },
+   'Scotland': {
+      'name': 'Scotland',
+      'states': [
+        '--No State--',
+      ],
+      'cities': {
+        'Gartocharn 1': ['--No State--'],
+        'Gartocharn 2': ['--No State--'],
+      },
+   },
+   'Spain': {
+      'name': 'Spain',
+      'states': [
+        '--No State--',
+      ],
+      'cities': {
+        'Madrid': ['--No State--'],
+      },
+   },
+   'Suriname': {
+      'name': 'Suriname',
+      'states': [
+      ],
+      'cities': {
+      },
+   },
+   'Sweden': {
+      'name': 'Sweden',
+      'states': [
+        'Stockholm',
+      ],
+      'cities': {
+      },
+   },
+   'Taiwan': {
+      'name': 'Taiwan',
+      'states': [
+      ],
+      'cities': {
+      },
+   },
+   'Trinidad': {
+      'name': 'Trinidad',
+      'states': [
+      ],
+      'cities': {
+      },
+   },
+   'Venezuela': {
+      'name': 'Venezuela',
+      'states': [
+        'Barquisimeto', 'Caracas',
+      ],
+      'cities': {
+      },
+   },
+   'Zimbabwe': {
+      'name': 'Zimbabwe',
+      'states': [
+        'Serial',
+      ],
+      'cities': {
+      },
+   },
+}

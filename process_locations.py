@@ -11,6 +11,22 @@ from countries_data import countries
 # Global variable for validation mode
 validate_mode = False
 
+# Month name to number mapping
+MONTH_MAP = {
+    'Jan': '01', 'January': '01',
+    'Feb': '02', 'February': '02',
+    'Mar': '03', 'March': '03',
+    'Apr': '04', 'April': '04',
+    'May': '05',
+    'Jun': '06', 'June': '06',
+    'Jul': '07', 'July': '07',
+    'Aug': '08', 'August': '08',
+    'Sep': '09', 'Sept': '09', 'September': '09',
+    'Oct': '10', 'October': '10',
+    'Nov': '11', 'November': '11',
+    'Dec': '12', 'December': '12'
+}
+
 def print_debug(*args, **kwargs):
     """Print debug information only when in validate mode."""
     if validate_mode:
@@ -133,6 +149,7 @@ def get_state_country(line: str, countries: Dict) -> Optional[Dict]:
     
     line = re.sub(r'\bN\.?\s+', 'North ', line)
     line = re.sub(r'\bS\.?\s+', 'South ', line)
+    line = re.sub(r'\bE\.?\s+', 'East ', line)
     line = re.sub(r'\bW\.?\s+', 'West ', line)
     line = re.sub(r'\bNW\.?\s+', 'Northwest ', line)
     line = re.sub(r'\bNE\.?\s+', 'Northeast ', line)
@@ -164,66 +181,90 @@ def get_state_country(line: str, countries: Dict) -> Optional[Dict]:
                         found_state = full_state
                         found_state_country = country_name
 
-    print_debug(f"\n\nBOB SC 0.0 - found_state: {found_state}")
-    print_debug(f"BOB SC 0.1 - found_state_country: {found_state_country}")
+    print_debug(f"\n\nBOB SC 0.0 - found_state: {found_state}  country: {found_state_country}")
 
     # First check if any word in the line is a city
     words = line.split()
     for i in range(len(words)):
-        # Try 3, 2, or 1 consecutive words (in that order)
-        for word_count in range(3, 0, -1):
+        # Try 5, 4, 3, 2, or 1 consecutive words (in that order)
+        for word_count in range(5, 0, -1):
             if i + word_count <= len(words):
                 potential_city = ' '.join(words[i:i + word_count])
-
+                print_debug(f"BOB SC 0.1 - potential_city: |{potential_city}|") if i==0 else None
+#BOB1
                 # If we found a state earlier, only check cities in that state's country
                 countries_to_check = {found_state_country: countries[found_state_country]} if found_state_country else countries
                 
                 for country_name, country_info in countries_to_check.items():
-                    if 'cities' in country_info and potential_city in country_info['cities']:
-                        # If this city is part of a state name we found earlier, skip it
-                        if found_state and potential_city in found_state:
-                            continue
+                    if 'cities' in country_info:
+                        # Check for multiple occurrences of the city by looking at the raw dictionary items
+                        matching_states = []
+                        for city, states in country_info['cities'].items():
+                            # Split compound city names and check for exact matches
+                            #city_parts = [c.strip() for c in city.split(',')]
+                            if potential_city == city:
+                                # Add all states for this city to matching_states
+                                matching_states.extend(states)
+                        if matching_states:
+                            # If this city is part of a state name we found earlier, skip it
+                            if found_state and potential_city in found_state:
+                                continue
+                            
+                            # Loop through all matching states
+                            for state in matching_states:
+                                print_debug(f"BOB SC 0.3 - checking state: {state}")                        
+                                # If we found a state earlier, only use cities that belong to that state
+                                if found_state and state != found_state:
+                                    continue
 
-                        # Found a city, get its state (may be None)
-                        state = country_info['cities'][potential_city]
-                        
-                        # If we found a state earlier, only use cities that belong to that state
-                        if found_state and state != found_state:
-                            continue
-
-                        result['state'] = state
-                        result['country'] = country_name
-                        # Remove the state and country from the line
-                        if state:  # Only remove state if it exists
-                            line = line.replace(state, '').strip()
-                        line = line.replace(country_name, '').strip()
-                        line = line.replace(potential_city, '').strip()
-                        # Remove any state variations
-                        if 'state_variations' in country_info:
-                            for variation in country_info['state_variations'].keys():
-                                line = re.sub(r'\b' + re.escape(variation) + r'\b', '', line).strip()
-                        # Set location to city name
-                        print_debug(f"BOB SC 0.2 - Location: {potential_city}")
-                        result['location'] = potential_city
-                        # Keep the remaining text in the line field
-                        print_debug(f"BOB SC 0.3 - Line: {line}")
-                        result['line'] = line
-                        return result
+                                result['state'] = state
+                                result['country'] = country_name
+                                # Remove the state and country from the line
+                                if state:  # Only remove state if it exists
+                                    line = line.replace(state, '').strip()
+                                line = line.replace(country_name, '').strip()
+                                line = line.replace(potential_city, '').strip()
+                                # Remove any state variations
+                                if 'state_variations' in country_info:
+                                    for variation in country_info['state_variations'].keys():
+                                        line = re.sub(r'\b' + re.escape(variation) + r'\b', '', line).strip()
+                                # Set location to city name
+                                result['location'] = potential_city
+                                # Keep the remaining text in the line field
+                                result['line'] = line
+                                return result
 
     print_debug(f"BOB SC 1.0 - Line: {line}")
     # First check for combined country names
     for country, info in countries.items():
         if '/' in country and country in line:
             result['country'] = country
-            # Check for states in this country
-            for state in info.get('states', []):
-                if state and state in line:  # Skip empty strings
-                    result['state'] = state
-                    # Remove the state and country from the line
-                    line = line.replace(state, '').strip()
-                    line = line.replace(country, '').strip()
-                    result['line'] = clean_line(line)
-                    return result
+            line = line.replace(country, '').strip()
+            print_debug(f"BOB SC 1.1 - country: {country}  line: {line}")
+            # Check for states in this country 1
+            words = line.split()
+            for i in range(len(words)):
+                # Try 5, 4, 3, 2, or 1 consecutive words (in that order)
+                for word_count in range(5, 0, -1):
+                    if i + word_count <= len(words):
+                        potential_state = ' '.join(words[i:i + word_count])
+                        print_debug(f"BOB SC 1.2 - potential_state: {potential_state}")
+                        # Check in regular states list
+                        if potential_state in info.get('states', []):
+                            result['state'] = potential_state
+                            # Remove the state from the line
+                            line = line.replace(potential_state, '').strip()
+                            result['line'] = clean_line(line)
+                            return result
+                        # Check in state variations
+                        if 'state_variations' in info:
+                            for variation, full_state in info['state_variations'].items():
+                                if potential_state == variation:
+                                    result['state'] = full_state
+                                    # Remove the variation from the line
+                                    line = line.replace(variation, '').strip()
+                                    result['line'] = clean_line(line)
+                                    return result
             # If no state found in this country, check for states in other countries
             for other_country, other_info in countries.items():
                 if other_country != country:
@@ -232,7 +273,6 @@ def get_state_country(line: str, countries: Dict) -> Optional[Dict]:
                             result['state'] = state
                             # Remove the state and country from the line
                             line = line.replace(state, '').strip()
-                            line = line.replace(country, '').strip()
                             result['line'] = clean_line(line)
                             return result
             # No state found, just return the country
@@ -284,6 +324,8 @@ def get_state_country(line: str, countries: Dict) -> Optional[Dict]:
     if earliest_state is not None:
         result['state'] = earliest_state
         result['country'] = earliest_country
+        print_debug(f"BOB SC 2.52 - state: {earliest_state}")
+        print_debug(f"BOB SC 2.51 - country: {earliest_country}")
         # Remove the state and country from the line
         line = line.replace(earliest_state_text, '').strip()
         print_debug(f"BOB SC 2.6 - line: {line}")
@@ -406,6 +448,9 @@ def handle_convention(line: str, countries: Dict) -> Optional[Dict]:
         'state': None,
         'location': None,
         'note': None,
+        'month': None,
+        'start_date': None,
+        'end_date': None
     }
 
     if 'convention' not in line.lower() or 'convention photo' in line.lower():
@@ -448,27 +493,118 @@ def handle_convention(line: str, countries: Dict) -> Optional[Dict]:
     # remove "Sk- " from line - Special case that was messing up the output.  Redundant Saskatchewan anyway
     line = line.replace('Sk- ', '')
 
+    print_debug(f"BOB CON 0.01 - Line: {line}")
+
     # Handle date or note in parentheses at the end
     date_visit_matches = re.finditer(r'\((.*?)\)', line)
+    matches_list = list(date_visit_matches)
     
     date_note = None
     visit_note = None
-    for match in date_visit_matches:
-        date_visit_note = match.group(1).strip()
-        print_debug(f"BOB CON 0.1 - date_visit_match: {date_visit_note}")
+    if len(matches_list) > 0:
+        print_debug(f"BOB CON 0.02 - we have date_visit_matches")
+        for match in matches_list:
+            date_visit_note = match.group(1).strip()
+            print_debug(f"BOB CON 0.1 - date_visit_match: {date_visit_note}")
 
-        # Check if date_visit_note contains a month or season
-        month_pattern = r'\b(?:Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|Jun(?:e)?|Jul(?:y)?|Aug(?:ust)?|Sep(?:tember)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?)\b'
-        season_pattern = r'\b(?:Spring|Summer|Fall|Autumn|Winter)\b'
+            # Check if date_visit_note contains a month or season  JOE
+            month_pattern = r'\b(?:Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|Jun(?:e)?|Jul(?:y)?|Aug(?:ust)?|Sep(?:tember)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?)\b'
+            season_pattern = r'\b(?:Spring|Summer|Fall|Autumn|Winter)\b'
+
+            first_match = re.search(month_pattern, date_visit_note, re.IGNORECASE) or re.search(season_pattern, date_visit_note, re.IGNORECASE)
+            range_found = False
+            if first_match:
+                print_debug(f"BOB CON 0.1.0 - Found first month/season pattern in: {first_match.group(0)}")
+                remaining_text = date_visit_note[first_match.end():]
+                second_match = re.search(month_pattern, remaining_text, re.IGNORECASE) or re.search(season_pattern, remaining_text, re.IGNORECASE)
+                if second_match:
+                    print_debug(f"BOB CON 0.1.1 - Found second month/season pattern in: {second_match.group(0)}")
+                    result['month'] = f"{first_match.group(0)}-{second_match.group(0)}"
+                    date_note = date_visit_note
+                    range_found = True
+            
+            if not range_found and not date_note and (re.search(month_pattern, date_visit_note, re.IGNORECASE) or re.search(season_pattern, date_visit_note, re.IGNORECASE)):
+                date_note = date_visit_note 
+                #SUE
+                # Check for second instance of month or season pattern after the first match
+                line = line.replace(date_visit_note, '')
+                date_pieces = date_visit_note.split()
+                if len(date_pieces) == 1:
+                    result['month'] = date_pieces[0]
+                else:
+                    result['month'] = date_pieces[0]
+                    month = MONTH_MAP.get(date_pieces[0], date_pieces[0])
+                    # Get start and possible end date
+                    day_pieces = date_pieces[1].split('-')
+                    if len(day_pieces) >= 1:
+                        day = day_pieces[0].zfill(2)  # Pad day with leading zero if needed
+                        result['start_date'] = f"{month}/{day}"
+                        if len(day_pieces) >= 2:
+                            end_day = day_pieces[1].zfill(2)  # Pad day with leading zero if needed
+                            result['end_date'] = f"{month}/{end_day}"
+                print_debug(f"BOB CON 0.2 - month: {result['month']}  |  start_date: {result['start_date']}  |  end_date: {result['end_date']}")
+            elif not range_found:
+                visit_note = date_visit_note.replace('Visiting Worker', '').strip()
+                line = line.replace(date_visit_note, '')
+                print_debug(f"BOB CON 0.3 - visit_note: {visit_note}")
+    else:
+        # No (somedate) found in the line so lets look for months and month ranges elsewhere in the line.  Can include July 1-30, July 1-August 30, etc.
+        # Check for month ranges
+        print_debug(f"BOB CON DATE 1.0 - Check for month ranges {line}")
+        month_abbreviations = r"(January|February|March|April|May|June|July|August|September|October|November|December|Jan|Feb|Mar|Apr|Jun|Jul|Aug|Sept|Sep|Oct|Nov|Dec)"
+
+        # Single pattern with named groups to handle all cases
+        date_range_pattern = re.compile(
+            rf"""
+            (?P<first_month>{month_abbreviations})
+            (?:
+                (?:
+                    \s+
+                    (?P<first_day>\d+)
+                    (?:
+                        -
+                        (?:(?P<second_month_with_day>{month_abbreviations})\s*)?
+                        (?P<second_day>\d+)
+                    )?
+                )|
+                (?:
+                    -
+                    (?P<second_month_only>{month_abbreviations})
+                )
+            )?
+            $
+            """,
+            re.IGNORECASE | re.VERBOSE
+        )
         
-        if not date_note and (re.search(month_pattern, date_visit_note, re.IGNORECASE) or re.search(season_pattern, date_visit_note, re.IGNORECASE)):
-            date_note = date_visit_note
-            line = line.replace(date_visit_note, '')
-            print_debug(f"BOB CON 0.2 - date_note: {date_note}")
-        else:
-            visit_note = date_visit_note.replace('Visiting Worker', '').strip()
-            line = line.replace(date_visit_note, '')
-            print_debug(f"BOB CON 0.3 - visit_note: {visit_note}")
+        first_month = None
+        first_day = None
+        second_month = None
+        second_day = None
+        for match in date_range_pattern.finditer(line):
+            first_month = match.group('first_month')
+            first_day = match.group('first_day')
+            second_month_with_day = match.group('second_month_with_day')
+            second_month_only = match.group('second_month_only')
+            second_day = match.group('second_day')
+
+            print_debug(f"BOB CON DATE 1.1 - first_month: {first_month}  |  first_day: {first_day}  |  second_month_with_day: {second_month_with_day}  |  second_month_only: {second_month_only}  |  second_day: {second_day}")
+        
+        if first_month:
+            result['month'] = first_month
+            month = MONTH_MAP.get(first_month, first_month)
+            if first_day:
+                day = first_day.zfill(2)  # Pad day with leading zero if needed
+                result['start_date'] = f"{month}/{day}"
+                if second_day:
+                    if second_month_with_day:
+                        month = MONTH_MAP.get(second_month_with_day, second_month_with_day)
+                    day = second_day.zfill(2)  # Pad day with leading zero if needed
+                    result['end_date'] = f"{month}/{day}"
+            else:
+                if second_month_only:
+                    result['month'] = first_month + '-' + second_month_only
+
 
     print_debug(f"BOB CON 0.4 - line: {line}")
 
@@ -536,7 +672,10 @@ def handle_special_meeting(line: str, countries: Dict) -> Optional[Dict]:
         'country': None,
         'state': None,
         'location': None,
-        'note': None
+        'note': None,
+        'month': None,
+        'start_date': None,
+        'end_date': None
     }
 
     print_debug(f"\n\nBOB SPECIAL MEETING 0.0 - Line: {line}")
@@ -573,6 +712,15 @@ def handle_special_meeting(line: str, countries: Dict) -> Optional[Dict]:
         
         if re.search(month_pattern, date_visit_note, re.IGNORECASE) or re.search(season_pattern, date_visit_note, re.IGNORECASE):
             date_note = date_visit_note
+            date_pieces = date_visit_note.split()
+            if len(date_pieces) == 1:
+                result['month'] = date_pieces[0]
+            else:
+                result['month'] = date_pieces[0]
+                month = MONTH_MAP.get(date_pieces[0], date_pieces[0])
+                day = date_pieces[1].zfill(2)  # Pad day with leading zero if needed
+                result['start_date'] = f"{month}/{day}"
+            print_debug(f"BOB SM 1.1 - month: {result['month']}  |  start_date: {result['start_date']}")
         else:
             visit_note = date_visit_note
         # Remove the parentheses and their contents from the line
@@ -601,17 +749,17 @@ def handle_special_meeting(line: str, countries: Dict) -> Optional[Dict]:
         for country, info in countries.items():
             if word == country and not info.get('states'):
                 result['country'] = country
-                # Remove the country from the line
-                line = line.replace(country, '').strip()
-                #result['line'] = clean_line(line)
-                result['note'] = clean_line(line)
-                if "Special Meeting" not in result['note']:
-                    result['note'] = f"{result['note']} Special Meeting"
-                if date_note:
-                    result['note'] = date_note + ' ' + result['note']
-                if visit_note:
-                    result['note'] = result['note'] + " Visiting from " + visit_note
-                # return result
+                # # Remove the country from the line
+                # line = line.replace(country, '').strip()
+                # #result['line'] = clean_line(line)
+                # result['note'] = clean_line(line)
+                
+                # if "Special Meeting" not in result['note']:
+                #     result['note'] = f"{result['note']} Special Meeting"
+                # if date_note:
+                #     result['note'] = date_note + ' ' + result['note']
+                # if visit_note:
+                #     result['note'] = result['note'] + " Visiting from " + visit_note
 
     print_debug(f"BOB SM 5.0 - country: {result['country']}")
     print_debug(f"BOB SM 5.1 - note: {result['note']}")
@@ -633,11 +781,143 @@ def handle_special_meeting(line: str, countries: Dict) -> Optional[Dict]:
 
     return result
 
+def upper_words(text):
+    """
+    Capitalizes the first letter of each word and trims leading/trailing spaces
+    Args:
+        text (str): The input text to capitalize
+    Returns:
+        str: The capitalized text with trimmed spaces
+    """
+    if not text:
+        return ""
+    # First trim the text
+    text = text.strip()
+    # Split into words and capitalize each word
+    words = text.split()
+    capitalized_words = [word.capitalize() for word in words]
+    # Join words back together with spaces
+    return " ".join(capitalized_words)
+
+def handle_paren_text_patterns(in_parens):
+    special_case_phrase = ''
+    everything_else = in_parens
+    if in_parens.lower().startswith('to '):
+        special_case_phrase = 'to'
+        everything_else = in_parens[3:].strip()
+    if "pro tem" in everything_else.lower():
+        special_case_phrase = 'to pro tem'
+        everything_else = everything_else.replace('pro tem', '').strip()
+    elif in_parens.lower().startswith('care of'):
+        special_case_phrase = 'care of'
+        everything_else = in_parens[8:].strip()
+    elif in_parens.lower().startswith('helping'):
+        special_case_phrase = 'helping'
+        everything_else = in_parens[7:].strip()
+    elif in_parens.lower().startswith('return home'):
+        special_case_phrase = 'return home'
+        everything_else = in_parens[11:].strip()
+    elif in_parens.lower().startswith('return to '):
+        special_case_phrase = 'return to'
+        everything_else = in_parens[10:].strip()
+    elif in_parens.lower().startswith('home visit'):
+        special_case_phrase = 'home visit'
+        everything_else = in_parens[10:].strip()
+    elif in_parens.lower().startswith('visiting '):
+        special_case_phrase = 'visiting'
+        everything_else = in_parens[8:].strip()
+    elif in_parens.lower().startswith('home'):
+        special_case_phrase = 'home'
+        everything_else = in_parens[4:].strip()
+    elif in_parens.lower().startswith('field companion later'):
+        special_case_phrase = 'field companion later'
+        everything_else = in_parens[21:].strip()
+    elif in_parens.lower().startswith('companion later'):
+        special_case_phrase = 'companion later'
+        everything_else = in_parens[21:].strip()
+    elif in_parens.lower().startswith('new worker'):
+        special_case_phrase = 'new worker'
+        everything_else = in_parens[10:].strip()
+    elif in_parens.lower().startswith('adjustments'):
+        special_case_phrase = 'adjustments'
+        everything_else = in_parens[11:].strip()
+    elif 'pro tem' in in_parens.lower():
+        special_case_phrase = 'pro tem'
+        everything_else = everything_else.replace('pro tem', '').strip()
+    elif 'and overseer' in everything_else.lower():
+        special_case_phrase = 'overseer'
+        everything_else = everything_else.replace('and overseer', '').strip()
+
+    return special_case_phrase, everything_else
+
+def format_paren_text_note(special_case_phrase, in_parens, after_parens):
+    the_field = '--Not Specified--'
+    the_note = ""
+    the_after = after_parens
+    if special_case_phrase:
+        if special_case_phrase == 'pro tem':
+            the_note =  in_parens.strip() + ' pro tem'
+        elif special_case_phrase == 'to pro tem':
+            the_note = 'To ' + in_parens.strip() + ' pro tem'
+        else:
+            the_note = upper_words(special_case_phrase) 
+            if in_parens.strip():
+                the_note += ' ' + in_parens.strip()
+    else:
+        if "West Africa" in in_parens or "Bolivia" in in_parens or "Peru" in in_parens or "Mexico" in in_parens:
+            the_note = "Laboring in " + in_parens
+        elif  "Russia" in in_parens or "Ponape" in in_parens or "France" in in_parens or "Europe" in in_parens:
+            the_note = "Laboring in " + in_parens
+        elif  "Ukraine" in in_parens or "Philippines" in in_parens or 'Uruguay' in in_parens:
+            the_note = "Laboring in " + in_parens
+
+        elif "Convention" in in_parens or "Address" in in_parens or "Companion Later" in in_parens or "Other Arrangements" in in_parens or "Changing Fields" in in_parens:
+            the_note = in_parens
+        elif "Adjustments" in in_parens:
+            the_note = "Adjustments: " + in_parens
+        else:
+            the_field = in_parens
+            the_note = in_parens
+    
+    if special_case_phrase == 'overseer':
+        if "overseer" not in the_after.lower():
+            if the_after:
+                the_after += ', Overseer'
+            else:
+                the_after = 'Overseer'
+    
+    return the_field, the_note, the_after
+
 def add_to_note_list(current_note: str, addition: str) -> str:
     """Add text to a note, handling the special case of 'Workers List:'."""
     if current_note == 'Workers List':
         return f"{current_note}: {addition}"
-    return f"{current_note}, {addition}"
+    new_note = current_note
+    if current_note:
+        new_note += ', ' + addition
+    else:
+        new_note = addition
+    return new_note
+
+def get_month_or_range(text):
+    matched_month_range = None
+    matched_month_single = None
+
+    single_month_pattern = r'\b(Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|Jun(?:e)?|Jul(?:y)?|Aug(?:ust)?|Sep(?:tember)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?|Winter|Spring|Summer|Fall|Autumn)\b'
+    range_month_pattern = r'\b(Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|Jun(?:e)?|Jul(?:y)?|Aug(?:ust)?|Sep(?:tember)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?|Winter|Spring|Summer|Fall|Autumn)\s*-\s*(Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|Jun(?:e)?|Jul(?:y)?|Aug(?:ust)?|Sep(?:tember)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?|Winter|Spring|Summer|Fall|Autumn)\b'
+
+    range_month_match = re.match(range_month_pattern, text, flags=re.IGNORECASE)
+    if range_month_match:
+        matched_month_range = range_month_match.group(0).strip()
+    else:
+        single_month_match = re.match(single_month_pattern, text, flags=re.IGNORECASE)
+        if single_month_match:
+            matched_month_single = single_month_match.group(0).strip()
+
+    if matched_month_range:
+        return matched_month_range
+    
+    return matched_month_single
 
 def handle_workers_list(line: str, countries: Dict) -> Optional[Dict]:
     """Handle workers list patterns."""
@@ -673,12 +953,82 @@ def handle_workers_list(line: str, countries: Dict) -> Optional[Dict]:
     if "N.W." in line:
         line = line.replace("N.W.", "Northwest")
 
+    if "NWOntario." in line:
+        line = line.replace("NWOntario.", "Northwest Ontario")
+
+    if "Canada Workers List (Newfoundland and Labrador) East" in line:
+        line = line.replace("Canada Workers List (Newfoundland and Labrador) East", "Canada Workers List Newfoundland and Labrador (East)")
+    
+    if "OHio" in line:
+        line = line.replace("OHio", "Ohio")
+
+    if "Mid Island Field" in line:
+        line = line.replace("Mid Island Field", "Mid Island")
+
+    if "Assinibboia" in line:
+        line = line.replace("Assinibboia", "Assiniboia")
+
+    if "Barhead" in line:
+        line = line.replace("Barhead", "Barrhead")
+
+    if "Freeedom" in line:
+        line = line.replace("Freeedom", "Freedom")
+
+    if "North Falls Freedom" in line:
+        line = line.replace("North Falls Freedom", "North Falls, Freedom")
+
+    if "Charesholm" in line:
+        line = line.replace("Charesholm", "Claresholm")
+
+    if "PIncher" in line:
+        line = line.replace("PIncher", "Pincher")
+
+    if "Beverdam" in line:
+        line = line.replace("Beverdam", "Beaver Dam")
+
+    if "Monomonie" in line:
+        line = line.replace("Monomonie", "Menomonie")
+
+    if "Cookville" in line:
+        line = line.replace("Cookville", "Cookeville")
+
+    if "New Port Richley" in line:
+        line = line.replace("New Port Richley", "New Port Richey")
+
+    if "Pentiction" in line or "Pentcton" in line:
+        line = line.replace("Pentiction", "Penticton")
+        line = line.replace("Pentcton", "Penticton")
+
+    if "…" in line:
+        line = line.replace("…", "")
+
+    if "Renfew" in line:
+        line = line.replace("Renfew", "Renfrew")
+
+    if "Surray" in line:
+        line = line.replace("Surray", "Surrey")
+
+    if "Mcmurray" in line:
+        line = line.replace("Mcmurray", "McMurray")
+    
+    if "Mccleary" in line:
+        line = line.replace("Mccleary", "McCleary")
+
+    if "S.Africa Workers List" in line:
+        line = line.replace("S.Africa Workers List", "South Africa Workers List")
+
+    # Replace SK with Saskatchewan using regex
+    line = re.sub(r'\bSK\b', 'Saskatchewan', line)
+
     # Handle Winter/Spring pattern with asterisks
     if "*Winter/Spring" in line and "*Winter/Spring*" not in line:
         line = line.replace("*Winter/Spring", "*Winter/Spring*")
 
     if "Manitoba and Northwest Ontario" in line:
         line = line.replace("Manitoba and Northwest Ontario", "Manitoba/Northwest Ontario")
+
+    if "Argentina/Paraguay/Uruguay, Rio Grande Do Sul" in line:
+        line = line.replace("Argentina/Paraguay/Uruguay, Rio Grande Do Sul", "Argentina/Paraguay/Uruguay/Brazil Rio Grande do Sul")
 
     # Special case for Canada Workers List followed by a province
     if line.startswith("Canada Workers List"):
@@ -692,7 +1042,10 @@ def handle_workers_list(line: str, countries: Dict) -> Optional[Dict]:
         'country': None,
         'state': None,
         'location': None,
-        'note': 'Workers List'
+        'note': 'Workers List',
+        'month': None,
+        'start_date': None,
+        'end_date': None
     }
     
     # Find the position of "Workers List" and split the line
@@ -709,38 +1062,67 @@ def handle_workers_list(line: str, countries: Dict) -> Optional[Dict]:
     print_debug(f"BOB WL 1.1 - text_after: {text_after}")
     # Remove month names and their variations first
 
-    single_month_pattern = r'\b(Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|Jun(?:e)?|Jul(?:y)?|Aug(?:ust)?|Sep(?:tember)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?)\b'
-    range_month_pattern = r'\b(Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|Jun(?:e)?|Jul(?:y)?|Aug(?:ust)?|Sep(?:tember)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?)\s*-\s*(Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|Jun(?:e)?|Jul(?:y)?|Aug(?:ust)?|Sep(?:tember)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?)\b'
-
-    range_month_match = re.match(range_month_pattern, text_before, flags=re.IGNORECASE)
-    if range_month_match:
-        matched_month_range = range_month_match.group(0).strip()
-        print_debug(f"BOB WL 1.2 - month_match: {matched_month_range}")
-        text_before = re.sub(range_month_pattern, '', text_before, flags=re.IGNORECASE).strip()
-        result['note'] = add_to_note_list(result['note'], f"{matched_month_range} List")
-    else:
-        single_month_match = re.match(single_month_pattern, text_before, flags=re.IGNORECASE)
-        if single_month_match:
-            matched_month_single = single_month_match.group(0).strip()
-            print_debug(f"BOB WL 1.3 - month_match: {matched_month_single}")
-            text_before = re.sub(single_month_pattern, '', text_before, flags=re.IGNORECASE).strip()
-            result['note'] = add_to_note_list(result['note'], f"{matched_month_single} List")
+    month_or_range = get_month_or_range(text_before)
+    if month_or_range:
+        print_debug(f"BOB WL 1.2 - month_match: {month_or_range}")
+        text_before = text_before.replace(month_or_range, '')
+        result['note'] = add_to_note_list(result['note'], f"{month_or_range} List")
+        result['month'] = month_or_range
 
     print_debug(f"BOB WL 2.0 - text_before: {text_before}")
     print_debug(f"BOB WL 2.1 - result['note']: {result['note']}")
     print_debug(f"BOB WL 2.2 - text_after: {text_after}")
 
+    # remove any spaces or commas from the beginning of the text_before
+    text_after = re.sub(r'^[\s,]+', '', text_after)
+    
+
+    print_debug(f"BOB WL 2.21 - text_after: {text_after}")
+
+    the_location = None
+    note_from_parens = ''
+    # Look for text in parentheses in the text after Workers List
     # Look for text in parentheses in the text after Workers List
     paren_match = re.search(r'\((.*?)\)', text_after)
     if paren_match:
-        note_text = paren_match.group(1).strip()
-        # If note starts with "to ", capitalize it as "To "
-        if note_text.lower().startswith('to '):
-            note_text = 'To ' + note_text[3:]
-        # Append to existing note
-        result['note'] = add_to_note_list(result['note'], note_text)
-        # Remove the parentheses and their contents from the line
+        # From text_after, remove the paren_matching text
+        straggler = re.sub(r'\(.*?\)', '', text_after).strip()
+        print_debug(f"BOB WL 2.211 - straggler: {straggler}")
+
+        paren_text = paren_match.group(1).strip()
+
+        if 'Interlake MB' in paren_text:
+            paren_text = paren_text.replace('Interlake MB', 'Interlake')
+
+        special_case_phrase, paren_text = handle_paren_text_patterns(paren_text)
+        the_location, note_from_parens, straggler = format_paren_text_note(special_case_phrase, paren_text, straggler)
+        if the_location and the_location != '--Not Specified--':
+            the_location = the_location.replace("/", ", ")  # in the location, substitue / with , space as that is how they are done consistently in countries
+            print_debug(f"BOB WL 2.2111 - the_location: {the_location}")
+            loc_result = get_state_country(the_location, countries)
+            print_debug(f"\nBOB WL 2.212 - country: {loc_result['country']} state: {loc_result['state']} location: {loc_result['location']}")
+            if loc_result['location'] and loc_result['line'] == '':
+                result['location'] = loc_result['location']
+            else:
+
+                text_after = paren_text.replace(the_location, '')
+                text_after += (', ' + straggler) if straggler and '*' not in straggler else (' ' + straggler) if straggler else ''
+        else:
+            result['location'] = the_location
+            if '--Not Specified--' in the_location and not result['state']:
+                result['state'] = '--No State--'
+
+        if note_from_parens:
+            result['note'] = add_to_note_list(result['note'], note_from_parens)
+
+        # Remove () if that's all that remains in text_after
         text_after = re.sub(r'\(.*?\)', '', text_after).strip()
+        print_debug(f"BOB WL 2.213 - special_case_phrase: {special_case_phrase}   | paren_text: {paren_text}")
+        print_debug(f"BOB WL 2.214 - the_location: {the_location}   | note_from_parens: {note_from_parens}   | straggler: {straggler}")
+        print_debug(f"BOB WL 2.215 - country: {result['country']}   | state: {result['state']}   | location: {result['location']}  | note: {result['note']}")
+        print_debug(f"BOB WL 2.216 - text_after after removing parentheses: {text_after}")
+        #text_after += (' - ' + straggler) if straggler else ''
+
 
     print_debug(f"BOB WL 3.0 - text_after: {text_after}")
     print_debug(f"BOB WL 3.1 - result['note']: {result['note']}")
@@ -753,22 +1135,42 @@ def handle_workers_list(line: str, countries: Dict) -> Optional[Dict]:
     
     # Get the text before any asterisks
     text_before_asterisks = text_after[:asterisk_pos].strip()
+
+    print_debug(f"BOB WL 3.11 - text_before_asterisks: {text_before_asterisks}")
     
     # Look for "with" patterns at the start
-    with_match = re.match(r'^(?:with|With|w/|w/\s+)(.+)$', text_before_asterisks)
+    with_match = re.match(r'(.*?)(?:with|With|w/|w/\s+)(.+)$', text_before_asterisks)
     if with_match:
         # If it starts with a "with" pattern, add "With " + the rest
-        cccc_text = "With " + with_match.group(1).strip()
+
+        print_debug(f"BOB WL 3.111 - with_match groups count: {len(with_match.groups())}")
+        before, after = with_match.groups()
+        before_stripped = before.strip()
+        if before_stripped.startswith(','):
+            before_stripped = before_stripped[1:].strip()
+        print_debug(f"BOB WL 3.112 - before_stripped: |{before_stripped}|")
+        cccc_text = f"{before_stripped}{',' if before_stripped and not before_stripped.endswith(',') else ''}With {' '.join(after.split())}"
+        print_debug(f"BOB WL 3.12 - cccc_text: {cccc_text}")
     else:
         # If no "with" pattern, use the whole text
+        if text_before_asterisks.startswith(','):
+            text_before_asterisks = text_before_asterisks[1:].strip()
         cccc_text = text_before_asterisks
+        print_debug(f"BOB WL 3.13 - cccc_text: {cccc_text}")
     
     # If we found CCCC text, add it to the note
     if cccc_text:
         # Append to existing note
         result['note'] = add_to_note_list(result['note'], cccc_text)
+        print_debug(f"BOB WL 3.14 - result['note']: {result['note']}  |  asterisk_pos: {asterisk_pos}")
+        # Check to see if there's a month range in cccc_text
+        month_or_range = get_month_or_range(cccc_text)
+        if month_or_range:
+            result['month'] = month_or_range
+
         # Remove the CCCC text from the line
         text_after = text_after[asterisk_pos:].strip()
+        print_debug(f"BOB WL 3.15 - text_after: {text_after}")
 
     print_debug(f"BOB WL 4.0 - text_after: {text_after}")
     print_debug(f"BOB WL 4.1 - result['note']: {result['note']}")
@@ -779,6 +1181,16 @@ def handle_workers_list(line: str, countries: Dict) -> Optional[Dict]:
         asterisk_text = asterisk_match.group(1).strip()
         # Append to existing note
         result['note'] = add_to_note_list(result['note'], asterisk_text)
+        month_or_range = get_month_or_range(asterisk_text)
+        if month_or_range:
+            if '/' in asterisk_text:
+                asterisk_text = asterisk_text.replace('/', '-')
+                month_or_range = get_month_or_range(asterisk_text)
+                if month_or_range:
+                    result['month'] = month_or_range
+            else:
+                result['month'] = month_or_range
+
         # Remove the asterisks and their contents from the line
         text_after = re.sub(r'\*.*?\*', '', text_after).strip()
 
@@ -799,14 +1211,13 @@ def handle_workers_list(line: str, countries: Dict) -> Optional[Dict]:
 
     if text_after:
         # Look for date ranges like Jan-Jun
-        date_range_match = re.search(r'\b(?:Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|Jun(?:e)?|Jul(?:y)?|Aug(?:ust)?|Sep(?:tember)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?)\s*[-–]\s*(?:Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|Jun(?:e)?|Jul(?:y)?|Aug(?:ust)?|Sep(?:tember)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?)\b', text_after)
-        date_range_match2 = re.search(r'(?:\((?:Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|Jun(?:e)?|Jul(?:y)?|Aug(?:ust)?|Sep(?:tember)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?|Winter|Spring|Autumn|Summer|Winter\/Spring|Spring\/Winter|[A-Z][a-z]{2}-[A-Z][a-z]{2}|[A-Z][a-z]{2}\/[A-Z][a-z]{2})\))|(?:\*+(?:Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|Jun(?:e)?|Jul(?:y)?|Aug(?:ust)?|Sep(?:tember)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?|Winter|Spring|Autumn|Summer|Winter\/Spring|Spring\/Winter)\*+)|(?:\*+(?:[A-Z][a-z]{2}-[A-Z][a-z]{2}|[A-Z][a-z]{2}\/[A-Z][a-z]{2})\*+)', text_after)
-        if date_range_match:
-            date_range = date_range_match.group(0)
+        month_or_range = get_month_or_range(text_after)
+        if month_or_range:
             # Append to existing note
-            result['note'] = add_to_note_list(result['note'], date_range)
+            result['note'] = add_to_note_list(result['note'], month_or_range)
+            result['month'] = month_or_range
             # Remove the date range from the text
-            text_after = re.sub(r'(?:\((?:Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|Jun(?:e)?|Jul(?:y)?|Aug(?:ust)?|Sep(?:tember)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?|Winter|Spring|Autumn|Summer|Winter\/Spring|Spring\/Winter|[A-Z][a-z]{2}-[A-Z][a-z]{2}|[A-Z][a-z]{2}\/[A-Z][a-z]{2})\))|(?:\*+(?:Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|Jun(?:e)?|Jul(?:y)?|Aug(?:ust)?|Sep(?:tember)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?|Winter|Spring|Autumn|Summer|Winter\/Spring|Spring\/Winter)\*+)|(?:\*+(?:[A-Z][a-z]{2}-[A-Z][a-z]{2}|[A-Z][a-z]{2}\/[A-Z][a-z]{2})\*+)', '', text_after).strip()
+            text_after = text_after.replace(month_or_range, '')
 
     print_debug(f"BOB WL 7.0 - text_after: {text_after}")
     print_debug(f"BOB WL 7.1 - result['note']: {result['note']}")
@@ -822,6 +1233,45 @@ def handle_workers_list(line: str, countries: Dict) -> Optional[Dict]:
         result['country'] = state_country_info['country']
     if state_country_info['state']:
         result['state'] = state_country_info['state']
+    if state_country_info['location']:
+        result['location'] = state_country_info['location']
+
+    if not the_location and cccc_text:
+        the_location = cccc_text
+        
+    if not result['location'] and the_location:
+        print_debug(f"\nBOB WL 8.01 - text_before: {text_before + ' | ' + the_location}")
+        state_country_info = get_state_country(text_before + ' ' + the_location, countries)
+        print_debug(f"BOB WL 8.001 - country: {state_country_info['country']}")
+        print_debug(f"BOB WL 8.002 - state: {state_country_info['state']}")
+        print_debug(f"BOB WL 8.003 - location: {state_country_info['location']}")
+        print_debug(f"BOB WL 8.004 - line: {state_country_info['line']}")
+        if state_country_info['state']:
+            result['state'] = state_country_info['state']
+        if state_country_info['location']:
+            result['location'] = state_country_info['location']
+        else:
+            # check to see if the_location is a location in a country in state_country_info['country'] and in state_country_info['states'] of that same country
+            for country_name, country in countries.items():
+                if country_name == state_country_info['country'] and 'cities' in country:
+#BOB3
+                    print_debug(f"BOB WL 8.000001 - the_location: {the_location} in country['cities'].  {country_name}")
+                    # Normalize the apostrophe in the_location
+                    if the_location in country['cities']:
+                        states = country['cities'][the_location]
+                        print_debug(f"BOB WL 8.000002 - states: {states}")
+                        # for city_name, city_value in country['cities'].items():
+                        #     print_debug(f"BOB WL 8.0000021 - City: {city_name} : {city_value[0]}")
+                        print_debug(f"BOB WL 8.000002 - Yep it's in there")
+                        # Print all cities and their values
+                        if result['state'] and result['state'] in states:
+                            print_debug(f"BOB WL 8.000003 - the_location: {the_location} in country['cities'].  {country_name}")
+                            result['location'] = the_location
+                            break
+
+
+
+
     text_before = state_country_info['line']
 
     print_debug(f"BOB WL 8.1 - result['country']: {result['country']}")
@@ -877,7 +1327,9 @@ def handle_started_work(line: str, countries: Dict) -> Optional[Dict]:
         'state': '',
         'location': '',
         'note': 'Started in the work',
-        'month': None
+        'month': None,
+        'start_date': None,
+        'end_date': None
     }
 
     # Remove the "Started in the work" text and any surrounding characters
@@ -887,6 +1339,23 @@ def handle_started_work(line: str, countries: Dict) -> Optional[Dict]:
     date_match = re.match(r'^(Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|Jun(?:e)?|Jul(?:y)?|Aug(?:ust)?|Sep(?:tember)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?)\s*\d*', line, flags=re.IGNORECASE)
     if date_match:
         result['month'] = date_match.group(1)
+        for i in range(date_match.lastindex + 1):  # Iterate through all captured groups
+            print_debug(f"BOB SW 0.1 - Group {i}: {date_match.group(i)}  |  date_match.groups(): {date_match.groups()}")
+        date_pieces = date_match.group(0).split()
+        if len(date_pieces) >= 1:
+            month = MONTH_MAP.get(date_pieces[0], date_pieces[0])
+            if len(date_pieces) >= 2:
+                day_pieces = date_pieces[1].split('-')
+                # Get start and possible end date
+                if len(day_pieces) >= 1:
+                    day = day_pieces[0].zfill(2)  # Pad day with leading zero if needed
+                    result['start_date'] = f"{month}/{day}"
+                    if len(day_pieces) >= 2:
+                        end_day = day_pieces[1].zfill(2)  # Pad day with leading zero if needed
+                        result['end_date'] = f"{month}/{end_day}"
+        print_debug(f"BOB SW 0.2 - result['start_date']: {result['start_date']}  |  result['end_date']: {result['end_date']}")
+
+        #result['start_date'] = len(date_match.groups())
         line = line[date_match.end():].strip()
 
     state_country_info = get_state_country(line, countries)
@@ -960,13 +1429,6 @@ def handle_photo(line: str, countries: Dict) -> Optional[Dict]:
     photo_type, line = get_photo_type(line)
     if photo_type:
         result['note'] = photo_type
-
-    print_debug(f"JOE note: {result['note']}")
-    
-    # if line:
-    #     result['note'] = result['note'] + ' ' + line
-
-    print_debug(f"GUY note: {result['note']}")
 
     # If no state/province found, set to Unknown location in United States
     if not result['state']:
@@ -1073,7 +1535,7 @@ def handle_guestbook(line: str, countries: Dict) -> Optional[Dict]:
     result = {
         'type': 'Guestbook',
         'location': None,
-        'note': None,
+        'note': 'Guestbook',
         'state': None,
         'country': None,
         'month': None
@@ -1096,7 +1558,9 @@ def handle_guestbook(line: str, countries: Dict) -> Optional[Dict]:
         # Remove the month from the line and store the rest in note
         line = line[month_match.end():].strip()
     
-    result['note'] = line
+    if line:
+        result['note'] = result['note'] + ': ' + line
+
     return result
    
 def handle_location_only(line: str, countries: Dict) -> Optional[Dict]:
@@ -1107,10 +1571,13 @@ def handle_location_only(line: str, countries: Dict) -> Optional[Dict]:
         'country': None,
         'state': None,
         'location': None,
-        'note': None
+        'note': None,
+        'month': None,
+        'start_date': None,
+        'end_date': None
     }
 
-    print_debug(f"BOB LOC 1.0 - line: {line}")
+    print_debug(f"\n\nBOB LOC 1.0 - line: {line}")
 
     state_country_info = get_state_country(line, countries)
     if state_country_info['country']:
@@ -1121,12 +1588,103 @@ def handle_location_only(line: str, countries: Dict) -> Optional[Dict]:
         result['location'] = state_country_info['location']
     line = state_country_info['line']
 
-    print_debug(f"BOB LOC 1.1 - line: {line}")
-    # Replace any occurrence of w/ or lowercase with with With
-    line = re.sub(r'\b(with|w/)\b(\s*)(?=[A-Z])', 'With ', line)
-    result['note'] = line
+    protem_case = ''
+
+    if line:
+        paren_match = re.search(r'\((.*?)\)', line)
+        if paren_match:
+            paren_text = paren_match.group(1).strip()
+
+            parts = re.split(r'\s*/\s*', paren_text)
+            # Join with comma and space
+            paren_text_fixed = ', '.join(parts)
+
+#BOB2
+            print_debug(f"BOB LOC 1.1 - paren_text_fixed: {paren_text_fixed}")
+            print_debug(f"BOB LOC 1.101- location: {result['location']}")
+            if paren_text_fixed and (result['location'] == None or result['location'] == ''):
+                print_debug(f"BOB LOC 1.10 - potential_city: |{paren_text_fixed}|")
+                # First check if the full paren_text_fixed string exists in the cities dictionary
+                for country_name, country in countries.items():
+                    if country_name == result['country'] and 'cities' in country:
+                        if paren_text_fixed in country['cities']:
+                            print_debug(f"BOB LOC 1.101 - {paren_text_fixed} in country['cities'] - {country['cities'][paren_text_fixed]}  state: {result['state']}")
+                            if result['state'] and result['state'] in country['cities'][paren_text_fixed]:
+                                print_debug(f"BOB LOC 1.102 - {paren_text_fixed} in country['cities'] and result['state'] matches")
+                                result['location'] = paren_text_fixed
+                                line = line.replace(paren_text, '')
+                                line = re.sub(r'\(.*?\)', '', line).strip()
+                                paren_text = ''
+                                paren_text_fixed = ''
+                                break
+
+            the_note = ''
+            special_case = ''
+            absent_case = ''
+            if paren_text_fixed:
+                print_debug(f"BOB LOC 1.11 - paren_text_fixed: {paren_text_fixed}")
+                
+                if paren_text_fixed.lower().startswith('Return To '):
+                    special_case = "return to"
+                    the_note = 'Return To ' + paren_text_fixed[10:].strip()
+                if paren_text_fixed.lower().startswith('to '):
+                    special_case = "to"
+                    the_note = 'To ' + paren_text_fixed[3:].strip()
+                if paren_text_fixed.lower().endswith('pro tem'):
+                    protem_case = "pro tem"
+                if 'Absent' in paren_text_fixed:
+                    absent_case = "absent"
+                    the_note = 'Absent'
+                if special_case or protem_case or absent_case:
+                    result['note'] = the_note
+                else:
+                    print_debug(f"BOB LOC 1.12 - paren_text_fixed: {paren_text_fixed}")
+                    print_debug(f"BOB LOC 1.12 - result['note']: {result['note']}")
+                    month_pattern = r'\b(?:Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|Jun(?:e)?|Jul(?:y)?|Aug(?:ust)?|Sep(?:tember)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?)\b'
+                    month_match = re.search(month_pattern, paren_text_fixed, re.IGNORECASE)
+                    if month_match:
+                        result['note'] = 'Visiting in ' + paren_text_fixed
+                    else:
+                        result['note'] = 'Visiting from ' + paren_text_fixed
+                    print_debug(f"BOB LOC 1.13 - result['note']: {result['note']}")
+                # Remove the paren_text from the line as it is determined to be a location
+                line = line.replace(paren_text, '')
+                # Strip out the () from the line
+                line = re.sub(r'\(.*?\)', '', line).strip()
+                paren_text = ''
+                paren_text_fixed = ''
+
+    if line:
+        # Check for date pattern (e.g., "March 8")
+        date_match = re.match(r'^(Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|Jun(?:e)?|Jul(?:y)?|Aug(?:ust)?|Sep(?:tember)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?)\s*\d*', line, flags=re.IGNORECASE)
+        if date_match:
+            result['month'] = date_match.group(1)
+            for i in range(date_match.lastindex + 1):  # Iterate through all captured groups
+                print_debug(f"BOB LOC DATE 1.0 - Group {i}: {date_match.group(i)}  |  date_match.groups(): {date_match.groups()}")
+            date_pieces = date_match.group(0).split()
+            if len(date_pieces) >= 1:
+                month = MONTH_MAP.get(date_pieces[0], date_pieces[0])
+                if len(date_pieces) >= 2:
+                    day_pieces = date_pieces[1].split('-')
+                    # Get start and possible end date
+                    if len(day_pieces) >= 1:
+                        day = day_pieces[0].zfill(2)  # Pad day with leading zero if needed
+                        result['start_date'] = f"{month}/{day}"
+                        if len(day_pieces) >= 2:
+                            end_day = day_pieces[1].zfill(2)  # Pad day with leading zero if needed
+                            result['end_date'] = f"{month}/{end_day}"
+            print_debug(f"BOB LOC DATE 2.0 - result['start_date']: {result['start_date']}  |  result['end_date']: {result['end_date']}")
+
 
     print_debug(f"BOB LOC 1.2 - line: {line}")
+    # Replace any occurrence of w/ or lowercase with with With
+    if line:
+        line = re.sub(r'\b(with|w/)\b(\s*)(?=[A-Z])', 'With ', line)
+        result['note'] = add_to_note_list(result['note'] if result['note'] else '', line)
+        if protem_case:
+            result['note'] = add_to_note_list(result['note'], 'pro tem')
+
+    print_debug(f"BOB LOC 1.3 - line: {line}")
     print_debug(f"BOB LOC 2.0 - country: {result['country']}")
     print_debug(f"BOB LOC 2.1 - state: {result['state']}")
     print_debug(f"BOB LOC 2.2 - location: {result['location']}")
@@ -1137,7 +1695,7 @@ def handle_location_only(line: str, countries: Dict) -> Optional[Dict]:
     
     return None
 
-def process_text_patterns(line: str) -> Dict:
+def process_text_patterns(line: str, original_text: str) -> Dict:
     """Process text patterns and extract relevant information."""
     result = {
         'type': None,
@@ -1145,16 +1703,19 @@ def process_text_patterns(line: str) -> Dict:
         'state': None,
         'location': None,
         'note': None,
-        'original_text': line,
+        'original_text': original_text,
+        'fixed': line,
         'start_date': None,
         'end_date': None,
     }
 
     # Clean up the line by removing "Visited" and "for"
-    line = re.sub(r'^Visited\s+', '', line, flags=re.IGNORECASE)
+    #line = re.sub(r'^Visited\s+', '', line, flags=re.IGNORECASE)
     line = re.sub(r'\s+for\s+', ' ', line, flags=re.IGNORECASE)
     # Remove trailing commas after Meeting or Convention
     line = re.sub(r'((?:Meeting|Convention))\s*,\s*$', r'\1', line, flags=re.IGNORECASE)
+
+    result['fixed'] = line
 
     # Try each handler in sequence
     handlers = [
@@ -1215,7 +1776,7 @@ def text_fixes(line: str) -> str:
         line = line.replace('Insurgentes Baja', 'Insurgentes')
 
     if 'Almonte New York' in line:
-        line = line.replace('Almonte', 'Altamonte')
+        line = line.replace('Almonte', 'Altamont')
 
     if 'Dagar Montana' in line:
         line = line.replace('Dagar', 'Dagmar')
@@ -1261,7 +1822,12 @@ def text_fixes(line: str) -> str:
 
     if 'Sart-Dames-Avelines,' in line:
         line = line.replace('Sart-Dames-Avelines,', 'Sart-Dames-Avelines')
+
+    if 'Yorkton/Fort' in line:
+        line = line.replace('Yorkton/Fort', 'Yorkton, Fort')
        
+    if "’" in line:
+        line = line.replace("’", "'")
         
 
     # Fix Glen Valley variations
@@ -1287,8 +1853,7 @@ def process_file(filepath: str, validate_mode: bool = False, header_output: bool
                 i += 1
                 continue
 
-            line = text_fixes(line)
-                    
+                   
             # Handle multi-line entries with split parentheses
             if '(' in line and ')' not in line and i + 1 < len(lines):
                 next_line = lines[i + 1].strip()
@@ -1311,7 +1876,11 @@ def process_file(filepath: str, validate_mode: bool = False, header_output: bool
                     text_after_year = re.sub(r'^\d{4}\s*', '', text_after_year)
                     # Remove any duplicate year that appears after a hyphen
                     text_after_year = re.sub(r'-\s*\d{4}\s*', '', text_after_year)
-                    pattern_result = process_text_patterns(text_after_year)
+
+                    original_text = text_after_year
+                    text_after_year = text_fixes(text_after_year)
+
+                    pattern_result = process_text_patterns(text_after_year, original_text)
                     if pattern_result['type']:
                         # Output header if not already done
                         if not header_output:
@@ -1327,7 +1896,8 @@ def process_file(filepath: str, validate_mode: bool = False, header_output: bool
                                 'Start Date',
                                 'End Date',
                                 'Month',
-                                'Original Text'
+                                'Original Text',
+                                'Fixed Text'
                             ]
                             print('|'.join(header_parts))
                             header_output = True
@@ -1349,7 +1919,8 @@ def process_file(filepath: str, validate_mode: bool = False, header_output: bool
                             pattern_result.get('start_date') or '',
                             pattern_result.get('end_date') or '',
                             pattern_result.get('month') or '',
-                            pattern_result.get('original_text') or ''
+                            pattern_result.get('original_text') or '',
+                            pattern_result.get('fixed') or ''
                         ]
                         separator = '|'
                         print(separator.join(output_parts))
@@ -1411,4 +1982,4 @@ def main():
                 header_output = True  # Set to True after first file is processed
 
 if __name__ == '__main__':
-    main() 
+    main()
