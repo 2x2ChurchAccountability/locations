@@ -16,23 +16,21 @@ countries = {
    'Australia/Papua New Guinea': {
       'name': 'Australia/Papua New Guinea',
       'states': [
-        '--No State--',
         'Tasmania',
       ],
       'cities': {
-        'Victoria, Tasmania, Balranald and Swan Hill': ['--No State--'],
-        'Tasmania, Northwest Coast': ['--No State--'],
-        'Victoria, Warrnanbool, Portland': ['--No State--'],
-        'Tasmania': ['--No State--'],
+        'Victoria, Tasmania, Balranald and Swan Hill': ['Australia/Papua New Guinea'],
+        'Tasmania, Northwest Coast': ['Australia/Papua New Guinea'],
+        'Victoria, Warrnanbool, Portland': ['Australia/Papua New Guinea'],
+        'Tasmania': ['Australia/Papua New Guinea'],
       },
    },
-   'Brazil and Uruguay': {
-      'name': 'Brazil and Uruguay',
+   'Brazil/Uruguay': {
+      'name': 'Brazil/Uruguay',
       'states': [
-        '--No State--',
       ],
       'cities': {
-        'POA, Cachoeirinha, Gravati, Igrejinha': ['--No State--'],
+        'POA, Cachoeirinha, Gravati, Igrejinha': ['Brazil/Uruguay'],
       },
    },
    'Argentina/Paraguay': {
@@ -55,10 +53,9 @@ countries = {
    'Dominican Republic': {
       'name': 'Dominican Republic',
       'states': [
-        '--No State--',
       ],
       'cities': {
-        'Bonao': ['--No State--'],
+        'Bonao': ['Dominican Republic'],
       },
       'variations': [
         'Republica Dominicana'
@@ -74,61 +71,58 @@ countries = {
    'New Zealand': {
       'name': 'New Zealand',
       'states': [
-        '--No State--',
       ],
       'cities': {
-        'Masterton 1': ['--No State--'],
-        'Pukekone 2': ['--No State--'],
-        'Winchester 1': ['--No State--'],
-        'Masterton': ['--No State--'],
-        'Ngaere': ['--No State--'],
-        'Pukekohe': ['--No State--'],
+        'Masterton 1': ['New Zealand'],
+        'Pukekone 2': ['New Zealand'],
+        'Winchester 1': ['New Zealand'],
+        'Masterton': ['New Zealand'],
+        'Ngaere': ['New Zealand'],
+        'Pukekohe': ['New Zealand'],
       },
    },
    'South Africa': {
       'name': 'South Africa',
       'states': [
-        '--No State--',
         'Johannesburg',
         'Zimbabwe',
         'Zambia, Zimbabwe'
       ],
       'cities': {
-        'Irene, West End, Pretoria North': ['--No State--'],
-        'Kempton Park, Alberton and Germinston': ['--No State--'],
-        'Bethal, Ermelo, White River': ['--No State--'],
-        'Cape Town Northern Suburbs': ['--No State--'],
-        'Cape Town and District': ['--No State--'],
-        'East London and District': ['--No State--'],
-        'Gokwe to Bulawayo Francistown': ['--No State--'],
-        'Port Elizabeth and District': ['--No State--'],
-        'Pretoria North and Central': ['--No State--'],
-        'Bloemfontein and District': ['--No State--'],
-        'Bloemfontein to Tweespruit': ['--No State--'],
-        'Cape Town Dist': ['--No State--'],
-        'East London District': ['--No State--'],
-        'Kimberly, Koffiefontein, District': ['--No State--'],
-        'Natal North Coast': ['--No State--'],
-        'Rand and District': ['--No State--'],
+        'Irene, West End, Pretoria North': ['South Africa'],
+        'Kempton Park, Alberton and Germinston': ['South Africa'],
+        'Bethal, Ermelo, White River': ['South Africa'],
+        'Cape Town Northern Suburbs': ['South Africa'],
+        'Cape Town and District': ['South Africa'],
+        'East London and District': ['South Africa'],
+        'Gokwe to Bulawayo Francistown': ['South Africa'],
+        'Port Elizabeth and District': ['South Africa'],
+        'Pretoria North and Central': ['South Africa'],
+        'Bloemfontein and District': ['South Africa'],
+        'Bloemfontein to Tweespruit': ['South Africa'],
+        'Cape Town Dist': ['South Africa'],
+        'East London District': ['South Africa'],
+        'Kimberly, Koffiefontein, District': ['South Africa'],
+        'Natal North Coast': ['South Africa'],
+        'Rand and District': ['South Africa'],
         'Zimbabwe including Francistown': ['Zimbabwe'],
-        '--Not Specified--': ['--No State--'],
-        'Cape 1': ['--No State--'],
-        'Cape 2': ['--No State--'],
-        'Cape Town': ['--No State--'],
-        'Limpopo Province': ['--No State--'],
-        'Northern Transvaal': ['--No State--'],
-        'Port Elizabeth': ['--No State--'],
-        'Pretoria 1': ['--No State--'],
-        'Pretoria 2': ['--No State--'],
-        'Pretoria Central': ['--No State--'],
-        'Rand Central': ['--No State--'],
-        'South America': ['--No State--'],
+        'Cape 1': ['South Africa'],
+        'Cape 2': ['South Africa'],
+        'Cape Town': ['South Africa'],
+        'Limpopo Province': ['South Africa'],
+        'Northern Transvaal': ['South Africa'],
+        'Port Elizabeth': ['South Africa'],
+        'Pretoria 1': ['South Africa'],
+        'Pretoria 2': ['South Africa'],
+        'Pretoria Central': ['South Africa'],
+        'Rand Central': ['South Africa'],
+        'South America': ['South Africa'],
         'Zambia, Zimbabwe': ['Zambia, Zimbabwe'],
-        'Bloemfontein': ['--No State--'],
-        'Durban': ['--No State--'],
-        'Gbetagbo': ['--No State--'],
-        'Johannesburg': ['--No State--'],
-        'Pretoria': ['--No State--'],
+        'Bloemfontein': ['South Africa'],
+        'Durban': ['South Africa'],
+        'Gbetagbo': ['South Africa'],
+        'Johannesburg': ['South Africa'],
+        'Pretoria': ['South Africa'],
         'Zimbabwe': ['Zimbabwe'],
       },
       'variations': [
@@ -160,13 +154,13 @@ countries = {
    'United Kingdom': {
       'name': 'United Kingdom',
       'states': [
-        '--No State--',
       ],
       'cities': {
-        'Dunbarton 1': ['--No State--'],
-        'Gloucester 2': ['--No State--'],
-        'Yorkley 2': ['--No State--'],
-        'Lancashire': ['--No State--'],
+        'Lancashire, Yorkshire': ['United Kingdom'],
+        'Dunbarton 1': ['United Kingdom'],
+        'Gloucester 2': ['United Kingdom'],
+        'Yorkley 2': ['United Kingdom'],
+        'Lancashire': ['United Kingdom'],
       },
       'variations': [
         'UK'
@@ -178,7 +172,7 @@ countries = {
         'PA/NY/New England/NJ/OH',
         'Delaware/Maryland/Virginia/South Carolina', 'Delaware/Virginia/Maryland/North Carolina', 'PA/NY/New England/NJ',
         'New York/New England', 'Pennsylvania/New Jersey/Delaware', 'Pennsylvania/Ohio/West Virginia',
-        'Montana and Wyoming', 'Montana/North Wyoming', 'Ohio/West Virginia', 'Oregon/South Idaho', 'Oregon/Southern Idaho', 'Virginia/Maryland/Delaware',
+        'Montana/North Wyoming', 'Ohio/West Virginia', 'Oregon/South Idaho', 'Oregon/Southern Idaho', 'Virginia/Maryland/Delaware',
         'Alabama/Mississippi', 'Colorado/Utah', 'Indiana/Illinois', 'Kansas/Nebraska', 'Kentucky/Tennessee', 'Maryland/Delaware', 'Montana/Wyoming',
         'New Hampshire', 'New Jersey', 'New Mexico', 'New York', 'North Carolina', 'North Dakota', 'North Idaho',
         'Rhode Island', 'South Carolina', 'South Dakota', 'Tennessee/Kentucky', 'Virginia/Maryland', 'West Virginia',
@@ -245,7 +239,7 @@ countries = {
         'Maryland and Delaware': ['Maryland'],
         'May Mountain Ranch': ['California'],
         'Mesa, Apache Junction': ['Arizona'],
-        'Missoula, Bitterroot Valley': ['Montana and Wyoming'],
+        'Missoula, Bitterroot Valley': ['Montana/Wyoming'],
         'Moscow, Pullman, Lewiston': ['North Idaho'],
         'Mountain Ranch 1': ['California'],
         'Mountain Ranch 2': ['California'],
@@ -261,7 +255,6 @@ countries = {
         'West Central Ohio': ['Ohio/West Virginia'],
         'Winterville, Commerce, Lawrenceville': ['Georgia'],
         'Wolf Point Area': ['Montana/Wyoming'],
-        '--Not Specified--': ['Georgia'],
         'Anchorage, Fairbanks': ['Alaska'],
         'Appleton, Seymour': ['Wisconsin'],
         'Baton Rouge': ['Louisiana'],
@@ -325,7 +318,6 @@ countries = {
         'Mt. Peak': ['Texas'],
         'Mt. Sterling': ['Illinois', 'Kentucky/Tennessee'],
         'Mt. Vernon': ['Washington'],
-        'New York': ['PA/NY/New England/NJ/OH'],
         'North Central': ['Colorado/Utah'],
         'North Denver': ['Colorado'],
         'North East': ['Colorado/Utah'],
@@ -534,6 +526,8 @@ countries = {
         'York': ['Nebraska'],
       },
       'state_variations': {
+        'Montana and Wyoming': 'Montana/Wyoming',
+        'Montana Wyoming': 'Montana/Wyoming',
         'AK': 'Alaska',
         'AL': 'Alabama',
         'AR': 'Arkansas',
@@ -617,47 +611,49 @@ countries = {
    'Argentina': {
       'name': 'Argentina',
       'states': [
-        '--No State--',
       ],
       'cities': {
-        'Rio Cuarto': ['--No State--'],
-        'San Rafael': ['--No State--'],
-        'Cipolletti': ['--No State--'],
+        'Rio Cuarto': ['Argentina'],
+        'San Rafael': ['Argentina'],
+        'Cipolletti': ['Argentina'],
       },
    },
    'Australia': {
       'name': 'Australia',
       'states': [
-        'Australian Capital Territory', 'New South Wales', 'Victoria and Tasmania',
-        '--No State--', 'Northern Territory', 'South Australia', 'Western Australia',
+        'Australian Capital Territory', 'New South Wales', 'Victoria/Tasmania',
+        'Northern Territory', 'South Australia', 'Western Australia',
         'Queensland', 'Tasmania', 'Victoria',
       ],
       'cities': {
         'Central North Victoria': ['Victoria'],
-        '--Not Specified--': ['Victoria and Tasmania'],
-        'Chelona 2': ['--No State--'],
+        'Victoria/Tasmania': ['Victoria/Tasmania'],
+        'Chelona 2': ['Australia'],
         'Geelong, Colac': ['Victoria'],
-        'Kapunda 1': ['--No State--'],
-        'Kapunda 2': ['--No State--'],
-        'Maroota 1': ['--No State--'],
-        'Maroota 2': ['--No State--'],
-        'Pilerwa #1': ['--No State--'],
-        'Pilerwa #2': ['--No State--'],
-        'Pilerwa 1': ['--No State--'],
-        'Williams 1': ['--No State--'],
-        'Williams 2': ['--No State--'],
+        'Kapunda 1': ['Australia'],
+        'Kapunda 2': ['Australia'],
+        'Maroota 1': ['Australia'],
+        'Maroota 2': ['Australia'],
+        'Pilerwa #1': ['Australia'],
+        'Pilerwa #2': ['Australia'],
+        'Pilerwa 1': ['Australia'],
+        'Williams 1': ['Australia'],
+        'Williams 2': ['Australia'],
         'Aspley': ['Queensland'],
-        'Biddeston': ['--No State--'],
+        'Biddeston': ['Australia'],
         'Colac': ['Victoria'],
         'Drouin': ['Victoria'],
-        'Glenco': ['--No State--'],
+        'Glenco': ['Australia'],
         'Mudgee': ['New South Wales'],
-        'Rochedale': ['--No State--'],
+        'Rochedale': ['Australia'],
         'Speed': ['Victoria'],
         'Thoona': ['Victoria'],
         'Watta': ['New South Wales'],
-        'Williams': ['--No State--'],
-        'Wilmington': ['--No State--'],
+        'Williams': ['Australia'],
+        'Wilmington': ['Australia'],
+      },
+      'state_variations': {
+        'Victoria and Tasmania': 'Victoria/Tasmania',
       },
       'variations': [
         'Australian'
@@ -666,10 +662,9 @@ countries = {
    'Austria': {
       'name': 'Austria',
       'states': [
-        '--No State--',
       ],
       'cities': {
-        'Vienna': ['--No State--'],
+        'Vienna': ['Austria'],
       },
    },
    'Barbados': {
@@ -682,44 +677,42 @@ countries = {
    'Belgium': {
       'name': 'Belgium',
       'states': [
-        '--No State--',
       ],
       'cities': {
-        'Lillois': ['--No State--'],
-        'Sart-Dames-Avelines': ['--No State--'],
+        'Lillois': ['Belgium'],
+        'Sart-Dames-Avelines': ['Belgium'],
       },
    },
    'Bolivia': {
       'name': 'Bolivia',
       'states': [
-        '--No State--', 'La Paz',
+        'La Paz',
       ],
       'cities': {
-        'Santa Cruz': ['--No State--'],
-        'Cochabamba': ['--No State--'],
+        'Santa Cruz': ['Bolivia'],
+        'Cochabamba': ['Bolivia'],
       },
       'special_location': 'Convention',
    },
    'Brazil': {
       'name': 'Brazil',
       'states': [
-        '--No State--',
       ],
       'cities': {
-        'Sao Jose dos Campos': ['--No State--'],
-        'Bel Horizonte': ['--No State--'],
-        'Sao Paulo': ['--No State--'],
-        'Alegrete': ['--No State--'],
-        'Gravati': ['--No State--'],
-        'Panambi': ['--No State--'],
+        'Sao Jose dos Campos': ['Brazil'],
+        'Bel Horizonte': ['Brazil'],
+        'Sao Paulo': ['Brazil'],
+        'Alegrete': ['Brazil'],
+        'Gravati': ['Brazil'],
+        'Panambi': ['Brazil'],
       },
    },
    'Canada': {
       'name': 'Canada',
       'states': [
         'Saskatchewan/Manitoba/Northwest Ontario',
-        'Manitoba/Northwest Ontario', 'Newfoundland and Labrador', 'Prince Edward Island', 'Quebec and Atlantic',
-        '--No State--', 'British Columbia', 'Manitoba/Ontario', 'New Brunswick', 'Northwest Territories', 'Nova Scotia', 'Ontario/Quebec',
+        'Manitoba/Northwest Ontario', 'Newfoundland and Labrador', 'Prince Edward Island',
+        'British Columbia', 'Manitoba/Ontario', 'New Brunswick', 'Northwest Territories', 'Nova Scotia', 'Ontario/Quebec',
         'Quebec/Atlantic', 'Saskatchewan/Manitoba',
         'Alberta', 'Atlantic', 'Calgary', 'Manitoba', 'Maritimes', 'Nunavut', 'Ontario',
         'Quebec', 'Saskatchewan', 'Yukon',
@@ -792,7 +785,6 @@ countries = {
         'Vermilion and North': ['Alberta'],
         'Vermilion, Elk Point': ['Alberta'],
         "Yorkton, Fort Qu'Appelle": ['Saskatchewan'],
-        '--Not Specified--': ['Alberta'],
         'Big River': ['Saskatchewan'],
         'Brooks, North': ['Alberta'],
         'Bruce Co.': ['Ontario/Quebec'],
@@ -818,13 +810,14 @@ countries = {
         'Grey, Bruce': ['Quebec/Atlantic'],
         'Halifax NS': ['Quebec/Atlantic'],
         'Hamilton, Brant': ['Ontario/Quebec'],
-        'Harvey Station': ['--No State--'],
+        'Harvey Station': ['Canada'],
         'Hon Mention': ['Alberta'],
         'Humber Village': ['Newfoundland and Labrador'],
         'Huron Co.': ['Ontario/Quebec'],
         'Iron Bridge': ['Ontario'],
         'Kelowna East': ['British Columbia'],
         'Kelvinton, Margo': ['Saskatchewan'],
+        'Kootenays, Brisco': ['British Columbia'],
         'Kootenays, Penticton': ['British Columbia'],
         'Lacombe, Rimbey': ['Alberta'],
         'Lambton, Essex': ['Ontario/Quebec'],
@@ -855,8 +848,8 @@ countries = {
         'Renfrew, Lanark': ['Ontario/Quebec'],
         'Salmon Arm': ['Saskatchewan'],
         'Saskatchewan, MB': ['British Columbia'],
-        'Silverdale 1': ['--No State--'],
-        'Silverdale 2': ['--No State--'],
+        'Silverdale 1': ['Canada'],
+        'Silverdale 2': ['Canada'],
         'Simcoe Co.': ['Ontario/Quebec'],
         'South Calgary': ['Alberta'],
         'South East': ['British Columbia'],
@@ -878,30 +871,29 @@ countries = {
         'Vermillion, Wainwright': ['Alberta'],
         'Weyburn, Assiniboia': ['Saskatchewan'],
         'Yorkton, Saskatchewan': ['Saskatchewan/Manitoba/Northwest Ontario'],
-        'Alberta': ['British Columbia'],
-        'Almonte': ['--No State--'],
+        'Almonte': ['Canada'],
         'Antler': ['Saskatchewan'],
         'Assiniboia': ['Saskatchewan'],
         'Aylesbury': ['Saskatchewan'],
         'Barrhead': ['Alberta'],
-        'Bowsman': ['--No State--'],
-        'Brigus': ['--No State--'],
+        'Bowsman': ['Canada'],
+        'Brigus': ['Canada'],
         'Calgary': ['Alberta'],
         'Camrose': ['Alberta'],
         'Chilliwack': ['British Columbia'],
         'Coquitlam': ['British Columbia'],
         'Didsbury': ['Alberta'],
         'Duncan': ['British Columbia'],
-        'Dunnville': ['--No State--'],
+        'Dunnville': ['Canada'],
         'East': ['Newfoundland and Labrador'],
         'Edson': ['Alberta'],
-        'Ellershouse': ['--No State--'],
-        'Emo': ['--No State--'],
-        'Freedom': ['--No State--'],
+        'Ellershouse': ['Canada'],
+        'Emo': ['Canada'],
+        'Freedom': ['Canada'],
         'Freetown': ['Prince Edward Island'],
-        'Greenshield': ['--No State--'],
+        'Greenshield': ['Canada'],
         'Guelph': ['Ontario/Quebec'],
-        'Hythe': ['--No State--'],
+        'Hythe': ['Canada'],
         'Irishtown': ['Newfoundland and Labrador'],
         'Kamloops': ['British Columbia'],
         'Kelowna': ['British Columbia'],
@@ -911,9 +903,9 @@ countries = {
         'Leduc': ['Alberta'],
         'Lethbridge': ['Alberta'],
         'Melfort': ['Saskatchewan'],
-        'Mellowdale': ['--No State--'],
+        'Mellowdale': ['Canada'],
         'Moosomin': ['Saskatchewan'],
-        'Napan': ['--No State--'],
+        'Napan': ['Canada'],
         'Nipawin': ['Saskatchewan'],
         'Northeast': ['British Columbia'],
         'Northwest': ['British Columbia'],
@@ -925,13 +917,12 @@ countries = {
         'Renfrew': ['Ontario/Quebec'],
         'Richmond': ['Quebec'],
         'Rimbey': ['Alberta'],
-        'Saskatchewan': ['British Columbia'],
         'Saskatoon': ['Saskatchewan'],
-        'Seagrave': ['--No State--'],
-        'Smeaton': ['--No State--'],
+        'Seagrave': ['Canada'],
+        'Smeaton': ['Canada'],
         'Southeast': ['British Columbia'],
         'Stettler': ['Alberta'],
-        'Strathroy': ['--No State--'],
+        'Strathroy': ['Canada'],
         'Surrey': ['British Columbia'],
         'Theodore': ['Saskatchewan'],
         'Tisdale': ['Saskatchewan'],
@@ -941,10 +932,11 @@ countries = {
         'Victoria': ['British Columbia'],
         'West': ['Newfoundland and Labrador'],
         'Winnipeg': ['Manitoba'],
-        'Woodstock': ['--No State--'],
+        'Woodstock': ['Canada'],
         'Yorkton': ['Saskatchewan'],
       },
       'state_variations': {
+        'Quebec and Atlantic': 'Quebec/Atlantic',
         'AB': 'Alberta',
         'BC': 'British Columbia',
         'MB': 'Manitoba',
@@ -975,20 +967,18 @@ countries = {
    'China': {
       'name': 'China',
       'states': [
-        '--No State--',
       ],
       'cities': {
-        'Hong Kong': ['--No State--'],
+        'Hong Kong': ['China'],
       },
    },
    'Columbia': {
       'name': 'Columbia',
       'states': [
-        '--No State--',
         'Ipiales',
       ],
       'cities': {
-        'Bogota': ['--No State--'],
+        'Bogota': ['Columbia'],
       },
       'variations': [
         'Colombia'
@@ -997,61 +987,55 @@ countries = {
    'Denmark': {
       'name': 'Denmark',
       'states': [
-        '--No State--',
       ],
       'cities': {
-        'Sonder Omme': ['--No State--'],
+        'Sonder Omme': ['Denmark'],
       },
    },
    'Ecuador': {
       'name': 'Ecuador',
       'states': [
-        '--No State--',
         'Galapagos',
       ],
       'cities': {
-        'El Cristal': ['--No State--'],
+        'El Cristal': ['Ecuador'],
       },
    },
    'Finland': {
       'name': 'Finland',
       'states': [
-        '--No State--',
       ],
       'cities': {
-        'Vaasa': ['--No State--'],
+        'Vaasa': ['Finland'],
       },
    },
    'France': {
       'name': 'France',
       'states': [
-        '--No State--',
       ],
       'cities': {
-        'Ales': ['--No State--'],
-        'Chaintreauville': ['--No State--'],
-        'Foljuif': ['--No State--'],
-        'Paris': ['--No State--'],
+        'Ales': ['France'],
+        'Chaintreauville': ['France'],
+        'Foljuif': ['France'],
+        'Paris': ['France'],
       },
    },
    'Germany': {
       'name': 'Germany',
       'states': [
-        '--No State--',
       ],
       'cities': {
-        'Hulben': ['--No State--'],
+        'Hulben': ['Germany'],
       },
    },
    'Greece': {
       'name': 'Greece',
       'states': [
-        '--No State--',
       ],
       'cities': {
-        '--Not Specified--': ['--No State--'],
-        'Athens': ['--No State--'],
-        'Inoi': ['--No State--'],
+        'Greece': ['Greece'],
+        'Athens': ['Greece'],
+        'Inoi': ['Greece'],
       },
    },
    'Guam': {
@@ -1065,10 +1049,9 @@ countries = {
    'Guatemala': {
       'name': 'Guatemala',
       'states': [
-        '--No State--',
       ],
       'cities': {
-        'Malacation': ['--No State--'],
+        'Malacation': ['Guatemala'],
       },
    },
    'Guyana': {
@@ -1088,33 +1071,30 @@ countries = {
    'India': {
       'name': 'India',
       'states': [
-        '--No State--',
       ],
       'cities': {
-        'Bangalore': ['--No State--'],
+        'Bangalore': ['India'],
       },
    },
    'Ireland': {
       'name': 'Ireland',
       'states': [
-        '--No State--',
       ],
       'cities': {
-        'Carrick': ['--No State--'],
-        'Down': ['--No State--'],
-        'Fermanagh': ['--No State--'],
-        'Laois': ['--No State--'],
-        'Monaghan': ['--No State--'],
+        'Carrick': ['Ireland'],
+        'Down': ['Ireland'],
+        'Fermanagh': ['Ireland'],
+        'Laois': ['Ireland'],
+        'Monaghan': ['Ireland'],
       },
    },
    'Italy': {
       'name': 'Italy',
       'states': [
-        '--No State--',
       ],
       'cities': {
-        'Emilla Romagna, Toscana': ['--No State--'],
-        'Petacciato': ['--No State--'],
+        'Emilla Romagna, Toscana': ['Italy'],
+        'Petacciato': ['Italy'],
       },
    },
    'Jamaica': {
@@ -1127,7 +1107,6 @@ countries = {
    'Japan': {
       'name': 'Japan',
       'states': [
-        '--No State--',
         'Tokyo',
       ],
       'cities': {
@@ -1137,31 +1116,28 @@ countries = {
    'Korea': {
       'name': 'Korea',
       'states': [
-        '--No State--',
       ],
       'cities': {
-        'Seoul South': ['--No State--'],
-        'Puchon': ['--No State--'],
+        'Seoul South': ['Korea'],
+        'Puchon': ['Korea'],
       },
    },
    'Mexico': {
       'name': 'Mexico',
       'states': [
-        '--No State--',
       ],
       'cities': {
-        'Ebano': ['--No State--'],
-        'Insurgentes': ['--No State--'],
-        'Tanama': ['--No State--'],
+        'Ebano': ['Mexico'],
+        'Insurgentes': ['Mexico'],
+        'Tanama': ['Mexico'],
       },
    },
    'Netherlands': {
       'name': 'Netherlands',
       'states': [
-        '--No State--',
       ],
       'cities': {
-        'Putten': ['--No State--'],
+        'Putten': ['Netherlands'],
       },
    },
    'Nevis': {
@@ -1174,19 +1150,17 @@ countries = {
    'Nigeria': {
       'name': 'Nigeria',
       'states': [
-        '--No State--',
       ],
       'cities': {
-        'Ikorodu': ['--No State--'],
+        'Ikorodu': ['Nigeria'],
       },
    },
    'Norway': {
       'name': 'Norway',
       'states': [
-        '--No State--',
       ],
       'cities': {
-        'Stokke': ['--No State--'],
+        'Stokke': ['Norway'],
       },
    },
    'Orient': {
@@ -1208,17 +1182,16 @@ countries = {
    'Peru': {
       'name': 'Peru',
       'states': [
-        '--No State--',
         'Lambayeque',
       ],
       'cities': {
-        '--Not Specified--': ['--No State--'],
-        'Cusco, Puno': ['--No State--'],
-        'companion later': ['--No State--'],
-        'Ancash': ['--No State--'],
-        'Cajamarca': ['--No State--'],
-        'Coyunde': ['--No State--'],
-        'Cusco': ['--No State--'],
+        'Peru': ['Peru'],
+        'Cusco, Puno': ['Peru'],
+        'companion later': ['Peru'],
+        'Ancash': ['Peru'],
+        'Cajamarca': ['Peru'],
+        'Coyunde': ['Peru'],
+        'Cusco': ['Peru'],
         'Olmos': ['Lambayeque'],
       },
       'special_location': 'Convention',
@@ -1226,33 +1199,30 @@ countries = {
    'Philippines': {
       'name': 'Philippines',
       'states': [
-        '--No State--',
       ],
       'cities': {
-        'Baguio': ['--No State--'],
-        'Cavite': ['--No State--'],
-        'Ilocos': ['--No State--'],
-        'Iloilo': ['--No State--'],
-        'Ozamis': ['--No State--'],
-        'Rosales': ['--No State--'],
+        'Baguio': ['Philippines'],
+        'Cavite': ['Philippines'],
+        'Ilocos': ['Philippines'],
+        'Iloilo': ['Philippines'],
+        'Ozamis': ['Philippines'],
+        'Rosales': ['Philippines'],
       },
    },
    'Poland': {
       'name': 'Poland',
       'states': [
-        '--No State--',
       ],
       'cities': {
-        'Wista': ['--No State--'],
+        'Wista': ['Poland'],
       },
    },
    'Romania': {
       'name': 'Romania',
       'states': [
-        '--No State--',
       ],
       'cities': {
-        'Sibiu 2': ['--No State--'],
+        'Sibiu 2': ['Romania'],
       },
    },
    'Saipan': {
@@ -1265,20 +1235,18 @@ countries = {
    'Scotland': {
       'name': 'Scotland',
       'states': [
-        '--No State--',
       ],
       'cities': {
-        'Gartocharn 1': ['--No State--'],
-        'Gartocharn 2': ['--No State--'],
+        'Gartocharn 1': ['Scotland'],
+        'Gartocharn 2': ['Scotland'],
       },
    },
    'Spain': {
       'name': 'Spain',
       'states': [
-        '--No State--',
       ],
       'cities': {
-        'Madrid': ['--No State--'],
+        'Madrid': ['Spain'],
       },
    },
    'Suriname': {

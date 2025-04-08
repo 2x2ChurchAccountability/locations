@@ -14,15 +14,17 @@ class TestGetStateCountry(unittest.TestCase):
     def test_simple_state_country(self):
         """Test basic state and country extraction"""
         result = get_state_country("California United States", self.countries)
-        self.assertEqual(result['state'], 'California')
         self.assertEqual(result['country'], 'United States')
+        self.assertEqual(result['state'], 'California')
+        self.assertEqual(result['location'], None)
+        self.assertEqual(result['line'], '')
 
     # Test state variation (abbreviation) extraction
     def test_state_variation(self):
         """Test state variation (abbreviation) extraction"""
         result = get_state_country("CA United States", self.countries)
-        self.assertEqual(result['state'], 'California')
         self.assertEqual(result['country'], 'United States')
+        self.assertEqual(result['state'], 'California')
         self.assertEqual(result['location'], None)
         self.assertEqual(result['line'], '')
 
@@ -81,8 +83,9 @@ class TestGetStateCountry(unittest.TestCase):
     def test_country_only(self):
         """Test when only country is found"""
         result = get_state_country("United States", self.countries)
-        self.assertIsNone(result['state'])
         self.assertEqual(result['country'], 'United States')
+        self.assertEqual(result['state'], None)
+        self.assertEqual(result['location'], None)
 
     def test_complex_combined_state(self):
         """Test complex combined state with multiple parts"""
@@ -136,8 +139,8 @@ class TestGetStateCountry(unittest.TestCase):
         result = get_state_country(text_fixes(line), self.countries)
         self.assertEqual(result['state'], 'British Columbia')  # Should match the state
         self.assertEqual(result['country'], 'Canada')
-        self.assertEqual(result['location'], None)
-        self.assertEqual(result['line'], 'Kootenays, Brisco Special Meeting')
+        self.assertEqual(result['location'], 'Kootenays, Brisco')
+        self.assertEqual(result['line'], 'Special Meeting')
 
     # Edgewood New Mexico Convention
     def test_edgewood_new_mexico_convention(self):
@@ -229,7 +232,7 @@ class TestGetStateCountry(unittest.TestCase):
         """Test test_san_rafel_state_country"""
         line = "San Rafael Special Meeting Argentina"
         result = get_state_country(text_fixes(line), self.countries)
-        self.assertEqual(result['state'], '--No State--')  # Should match the state
+        self.assertEqual(result['state'], 'Argentina')  # Should match the state
         self.assertEqual(result['country'], 'Argentina')
         self.assertEqual(result['location'], 'San Rafael')
         self.assertEqual(result['line'], 'Special Meeting')
@@ -239,7 +242,7 @@ class TestGetStateCountry(unittest.TestCase):
         """Test bangalore_convention"""
         line = "Bangalore Convention"
         result = get_state_country(text_fixes(line), self.countries)
-        self.assertEqual(result['state'], '--No State--')
+        self.assertEqual(result['state'], 'India')
         self.assertEqual(result['country'], 'India')
         self.assertEqual(result['location'], 'Bangalore')
         self.assertEqual(result['line'], 'Convention')
@@ -262,7 +265,7 @@ class TestGetStateCountry(unittest.TestCase):
         result = handle_started_work(text_fixes(line), self.countries)
         self.assertEqual(result['state'], 'New Brunswick')  # Should match the state
         self.assertEqual(result['country'], 'Canada')
-        self.assertEqual(result['location'], '')
+        self.assertEqual(result['location'], 'New Brunswick')
         self.assertEqual(result['note'], 'Started in the work')
 
     # Oct Started in the work
@@ -282,7 +285,7 @@ class TestGetStateCountry(unittest.TestCase):
         result = handle_started_work(text_fixes(line), self.countries)
         self.assertEqual(result['state'], 'New York')  # Should match the state
         self.assertEqual(result['country'], 'United States')
-        self.assertEqual(result['location'], '')
+        self.assertEqual(result['location'], 'New York')
         self.assertEqual(result['note'], 'Started in the work')
 
     #New York *Started in the work*
@@ -292,7 +295,7 @@ class TestGetStateCountry(unittest.TestCase):
         result = handle_started_work(text_fixes(line), self.countries)
         self.assertEqual(result['state'], 'New York')  # Should match the state
         self.assertEqual(result['country'], 'United States')
-        self.assertEqual(result['location'], '')
+        self.assertEqual(result['location'], 'New York')
         self.assertEqual(result['note'], 'Started in the work: York')
 
     #New York *Started in the work*
@@ -302,7 +305,7 @@ class TestGetStateCountry(unittest.TestCase):
         result = handle_started_work(text_fixes(line), self.countries)
         self.assertEqual(result['state'], 'New York')  # Should match the state
         self.assertEqual(result['country'], 'United States')
-        self.assertEqual(result['location'], '')
+        self.assertEqual(result['location'], 'New York')
         self.assertEqual(result['note'], 'Started in the work: Mountain Ranch 1')
 
     #New York *Started in the work*
@@ -332,7 +335,7 @@ class TestGetStateCountry(unittest.TestCase):
         result = handle_workers_meeting(text_fixes(line), self.countries)
         self.assertEqual(result['state'], 'Tennessee')  # Should match the state
         self.assertEqual(result['country'], 'United States')
-        self.assertEqual(result['location'], None)
+        self.assertEqual(result['location'], 'Tennessee')
         self.assertEqual(result['note'], 'Knoxsville Workers Meeting')
 
     # Portage Canada Workers Meeting
@@ -352,7 +355,7 @@ class TestGetStateCountry(unittest.TestCase):
         result = handle_workers_meeting(text_fixes(line), self.countries)
         self.assertEqual(result['state'], 'Tennessee')  # Should match the state
         self.assertEqual(result['country'], 'United States')
-        self.assertEqual(result['location'], None)
+        self.assertEqual(result['location'], 'Tennessee')
         self.assertEqual(result['note'], 'Nashville Workers Meeting Visiting from Colorado')
 
     # Minnesota Workers Meeting (MO)
@@ -362,7 +365,7 @@ class TestGetStateCountry(unittest.TestCase):
         result = handle_workers_meeting(text_fixes(line), self.countries)
         self.assertEqual(result['state'], 'Minnesota')  # Should match the state
         self.assertEqual(result['country'], 'United States')
-        self.assertEqual(result['location'], None)
+        self.assertEqual(result['location'], 'Minnesota')
         self.assertEqual(result['note'], 'Workers Meeting Visiting from Missouri')
 
     # Kenai Alaska Special Meeting
@@ -384,7 +387,7 @@ class TestGetStateCountry(unittest.TestCase):
         result = handle_special_meeting(text_fixes(line), self.countries)
         self.assertEqual(result['state'], 'South Dakota')
         self.assertEqual(result['country'], 'United States')
-        self.assertEqual(result['location'], None) 
+        self.assertEqual(result['location'], 'South Dakota') 
         self.assertEqual(result['note'], 'Winter Special Meeting')
 
     # Quebec/Atlantic Canada Special Meetings (Pennsylvania)
@@ -394,7 +397,7 @@ class TestGetStateCountry(unittest.TestCase):
         result = handle_special_meeting(text_fixes(line), self.countries)
         self.assertEqual(result['state'], 'Quebec/Atlantic')
         self.assertEqual(result['country'], 'Canada')
-        self.assertEqual(result['location'], None) 
+        self.assertEqual(result['location'], 'Quebec/Atlantic') 
         self.assertEqual(result['note'], 'Special Meetings Visiting from Pennsylvania')
 
     # San Rafael Special Meeting Argentina (July 14)
@@ -402,7 +405,7 @@ class TestGetStateCountry(unittest.TestCase):
         """Test san_rafael_special_meeting_argentina"""
         line = "San Rafael Special Meeting Argentina (July 14)"
         result = handle_special_meeting(text_fixes(line), self.countries)
-        self.assertEqual(result['state'], '--No State--')
+        self.assertEqual(result['state'], 'Argentina')
         self.assertEqual(result['country'], 'Argentina')
         self.assertEqual(result['location'], 'San Rafael')
         self.assertEqual(result['note'], 'July 14 Special Meeting')
@@ -414,7 +417,7 @@ class TestGetStateCountry(unittest.TestCase):
         """Test cipolletti_special_meeting_argentina"""
         line = "Cipolletti Special Meeting Argentina (July 7)"
         result = handle_special_meeting(text_fixes(line), self.countries)
-        self.assertEqual(result['state'], '--No State--')
+        self.assertEqual(result['state'], 'Argentina')
         self.assertEqual(result['country'], 'Argentina')
         self.assertEqual(result['location'], 'Cipolletti')
         self.assertEqual(result['note'], 'July 7 Special Meeting')
@@ -426,7 +429,7 @@ class TestGetStateCountry(unittest.TestCase):
         """Test fermanagh_ireland_summer_special_meetings"""
         line = "Fermanagh Ireland Summer Special Meetings"
         result = handle_special_meeting(text_fixes(line), self.countries)
-        self.assertEqual(result['state'], '--No State--')
+        self.assertEqual(result['state'], 'Ireland')
         self.assertEqual(result['country'], 'Ireland')
         self.assertEqual(result['location'], 'Fermanagh')
         self.assertEqual(result['note'], 'Summer Special Meetings') 
@@ -436,9 +439,9 @@ class TestGetStateCountry(unittest.TestCase):
         """Test philippines_special_meeting_rounds"""
         line = "Philippines Special Meeting Rounds"
         result = handle_special_meeting(text_fixes(line), self.countries)
-        self.assertEqual(result['state'], None)
+        self.assertEqual(result['state'], 'Philippines')
         self.assertEqual(result['country'], 'Philippines')
-        self.assertEqual(result['location'], None)
+        self.assertEqual(result['location'], 'Philippines')
         self.assertEqual(result['note'], 'Special Meeting Rounds')
 
     # Special Meeting Gilbert Arizona
@@ -458,7 +461,7 @@ class TestGetStateCountry(unittest.TestCase):
         result = handle_special_meeting(text_fixes(line), self.countries)
         self.assertEqual(result['state'], 'Quebec/Atlantic')
         self.assertEqual(result['country'], 'Canada')
-        self.assertEqual(result['location'], None)
+        self.assertEqual(result['location'], 'Quebec/Atlantic')
         self.assertEqual(result['note'], 'Special Meeting')
 
     # Oregon/ S. Idaho Special Meetings
@@ -468,7 +471,7 @@ class TestGetStateCountry(unittest.TestCase):
         result = handle_special_meeting(text_fixes(line), self.countries)
         self.assertEqual(result['state'], 'Oregon/Southern Idaho')
         self.assertEqual(result['country'], 'United States')
-        self.assertEqual(result['location'], None)
+        self.assertEqual(result['location'], 'Oregon/Southern Idaho')
         self.assertEqual(result['note'], 'Special Meetings')
 
     # Anchorage Alaska Special Meeting
@@ -506,9 +509,9 @@ class TestGetStateCountry(unittest.TestCase):
         """Test Doak’s Special Meeting Shed United Kingdom"""
         line = "Doak’s Special Meeting Shed United Kingdom"
         result = handle_special_meeting(text_fixes(line), self.countries)
-        self.assertEqual(result['state'], None)
+        self.assertEqual(result['state'], 'United Kingdom')
         self.assertEqual(result['country'], 'United Kingdom')
-        self.assertEqual(result['location'], None)
+        self.assertEqual(result['location'], 'United Kingdom')
         self.assertEqual(result['note'], "Doak's Special Meeting Shed")
 
     #Winnipeg Special Meeting
@@ -584,7 +587,7 @@ class TestGetStateCountry(unittest.TestCase):
         result = handle_workers_list(text_fixes(line), self.countries)
         self.assertEqual(result['state'], 'Alberta')
         self.assertEqual(result['country'], 'Canada')
-        self.assertEqual(result['location'], '--Not Specified--')
+        self.assertEqual(result['location'], 'Alberta')
         self.assertEqual(result['note'], 'Workers List: Jul-Dec List, Laboring in West Africa')
 
     # Saskatchewan Canada Workers List (Swift Current/Kindersley) Jul-Dec
@@ -614,9 +617,9 @@ class TestGetStateCountry(unittest.TestCase):
         """Test Peru Workers List (companion later)"""
         line = "Peru Workers List (companion later)"
         result = handle_workers_list(text_fixes(line), self.countries)
-        self.assertEqual(result['state'], '--No State--')
+        self.assertEqual(result['state'], 'Peru')
         self.assertEqual(result['country'], 'Peru')
-        self.assertEqual(result['location'], '--Not Specified--')
+        self.assertEqual(result['location'], 'Peru')
         self.assertEqual(result['note'], 'Workers List: Companion Later')
 
     # S. Africa Workers List (Zimbabwe)
@@ -656,7 +659,7 @@ class TestGetStateCountry(unittest.TestCase):
         result = handle_workers_list(text_fixes(line), self.countries)
         self.assertEqual(result['state'], 'Nova Scotia')
         self.assertEqual(result['country'], 'Canada')
-        self.assertEqual(result['location'], None)
+        self.assertEqual(result['location'], 'Nova Scotia')
         self.assertEqual(result['note'], 'Workers List')
 
     # July Alberta Canada Workers List (West Africa)
@@ -666,7 +669,7 @@ class TestGetStateCountry(unittest.TestCase):
         result = handle_workers_list(text_fixes(line), self.countries)
         self.assertEqual(result['state'], 'Alberta')
         self.assertEqual(result['country'], 'Canada')
-        self.assertEqual(result['location'], '--Not Specified--')
+        self.assertEqual(result['location'], 'Alberta')
         self.assertEqual(result['note'], 'Workers List: July List, Laboring in West Africa')
 
     # British Columbia Canada Workers List (Chilliwack)
@@ -834,7 +837,7 @@ class TestGetStateCountry(unittest.TestCase):
         result = handle_location_only(text_fixes(line), self.countries)
         self.assertEqual(result['state'], 'Alberta')
         self.assertEqual(result['country'], 'Canada')
-        self.assertEqual(result['location'], None)
+        self.assertEqual(result['location'], 'Alberta')
         self.assertEqual(result['note'], 'Autumn, pro tem')
 
     # Glen Valley 2 British Columbia Staff Photo (Absent)
@@ -854,7 +857,7 @@ class TestGetStateCountry(unittest.TestCase):
         result = handle_location_only(text_fixes(line), self.countries)
         self.assertEqual(result['state'], 'Florida')
         self.assertEqual(result['country'], 'United States')
-        self.assertEqual(result['location'], None)
+        self.assertEqual(result['location'], 'Florida')
         self.assertEqual(result['note'], 'December to 2022 New Year Vacation in Smyrna Beach')
 
     # Visited South Africa
@@ -862,9 +865,9 @@ class TestGetStateCountry(unittest.TestCase):
         """Test visited_south_africa"""
         line = "Visited South Africa"
         result = handle_location_only(text_fixes(line), self.countries)
-        self.assertEqual(result['state'], None)
+        self.assertEqual(result['state'], 'South Africa')
         self.assertEqual(result['country'], 'South Africa')
-        self.assertEqual(result['location'], None)
+        self.assertEqual(result['location'], 'South Africa')
         self.assertEqual(result['note'], "Visited")
 
     # La Paz, Ecuador
@@ -874,7 +877,7 @@ class TestGetStateCountry(unittest.TestCase):
         result = handle_location_only(text_fixes(line), self.countries)
         self.assertEqual(result['state'], 'La Paz')
         self.assertEqual(result['country'], 'Bolivia')
-        self.assertEqual(result['location'], None)
+        self.assertEqual(result['location'], 'La Paz')
         self.assertEqual(result['note'], 'Ecuador')
 
     #was in New Zealand and walked the Routeburn Track (January)
@@ -882,9 +885,9 @@ class TestGetStateCountry(unittest.TestCase):
         """Test was_in_new_zealand_and_walked_the_routeburn_track_january"""
         line = "was in New Zealand and walked the Routeburn Track (January)"
         result = handle_location_only(text_fixes(line), self.countries)
-        self.assertEqual(result['state'], None)
+        self.assertEqual(result['state'], 'New Zealand')
         self.assertEqual(result['country'], 'New Zealand')
-        self.assertEqual(result['location'], None)
+        self.assertEqual(result['location'], 'New Zealand')
         self.assertEqual(result['note'], 'Visiting in January, was in and walked the Routeburn Track')
 
     # Quebec Canada (Richmond)
@@ -904,7 +907,7 @@ class TestGetStateCountry(unittest.TestCase):
         result = handle_location_only(text_fixes(line), self.countries)
         self.assertEqual(result['state'], 'New South Wales')
         self.assertEqual(result['country'], 'Australia')
-        self.assertEqual(result['location'], None)
+        self.assertEqual(result['location'], 'New South Wales')
         self.assertEqual(result['note'], 'Visiting from TX')
 
     # Quebec/Atlantic (Halifax NS) w/Albert Clark
@@ -934,7 +937,7 @@ class TestGetStateCountry(unittest.TestCase):
         result = handle_location_only(text_fixes(line), self.countries)
         self.assertEqual(result['state'], 'Quebec/Atlantic')
         self.assertEqual(result['country'], 'Canada')
-        self.assertEqual(result['location'], None)
+        self.assertEqual(result['location'], 'Quebec/Atlantic')
         self.assertEqual(result['note'], 'To Ontario')
 
     # Kentucky/Tennessee (Mt. Sterling)
@@ -974,7 +977,7 @@ class TestGetStateCountry(unittest.TestCase):
         result = handle_location_only(text_fixes(line), self.countries)
         self.assertEqual(result['state'], 'Barquisimeto')
         self.assertEqual(result['country'], 'Venezuela')
-        self.assertEqual(result['location'], None)
+        self.assertEqual(result['location'], 'Barquisimeto')
         self.assertEqual(result['note'], None)
 
     # Serial, Zimbabwe
@@ -984,7 +987,7 @@ class TestGetStateCountry(unittest.TestCase):
         result = handle_location_only(text_fixes(line), self.countries)
         self.assertEqual(result['state'], 'Serial')
         self.assertEqual(result['country'], 'Zimbabwe')
-        self.assertEqual(result['location'], None)
+        self.assertEqual(result['location'], 'Serial')
         self.assertEqual(result['note'], None)
 
 
@@ -1019,7 +1022,7 @@ class TestGetStateCountry(unittest.TestCase):
         """Test bangalore_india_convention"""
         line = "Bangalore India Convention"
         result = handle_convention(text_fixes(line), self.countries)
-        self.assertEqual(result['state'], '--No State--')
+        self.assertEqual(result['state'], 'India')
         self.assertEqual(result['country'], 'India')
         self.assertEqual(result['location'], 'Bangalore')
         self.assertEqual(result['note'], 'Convention')
@@ -1039,7 +1042,7 @@ class TestGetStateCountry(unittest.TestCase):
         """Test ales_france_convention_aug_12"""
         line = "Ales, France Convention (Aug 12)"
         result = handle_convention(text_fixes(line), self.countries)
-        self.assertEqual(result['state'], '--No State--')
+        self.assertEqual(result['state'], 'France')
         self.assertEqual(result['country'], 'France')
         self.assertEqual(result['location'], 'Ales')
         self.assertEqual(result['note'], 'Convention - Aug 12')
@@ -1071,7 +1074,7 @@ class TestGetStateCountry(unittest.TestCase):
         result = handle_convention(text_fixes(line), self.countries)
         self.assertEqual(result['state'], 'Tokyo')
         self.assertEqual(result['country'], 'Japan')
-        self.assertEqual(result['location'], None)
+        self.assertEqual(result['location'], 'Tokyo')
         self.assertEqual(result['note'], 'Convention')
 
     # Manhattan 2 Montana Convention June 29-July2
@@ -1164,7 +1167,7 @@ class TestGetStateCountry(unittest.TestCase):
         line = "Insurgents Mexico Convention"
         line = process_locations.text_fixes(line)
         result = handle_convention(text_fixes(line), self.countries)
-        self.assertEqual(result['state'], '--No State--')
+        self.assertEqual(result['state'], 'Mexico')
         self.assertEqual(result['country'], 'Mexico')
         self.assertEqual(result['location'], 'Insurgentes')
         self.assertEqual(result['note'], 'Convention')
@@ -1175,7 +1178,7 @@ class TestGetStateCountry(unittest.TestCase):
         line = "Ilocos Convention"
         line = process_locations.text_fixes(line)
         result = handle_convention(text_fixes(line), self.countries)
-        self.assertEqual(result['state'], '--No State--')
+        self.assertEqual(result['state'], 'Philippines')
         self.assertEqual(result['country'], 'Philippines')
         self.assertEqual(result['location'], 'Ilocos')
         self.assertEqual(result['note'], 'Convention')
@@ -1186,7 +1189,7 @@ class TestGetStateCountry(unittest.TestCase):
         line = "Dunbarton 1 UK Convention"
         line = process_locations.text_fixes(line)
         result = handle_convention(text_fixes(line), self.countries)
-        self.assertEqual(result['state'], '--No State--')
+        self.assertEqual(result['state'], 'United Kingdom')
         self.assertEqual(result['country'], 'United Kingdom')
         self.assertEqual(result['location'], 'Dunbarton 1')
         self.assertEqual(result['note'], 'Convention')
@@ -1216,9 +1219,9 @@ class TestGetStateCountry(unittest.TestCase):
         """Test guam_convention_march"""
         line = "Guam Convention March"
         result = handle_convention(text_fixes(line), self.countries)
-        self.assertEqual(result['state'], None)
+        self.assertEqual(result['state'], 'Guam')
         self.assertEqual(result['country'], 'Guam')
-        self.assertEqual(result['location'], None)
+        self.assertEqual(result['location'], 'Guam')
         self.assertEqual(result['note'], 'Convention March')
         self.assertEqual(result['month'], 'March')
 
@@ -1228,10 +1231,21 @@ class TestGetStateCountry(unittest.TestCase):
         line = "Orient Conventions (April/May)"
         result = handle_convention(text_fixes(line), self.countries)
         self.assertEqual(result['country'], 'Orient')
-        self.assertEqual(result['state'], None)
-        self.assertEqual(result['location'], None)
+        self.assertEqual(result['state'], 'Orient')
+        self.assertEqual(result['location'], 'Orient')
         self.assertEqual(result['note'], 'Conventions - April/May')
         self.assertEqual(result['month'], 'April-May')
+
+    # Bonao, Republica Dominicana Convention
+    def test_bonao_republica_dominicana_convention(self):
+        """Test bonao_republica_dominicana_convention"""
+        line = "Bonao, Republica Dominicana Convention"
+        result = handle_convention(text_fixes(line), self.countries)
+        self.assertEqual(result['state'], 'Dominican Republic')
+        self.assertEqual(result['country'], 'Dominican Republic')
+        self.assertEqual(result['location'], 'Bonao')
+        self.assertEqual(result['note'], 'Republica Dominicana Convention')
+        self.assertEqual(result['month'], None)
 
 
 

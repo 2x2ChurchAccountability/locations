@@ -189,8 +189,8 @@ def get_state_country(line: str, countries: Dict) -> Optional[Dict]:
         # Try 5, 4, 3, 2, or 1 consecutive words (in that order)
         for word_count in range(5, 0, -1):
             if i + word_count <= len(words):
-                potential_city = ' '.join(words[i:i + word_count])
-                print_debug(f"BOB SC 0.1 - potential_city: |{potential_city}|") if i==0 else None
+                potential_city = ' '.join(words[i:i + word_count]).rstrip(',')
+                print_debug(f"BOB SC 0.1 - potential_city: |{potential_city}|") #if i==0 else None
 #BOB1
                 # If we found a state earlier, only check cities in that state's country
                 countries_to_check = {found_state_country: countries[found_state_country]} if found_state_country else countries
@@ -205,16 +205,22 @@ def get_state_country(line: str, countries: Dict) -> Optional[Dict]:
                             if potential_city == city:
                                 # Add all states for this city to matching_states
                                 matching_states.extend(states)
+                        
                         if matching_states:
+                            print_debug(f"BOB SC 0.2 - found_state: {found_state}  |  matching_states: {matching_states}")
                             # If this city is part of a state name we found earlier, skip it
                             if found_state and potential_city in found_state:
                                 continue
-                            
+                            print_debug(f"BOB SC 0.21 - checking matching_states")
                             # Loop through all matching states
                             for state in matching_states:
-                                print_debug(f"BOB SC 0.3 - checking state: {state}")                        
+                                print_debug(f"BOB SC 0.3 - checking state: {state}  | found_state: {found_state}")                        
                                 # If we found a state earlier, only use cities that belong to that state
-                                if found_state and state != found_state:
+
+                                # two tests exercise this so if you touch it make sure those still work
+                                # 1. Theodore Canada Convention
+                                # 2. New York *Started in the work* Mountain Ranch 1
+                                if state != found_state and found_state != found_state_country:
                                     continue
 
                                 result['state'] = state
@@ -462,6 +468,8 @@ def handle_convention(line: str, countries: Dict) -> Optional[Dict]:
     if line.lower().startswith('australian workers convention'):
         result['note'] = 'Workers Convention'
         result['country'] = 'Australia'
+        result['state'] = 'Australia'
+        result['location'] = 'Australia'
         return result
 
     # Create patterns for all countries and US states
@@ -649,6 +657,13 @@ def handle_convention(line: str, countries: Dict) -> Optional[Dict]:
             line = line + ". Visiting from " + visit_note
     result['note'] = line
     print_debug(f"BOB CON 1.8 - note: {result['note']}")
+
+    if not result['state']:
+        result['state'] = result['country']
+    if not result['location']:
+        result['location'] = result['state']
+
+    print_debug(f"BOB CON 1.9 - country: |{result['country']}|    state: |{result['state']}|    location: |{result['location']}|")
         
     return result
     
@@ -772,6 +787,11 @@ def handle_special_meeting(line: str, countries: Dict) -> Optional[Dict]:
         result['state'] = state_country_info['state']
     if state_country_info['location']:
         result['location'] = state_country_info['location']
+
+    if not result['state']:
+        result['state'] = result['country']
+    if not result['location']:
+        result['location'] = result['state']
     
     result['note'] = state_country_info['line']
     if date_note:
@@ -851,7 +871,7 @@ def handle_paren_text_patterns(in_parens):
     return special_case_phrase, everything_else
 
 def format_paren_text_note(special_case_phrase, in_parens, after_parens):
-    the_field = '--Not Specified--'
+    the_field = ""
     the_note = ""
     the_after = after_parens
     if special_case_phrase:
@@ -1096,21 +1116,26 @@ def handle_workers_list(line: str, countries: Dict) -> Optional[Dict]:
 
         special_case_phrase, paren_text = handle_paren_text_patterns(paren_text)
         the_location, note_from_parens, straggler = format_paren_text_note(special_case_phrase, paren_text, straggler)
-        if the_location and the_location != '--Not Specified--':
+        if the_location:
             the_location = the_location.replace("/", ", ")  # in the location, substitue / with , space as that is how they are done consistently in countries
             print_debug(f"BOB WL 2.2111 - the_location: {the_location}")
             loc_result = get_state_country(the_location, countries)
             print_debug(f"\nBOB WL 2.212 - country: {loc_result['country']} state: {loc_result['state']} location: {loc_result['location']}")
             if loc_result['location'] and loc_result['line'] == '':
+                print_debug(f"BOB WL 2.2121 - loc_result['location']: {loc_result['location']}  |  result['location']: {result['location']}")
+                print_debug(f"BOB WL 2.2122 - loc_result['state']: {loc_result['state']}  |  result['state']: {result['state']}")
+                print_debug(f"BOB WL 2.2123 - loc_result['country']: {loc_result['country']}  |  result['country']: {result['country']}")
+                print_debug(f"BOB WL 2.2124 - loc_result['line']: {loc_result['line']}")
                 result['location'] = loc_result['location']
+                if loc_result['state'] and not result['state']:
+                    result['state'] = loc_result['state']
+                if loc_result['country'] and not result['country']:
+                    result['country'] = loc_result['country']
             else:
-
                 text_after = paren_text.replace(the_location, '')
                 text_after += (', ' + straggler) if straggler and '*' not in straggler else (' ' + straggler) if straggler else ''
         else:
             result['location'] = the_location
-            if '--Not Specified--' in the_location and not result['state']:
-                result['state'] = '--No State--'
 
         if note_from_parens:
             result['note'] = add_to_note_list(result['note'], note_from_parens)
@@ -1269,8 +1294,10 @@ def handle_workers_list(line: str, countries: Dict) -> Optional[Dict]:
                             result['location'] = the_location
                             break
 
-
-
+    if not result['state']:
+        result['state'] = result['country']
+    if not result['location']:
+        result['location'] = result['state']
 
     text_before = state_country_info['line']
 
@@ -1310,6 +1337,10 @@ def handle_travel(line: str, countries: Dict) -> Optional[Dict]:
                 result['country'] = state_country_info['country']
             if state_country_info['state']:
                 result['state'] = state_country_info['state']
+            if state_country_info['location']:
+                result['location'] = state_country_info['location']
+            elif state_country_info['state']:
+                result['location'] = state_country_info['state']
             result['note'] = f"{travel_type} {result['country']}"
             return result
 
@@ -1368,6 +1399,11 @@ def handle_started_work(line: str, countries: Dict) -> Optional[Dict]:
     if state_country_info['line']:
         result['note'] = result['note'] + ': ' + state_country_info['line']
 
+    if not result['state']:
+        result['state'] = result['country']
+    if not result['location']:
+        result['location'] = result['state']
+
     return result
 
 def get_photo_type(line: str) -> Tuple[str, str]:
@@ -1418,6 +1454,12 @@ def handle_photo(line: str, countries: Dict) -> Optional[Dict]:
     if state_country_info['state']:
         result['state'] = state_country_info['state']
     result['location'] = state_country_info['location']
+
+    if not result['state']:
+        result['state'] = result['country']
+    if not result['location']:
+        result['location'] = result['state']
+        
     line = state_country_info['line']
 
     print_debug(f"\n\nBOB PHOTO country: {result['country']}")
@@ -1429,11 +1471,6 @@ def handle_photo(line: str, countries: Dict) -> Optional[Dict]:
     photo_type, line = get_photo_type(line)
     if photo_type:
         result['note'] = photo_type
-
-    # If no state/province found, set to Unknown location in United States
-    if not result['state']:
-        result['location'] = 'Unknown'
-        result['country'] = 'United States'
 
     return result
 
@@ -1485,6 +1522,11 @@ def handle_workers_meeting(line: str, countries: Dict) -> Optional[Dict]:
     
     if visiting_from:
         result['note'] = result['note'] + ' Visiting from ' + visiting_from
+
+    if not result['state']:
+        result['state'] = result['country']
+    if not result['location']:
+        result['location'] = result['state']
 
     return result
     
@@ -1561,6 +1603,11 @@ def handle_guestbook(line: str, countries: Dict) -> Optional[Dict]:
     if line:
         result['note'] = result['note'] + ': ' + line
 
+    if not result['state']:
+        result['state'] = result['country']
+    if not result['location']:
+        result['location'] = result['state']
+
     return result
    
 def handle_location_only(line: str, countries: Dict) -> Optional[Dict]:
@@ -1587,6 +1634,8 @@ def handle_location_only(line: str, countries: Dict) -> Optional[Dict]:
     if state_country_info['location']:
         result['location'] = state_country_info['location']
     line = state_country_info['line']
+
+    print_debug(f"BOB LOC 1.01 - country: {result['country']}  |  state: {result['state']}  |  location: {result['location']}  |  line: {line}")
 
     protem_case = ''
 
@@ -1683,6 +1732,11 @@ def handle_location_only(line: str, countries: Dict) -> Optional[Dict]:
         result['note'] = add_to_note_list(result['note'] if result['note'] else '', line)
         if protem_case:
             result['note'] = add_to_note_list(result['note'], 'pro tem')
+
+    if not result['state']:
+        result['state'] = result['country']
+    if not result['location']:
+        result['location'] = result['state']
 
     print_debug(f"BOB LOC 1.3 - line: {line}")
     print_debug(f"BOB LOC 2.0 - country: {result['country']}")
@@ -1825,6 +1879,9 @@ def text_fixes(line: str) -> str:
 
     if 'Yorkton/Fort' in line:
         line = line.replace('Yorkton/Fort', 'Yorkton, Fort')
+
+    if 'Brazil and Uruguay' in line:
+        line = line.replace('Brazil and Uruguay', 'Brazil/Uruguay')
        
     if "’" in line:
         line = line.replace("’", "'")
