@@ -67,7 +67,8 @@ def write_countries(existing):
             
             # Generate new country
             recid = generate_guid('cccc', sequence)
-            f.write(f"INSERT INTO public.country (recid, name) VALUES ('{recid}', '{escaped_name}');\n")
+            state_insert = f"INSERT INTO public.country (recid, name) VALUES ('{recid}', '{escaped_name}');\n"
+            f.write(state_insert)
             # Store the newly generated recid to ensure consistency
             existing['countries'][country_name] = recid
             sequence += 1
@@ -116,7 +117,7 @@ def write_locations(existing):
         # First write all existing locations from CSV as comments
         for (state_recid, location_name), location_recid in existing['locations'].items():
             escaped_name = escape_single_quotes(location_name)
-            f.write(f"-- INSERT INTO public.location (recid, location_recid, name) VALUES ('{location_recid}', '{state_recid}', '{escaped_name}');\n")
+            f.write(f"-- INSERT INTO public.location (recid, state_recid, name) VALUES ('{location_recid}', '{state_recid}', '{escaped_name}');\n")
         
         # Then handle locations from countries_data
         for country_name, country_data in countries_data.countries.items():
@@ -126,9 +127,51 @@ def write_locations(existing):
             
             print(f"Country: {country_name}  country_recid: {country_recid}")
             
+            # Handle case where cities list is empty
+            if not country_data['cities']:
+                # If no states listed, create state and location using country name
+                if not country_data['states']:
+                    state_name = country_name
+                    state_key = (country_recid, state_name)
+                    if state_key not in existing['states']:
+                        state_recid = generate_guid('dddd', len(existing['states']) + 1)
+                        existing['states'][state_key] = state_recid
+                        with open('inserts_state.sql', 'a') as state_file:
+                            escaped_name = escape_single_quotes(state_name)
+                            state_file.write(f"INSERT INTO public.state (recid, country_recid, name) VALUES ('{state_recid}', '{country_recid}', '{escaped_name}');\n")
+                    state_recid = existing['states'][state_key]
+                    
+                    # Create location using country name
+                    location_key = (state_recid, country_name)
+                    if location_key not in existing['locations']:
+                        escaped_name = escape_single_quotes(country_name)
+                        recid = generate_guid('dddd', sequence)
+                        f.write(f"INSERT INTO public.location (recid, state_recid, name) VALUES ('{recid}', '{state_recid}', '{escaped_name}');\n")
+                        sequence += 1
+                else:
+                    # Create location for each state
+                    for state_name in country_data['states']:
+                        state_key = (country_recid, state_name)
+                        if state_key not in existing['states']:
+                            state_recid = generate_guid('dddd', len(existing['states']) + 1)
+                            existing['states'][state_key] = state_recid
+                            with open('inserts_state.sql', 'a') as state_file:
+                                escaped_name = escape_single_quotes(state_name)
+                                state_file.write(f"INSERT INTO public.state (recid, country_recid, name) VALUES ('{state_recid}', '{country_recid}', '{escaped_name}');\n")
+                        state_recid = existing['states'][state_key]
+                        
+                        # Create location using state name
+                        location_key = (state_recid, state_name)
+                        if location_key not in existing['locations']:
+                            escaped_name = escape_single_quotes(state_name)
+                            recid = generate_guid('dddd', sequence)
+                            f.write(f"INSERT INTO public.location (recid, state_recid, name) VALUES ('{recid}', '{state_recid}', '{escaped_name}');\n")
+                            sequence += 1
+                continue
+            
             for city_name, state_names in country_data['cities'].items():
                 found=False
-                if city_name == 'Provo, Vernal':
+                if city_name == 'Vienna':
                     found=True
                     print(f"City: {city_name}")
                 for state_name in state_names:
@@ -143,8 +186,13 @@ def write_locations(existing):
                     
                     # Get the state_recid from existing states
                     if state_key not in existing['states']:
-                        print(f"WARNING: State {state_name} not found in existing states for country {country_name}")
-                        continue
+                        # Create the state on the spot
+                        state_recid = generate_guid('dddd', len(existing['states']) + 1)
+                        existing['states'][state_key] = state_recid
+                        # Write the insert statement to the state SQL file
+                        with open('inserts_state.sql', 'a') as state_file:
+                            escaped_name = escape_single_quotes(state_name)
+                            state_file.write(f"INSERT INTO public.state (recid, country_recid, name) VALUES ('{state_recid}', '{country_recid}', '{escaped_name}');\n")
                         
                     state_recid = existing['states'][state_key]
                     
