@@ -2,6 +2,18 @@ import countries_data
 import uuid
 import os
 import csv
+import argparse
+import sys
+
+def debug(message):
+    """Write debug message to stderr if debug mode is enabled."""
+    if args.debug:
+        print(f"DEBUG: {message}", file=sys.stderr)
+
+# Parse command line arguments
+parser = argparse.ArgumentParser(description='Generate SQL insert statements for countries, states, and locations.')
+parser.add_argument('--debug', action='store_true', help='Enable debug output')
+args = parser.parse_args()
 
 def generate_guid(prefix, sequence):
     """Generate a GUID in the specified format."""
@@ -56,6 +68,8 @@ def write_countries(existing):
         for country_name, recid in existing['countries'].items():
             escaped_name = escape_single_quotes(country_name)
             f.write(f"-- INSERT INTO public.country (recid, name) VALUES ('{recid}', '{escaped_name}');\n")
+            if country_name == 'Guadeloupe' or country_name == 'GuadeloupeX':
+                debug(f"Country 1: {country_name}  recid: {recid}")
         
         # Then handle countries from countries_data
         for country_name in countries_data.countries:
@@ -68,6 +82,8 @@ def write_countries(existing):
             # Generate new country
             recid = generate_guid('cccc', sequence)
             state_insert = f"INSERT INTO public.country (recid, name) VALUES ('{recid}', '{escaped_name}');\n"
+            if country_name == 'Guadeloupe':
+                debug(f"Country 2: {country_name}  recid: {recid}")
             f.write(state_insert)
             # Store the newly generated recid to ensure consistency
             existing['countries'][country_name] = recid
@@ -81,6 +97,8 @@ def write_states(existing):
         for (country_recid, state_name), state_recid in existing['states'].items():
             escaped_name = escape_single_quotes(state_name)
             f.write(f"-- INSERT INTO public.state (recid, country_recid, name) VALUES ('{state_recid}', '{country_recid}', '{escaped_name}');\n")
+            if state_name == 'Guadeloupe' or state_name == 'GuadeloupeX':
+                debug(f"State 1: {state_name}  recid: {state_recid}")
         
         # Then handle states from countries_data
         for country_name, country_data in countries_data.countries.items():
@@ -106,6 +124,8 @@ def write_states(existing):
                 # Generate new state
                 recid = generate_guid('dddd', sequence)
                 f.write(f"INSERT INTO public.state (recid, country_recid, name) VALUES ('{recid}', '{country_recid}', '{escaped_name}');\n")
+                if state_name == 'Guadeloupe' or state_name == 'GuadeloupeX':
+                    debug(f"State 2: {state_name}  recid: {recid}")
                 # Store the state key in existing['states']
                 existing['states'][key] = recid
                 sequence += 1
@@ -139,6 +159,8 @@ def write_locations(existing):
                         with open('inserts_state.sql', 'a') as state_file:
                             escaped_name = escape_single_quotes(state_name)
                             state_file.write(f"INSERT INTO public.state (recid, country_recid, name) VALUES ('{state_recid}', '{country_recid}', '{escaped_name}');\n")
+                            if state_name == 'Guadeloupe' or state_name == 'GuadeloupeX':
+                                debug(f"State 3: {state_name}  recid: {state_recid}")
                     state_recid = existing['states'][state_key]
                     
                     # Create location using country name
@@ -158,6 +180,8 @@ def write_locations(existing):
                             with open('inserts_state.sql', 'a') as state_file:
                                 escaped_name = escape_single_quotes(state_name)
                                 state_file.write(f"INSERT INTO public.state (recid, country_recid, name) VALUES ('{state_recid}', '{country_recid}', '{escaped_name}');\n")
+                                if state_name == 'Guadeloupe' or state_name == 'GuadeloupeX':
+                                    debug(f"State 4: {state_name}  recid: {state_recid}")
                         state_recid = existing['states'][state_key]
                         
                         # Create location using state name
@@ -170,19 +194,13 @@ def write_locations(existing):
                 continue
             
             for city_name, state_names in country_data['cities'].items():
-                found=False
-                if city_name == 'Vienna':
-                    found=True
-                    print(f"City: {city_name}")
                 for state_name in state_names:
                     # Replace --No State-- with country name before any processing
                     if state_name == '--No State--':
                         state_name = country_name
                     
-                    if found: print(f"State: {state_name}  City: {city_name}")
                     # Get the state's recid - use the state name directly from the mapping
                     state_key = (country_recid, state_name)
-                    if found: print(f"state_key: {state_key}")
                     
                     # Get the state_recid from existing states
                     if state_key not in existing['states']:
@@ -193,6 +211,8 @@ def write_locations(existing):
                         with open('inserts_state.sql', 'a') as state_file:
                             escaped_name = escape_single_quotes(state_name)
                             state_file.write(f"INSERT INTO public.state (recid, country_recid, name) VALUES ('{state_recid}', '{country_recid}', '{escaped_name}');\n")
+                            if state_name == 'Guadeloupe' or state_name == 'GuadeloupeX':
+                                debug(f"State 5: {state_name}  recid: {state_recid}")
                         
                     state_recid = existing['states'][state_key]
                     
