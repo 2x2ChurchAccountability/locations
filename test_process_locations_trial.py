@@ -22,16 +22,18 @@ class TestGetStateCountry(unittest.TestCase):
 
 
 
-    # Bonao, Republica Dominicana Convention
-    def test_bonao_republica_dominicana_convention(self):
-        """Test bonao_republica_dominicana_convention"""
-        line = "Bonao, Republica Dominicana Convention"
-        result = handle_convention(text_fixes(line), self.countries)
-        self.assertEqual(result['state'], 'Dominican Republic')
-        self.assertEqual(result['country'], 'Dominican Republic')
-        self.assertEqual(result['location'], 'Bonao')
-        self.assertEqual(result['note'], 'Republica Dominicana Convention')
-        self.assertEqual(result['month'], None)
+
+    # July 6, Started in the work
+    def test_july_6_started_in_the_work(self):
+        """Test july_6_started_in_the_work"""
+        line = "July 6, Started in the work"
+        result = handle_location_only(text_fixes(line), self.countries)
+        self.assertEqual(result['state'], '--United States--')
+        self.assertEqual(result['country'], '--United States--')
+        self.assertEqual(result['location'], '--United States--')
+        self.assertEqual(result['note'], 'July 6, Started in the work')
+        self.assertEqual(result['month'], 'July')
+        self.assertEqual(result['start_date'], '07/06')
 
 
 

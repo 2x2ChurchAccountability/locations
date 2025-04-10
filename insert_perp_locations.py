@@ -7,7 +7,7 @@ import argparse
 from datetime import datetime, UTC
 from dotenv import load_dotenv
 from supabase import create_client, Client
-from typing import Optional, Tuple, Dict
+from typing import Optional, Tuple, Dict, Set
 import re
 
 # Load environment variables from .env.local
@@ -16,13 +16,23 @@ load_dotenv('.env.local')
 # Supabase configuration
 SUPABASE_URL = os.getenv('NEXT_PUBLIC_SUPABASE_URL')
 SUPABASE_KEY = os.getenv('NEXT_PUBLIC_SUPABASE_ANON_KEY')
-SCHEMA_NAME = os.getenv('NEXT_PUBLIC_DB_SCHEMA', 'dev')
+SCHEMA_NAME = os.getenv('NEXT_PUBLIC_DB_SCHEMA', 'test')
 
 # Global debug flag
 DEBUG = False
 # Global timestamp for all inserts
 date_now = None
 date_now_date_only = None
+# Track unique state bad combinations
+state_bad_combinations: Set[Tuple[str, str, str]] = set()
+# Track country recids
+country_recids: Dict[str, str] = {}
+# Store raw get_locations data
+raw_locations_data = []
+# Track missing locations
+missing_locations: Set[Tuple[str, str, str]] = set()
+# Track locations for new states
+new_state_locations: Dict[Tuple[str, str], Set[str]] = {}
 
 def debug(message: str) -> None:
     """Print debug message if debug mode is enabled."""
@@ -83,16 +93,44 @@ perp_cache: Dict[str, Optional[str]] = {}
 
 def load_location_cache() -> None:
     """Load all locations into the cache using the get_locations function."""
-    global location_cache
+    global location_cache, country_recids, raw_locations_data
     
     try:
         debug("Loading location cache from database...")
         result = supabase.rpc('get_locations', params={}).execute()
         if result.data:
             debug(f"Found {len(result.data)} locations in database")
+            raw_locations_data = result.data
+            
+            # Write the entire structure to a CSV file
+            with open('insert_perp_location_check.csv', 'w', newline='') as f:
+                writer = csv.writer(f)
+                # Write header
+                writer.writerow(['country_name', 'country_recid', 'state_name', 'state_recid', 'location_name', 'location_recid'])
+                # Write data
+                for row in result.data:
+                    writer.writerow([
+                        row['country_name'],
+                        row['country_recid'],
+                        row['state_name'],
+                        row['state_recid'],
+                        row['location_name'],
+                        row['location_recid']
+                    ])
+            
             for row in result.data:
-                key = (row['country_name'], row['state_name'], row['location_name'])
-                location_cache[key] = row['location_recid']
+                # Skip if any required fields are null
+                if row['country_name'] is None or row['country_recid'] is None:
+                    continue
+                    
+                # Store country recid
+                country_recids[row['country_name']] = row['country_recid']
+                
+                # Only add to location cache if we have a valid state and location
+                if row['state_name'] is not None and row['state_recid'] is not None and \
+                   row['location_name'] is not None and row['location_recid'] is not None:
+                    key = (row['country_name'], row['state_name'], row['location_name'])
+                    location_cache[key] = row['location_recid']
             debug("Location cache loaded successfully")
         else:
             debug("No locations found in database")
@@ -235,7 +273,12 @@ def format_sql_insert(perp_location_data: dict) -> str:
         if value is not None:
             columns.append(key)
             if isinstance(value, str):
-                values.append(f"'{value}'")
+                if key == 'note':
+                    # Escape single quotes in note field by doubling them
+                    escaped_value = value.replace("'", "''")
+                    values.append(f"'{escaped_value}'")
+                else:
+                    values.append(f"'{value}'")
             else:
                 values.append(str(value))
     
@@ -245,7 +288,7 @@ def format_sql_insert(perp_location_data: dict) -> str:
     return sql
 
 def main():
-    global DEBUG, date_now, date_now_date_only
+    global DEBUG, date_now, date_now_date_only, state_bad_combinations, country_recids
     
     # Parse command line arguments
     parser = argparse.ArgumentParser(description='Process and insert perp location data')
@@ -286,16 +329,61 @@ def main():
                 print(f"Warning: Perp '{row['Perp Name']}' not found in database, will skip future records", file=sys.stderr)
             continue
             
-        # Get location_recid from cache
-        location_recid = get_location_recid(
-            row['Country'],
-            row['State'],
-            row['Location']
-        )
-        
-        if not location_recid:
-            print(f"Warning: Location not found for {row['Country']}/{row['State']}/{row['Location']}", file=sys.stderr)
-            continue
+        # Get location_recid from cache only if country is not blank
+        location_recid = None
+        if row['Country']:
+            location_recid = get_location_recid(
+                row['Country'],
+                row['State'],
+                row['Location']
+            )
+            
+            if not location_recid:
+                # Check if country exists by itself
+                country_exists = False
+                state_exists = False
+                
+                # Debug for West Virginia
+                if row['State'] == 'West Virginia':
+                    debug(f"\nDEBUG - West Virginia check:")
+                    debug(f"Country: {row['Country']}")
+                    debug("All states for this country:")
+                    for loc_data in raw_locations_data:
+                        if loc_data['country_name'] == row['Country'] and loc_data['state_name']:
+                            debug(f"  - {loc_data['state_name']}")
+                
+                # First check if country exists
+                if row['Country'] in country_recids:
+                    country_exists = True
+                    # Then check if state exists for this country using raw data
+                    for loc_data in raw_locations_data:
+                        if loc_data['country_name'] == row['Country'] and \
+                           loc_data['state_name'] == row['State'] and \
+                           loc_data['state_recid'] is not None:
+                            state_exists = True
+                            if row['State'] == 'West Virginia':
+                                debug(f"Found West Virginia: {loc_data['country_name']}|{loc_data['state_name']}")
+                            break
+                
+                warning_msg = f"Warning: Location not found for {row['Country']}|{row['State']}|{row['Location']}"
+                if not country_exists:
+                    warning_msg += " - Country BAD"
+                if not state_exists:
+                    warning_msg += " - State BAD"
+                    # Add to state bad combinations if unique
+                    state_bad_combinations.add((row['Country'], row['State'], row['Location']))
+                    # Track location for this new state
+                    state_key = (row['Country'], row['State'])
+                    if state_key not in new_state_locations:
+                        new_state_locations[state_key] = set()
+                    new_state_locations[state_key].add(row['Location'])
+                    if row['State'] == 'West Virginia':
+                        debug(f"Adding West Virginia to state_bad_combinations")
+                else:
+                    # If state exists but location doesn't, add to missing locations
+                    missing_locations.add((row['Country'], row['State'], row['Location']))
+                print(warning_msg, file=sys.stderr)
+                continue
             
         try:
             # Process dates
@@ -335,6 +423,64 @@ def main():
         except Exception as e:
             print(f"Error processing record: {str(e)}", file=sys.stderr)
             continue
+
+    # Write state bad combinations to CSV and SQL files
+    if state_bad_combinations:
+        # Write CSV file
+        with open('process_state.csv', 'w', newline='') as f:
+            writer = csv.writer(f)
+            writer.writerow(['country', 'state', 'location'])
+            for country, state, location in sorted(state_bad_combinations):
+                writer.writerow([country, state, location])
+        
+        # Write SQL file
+        with open('process_state.sql', 'w') as f:
+            sequence = 1
+            for country, state, _ in sorted(state_bad_combinations):
+                if country in country_recids:
+                    country_recid = country_recids[country]
+                    # Generate sequence number with leading zeros
+                    seq_str = str(sequence).zfill(4)
+                    f.write(f"INSERT INTO {SCHEMA_NAME}.state(recid,country_recid,name) values('20250410-ffff-ffff-ffff-ffffffff{seq_str}','{country_recid}', '{state}');\n")
+                    sequence += 1
+
+    # Write missing locations to SQL file
+    if missing_locations or new_state_locations:
+        with open('process_location.sql', 'w') as f:
+            sequence = 1
+            
+            # First handle locations for existing states
+            for country, state, location in sorted(missing_locations):
+                # Find the state_recid from raw_locations_data
+                state_recid = None
+                for loc_data in raw_locations_data:
+                    if loc_data['country_name'] == country and loc_data['state_name'] == state:
+                        state_recid = loc_data['state_recid']
+                        break
+                
+                if state_recid:
+                    # Generate sequence number with leading zeros
+                    seq_str = str(sequence).zfill(4)
+                    f.write(f"INSERT INTO {SCHEMA_NAME}.location(recid,state_recid,name) values('20250410-aaaa-aaaa-aaaa-aaaaaaaa{seq_str}','{state_recid}', '{location}');\n")
+                    sequence += 1
+            
+            # Then handle locations for new states
+            for (country, state), locations in sorted(new_state_locations.items()):
+                # Find the state_recid that would be in process_state.sql
+                state_recid = None
+                state_sequence = 1
+                for c, s, _ in sorted(state_bad_combinations):
+                    if c == country and s == state:
+                        state_recid = f"20250410-ffff-ffff-ffff-ffffffff{str(state_sequence).zfill(4)}"
+                        break
+                    state_sequence += 1
+                
+                if state_recid:
+                    for location in sorted(locations):
+                        # Generate sequence number with leading zeros
+                        seq_str = str(sequence).zfill(4)
+                        f.write(f"INSERT INTO {SCHEMA_NAME}.location(recid,state_recid,name) values('20250410-aaaa-aaaa-aaaa-aaaaaaaa{seq_str}','{state_recid}', '{location}');\n")
+                        sequence += 1
 
 if __name__ == '__main__':
     main()

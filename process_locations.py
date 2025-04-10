@@ -11,6 +11,9 @@ from countries_data import countries
 # Global variable for validation mode
 validate_mode = False
 
+# Global variable for perp name
+perp_name = ''
+
 # Month name to number mapping
 MONTH_MAP = {
     'Jan': '01', 'January': '01',
@@ -26,6 +29,32 @@ MONTH_MAP = {
     'Nov': '11', 'November': '11',
     'Dec': '12', 'December': '12'
 }
+
+def get_perp_home_country() -> str:
+    """Determine the home country of the current perp based on their name.
+    Returns a string with the country name or None if not found."""
+    global perp_name
+    
+    # Dictionary mapping perp names to their home countries
+    perp_home_countries = {
+        'Marion Crawford': 'Canada',
+        'Robert Flippo': 'United States',
+        'Leslie White': 'United States',
+        'Robert Corfield': 'Canada',
+        'John Van Den Berg': 'United States',
+        'Dean Bruer': 'United States',
+        'Luther Raine': 'United States',
+        'Mark Huddle': 'United States',
+        'Jack Reddekopp': 'Canada',
+        'Albert Clark': 'Canada'
+        # Add more mappings as needed
+    }
+
+    home =perp_home_countries.get(perp_name)
+    if not home:
+        home = "--United States--" # This is just for unit testing
+    
+    return home
 
 def print_debug(*args, **kwargs):
     """Print debug information only when in validate mode."""
@@ -658,15 +687,20 @@ def handle_convention(line: str, countries: Dict) -> Optional[Dict]:
     result['note'] = line
     print_debug(f"BOB CON 1.8 - note: {result['note']}")
 
-    if not result['state']:
-        result['state'] = result['country']
-    if not result['location']:
-        result['location'] = result['state']
+    result = adjust_location_result(result)
 
     print_debug(f"BOB CON 1.9 - country: |{result['country']}|    state: |{result['state']}|    location: |{result['location']}|")
         
     return result
-    
+
+def adjust_location_result(result):
+    if not result['country']:
+        result['country'] = get_perp_home_country()
+    if not result['state']:
+        result['state'] = result['country']
+    if not result['location']:
+        result['location'] = result['state']
+    return result    
 
 def handle_special_meeting(line: str, countries: Dict) -> Optional[Dict]:
     """Handle special meeting patterns.
@@ -764,17 +798,6 @@ def handle_special_meeting(line: str, countries: Dict) -> Optional[Dict]:
         for country, info in countries.items():
             if word == country and not info.get('states'):
                 result['country'] = country
-                # # Remove the country from the line
-                # line = line.replace(country, '').strip()
-                # #result['line'] = clean_line(line)
-                # result['note'] = clean_line(line)
-                
-                # if "Special Meeting" not in result['note']:
-                #     result['note'] = f"{result['note']} Special Meeting"
-                # if date_note:
-                #     result['note'] = date_note + ' ' + result['note']
-                # if visit_note:
-                #     result['note'] = result['note'] + " Visiting from " + visit_note
 
     print_debug(f"BOB SM 5.0 - country: {result['country']}")
     print_debug(f"BOB SM 5.1 - note: {result['note']}")
@@ -788,10 +811,7 @@ def handle_special_meeting(line: str, countries: Dict) -> Optional[Dict]:
     if state_country_info['location']:
         result['location'] = state_country_info['location']
 
-    if not result['state']:
-        result['state'] = result['country']
-    if not result['location']:
-        result['location'] = result['state']
+    result = adjust_location_result(result)
     
     result['note'] = state_country_info['line']
     if date_note:
@@ -1294,10 +1314,7 @@ def handle_workers_list(line: str, countries: Dict) -> Optional[Dict]:
                             result['location'] = the_location
                             break
 
-    if not result['state']:
-        result['state'] = result['country']
-    if not result['location']:
-        result['location'] = result['state']
+    result = adjust_location_result(result)
 
     text_before = state_country_info['line']
 
@@ -1341,6 +1358,10 @@ def handle_travel(line: str, countries: Dict) -> Optional[Dict]:
                 result['location'] = state_country_info['location']
             elif state_country_info['state']:
                 result['location'] = state_country_info['state']
+
+
+            result = adjust_location_result(result)
+
             result['note'] = f"{travel_type} {result['country']}"
             return result
 
@@ -1399,10 +1420,7 @@ def handle_started_work(line: str, countries: Dict) -> Optional[Dict]:
     if state_country_info['line']:
         result['note'] = result['note'] + ': ' + state_country_info['line']
 
-    if not result['state']:
-        result['state'] = result['country']
-    if not result['location']:
-        result['location'] = result['state']
+    result = adjust_location_result(result)
 
     return result
 
@@ -1455,10 +1473,7 @@ def handle_photo(line: str, countries: Dict) -> Optional[Dict]:
         result['state'] = state_country_info['state']
     result['location'] = state_country_info['location']
 
-    if not result['state']:
-        result['state'] = result['country']
-    if not result['location']:
-        result['location'] = result['state']
+    result = adjust_location_result(result)
         
     line = state_country_info['line']
 
@@ -1523,10 +1538,7 @@ def handle_workers_meeting(line: str, countries: Dict) -> Optional[Dict]:
     if visiting_from:
         result['note'] = result['note'] + ' Visiting from ' + visiting_from
 
-    if not result['state']:
-        result['state'] = result['country']
-    if not result['location']:
-        result['location'] = result['state']
+    result = adjust_location_result(result)
 
     return result
     
@@ -1557,6 +1569,9 @@ def handle_removed_from(line: str, countries: Dict) -> Optional[Dict]:
         result['country'] = state_country_info['country']
     if state_country_info['state']:
         result['state'] = state_country_info['state']
+
+    result = adjust_location_result(result)
+
     line = state_country_info['line']
 
     # Check for month abbreviation in remaining text
@@ -1603,10 +1618,7 @@ def handle_guestbook(line: str, countries: Dict) -> Optional[Dict]:
     if line:
         result['note'] = result['note'] + ': ' + line
 
-    if not result['state']:
-        result['state'] = result['country']
-    if not result['location']:
-        result['location'] = result['state']
+    result = adjust_location_result(result)
 
     return result
    
@@ -1733,10 +1745,7 @@ def handle_location_only(line: str, countries: Dict) -> Optional[Dict]:
         if protem_case:
             result['note'] = add_to_note_list(result['note'], 'pro tem')
 
-    if not result['state']:
-        result['state'] = result['country']
-    if not result['location']:
-        result['location'] = result['state']
+    result = adjust_location_result(result)
 
     print_debug(f"BOB LOC 1.3 - line: {line}")
     print_debug(f"BOB LOC 2.0 - country: {result['country']}")
@@ -1884,6 +1893,9 @@ def text_fixes(line: str) -> str:
         line = line.replace('Brazil and Uruguay', 'Brazil/Uruguay')
        
     if "’" in line:
+        # DO NOT MODIFY OR REMOVE THIS LINE - Critical for handling apostrophes
+        # This line specifically handles the conversion of curly apostrophes to straight apostrophes
+        # Any modification to this line could break text processing
         line = line.replace("’", "'")
         
 
@@ -1894,6 +1906,7 @@ def text_fixes(line: str) -> str:
 
 def process_file(filepath: str, validate_mode: bool = False, header_output: bool = False) -> None:
     """Process a single file and update the database or just look at patterns."""
+    global perp_name
     filename = os.path.basename(filepath)
     perp_name = extract_perp_name(filename)
     
