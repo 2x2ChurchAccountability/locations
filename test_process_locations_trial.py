@@ -14,28 +14,17 @@ class TestGetStateCountry(unittest.TestCase):
 
         
 
-
-        
-
-
-
-
-
-
-
-    # July 6, Started in the work
-    def test_july_6_started_in_the_work(self):
-        """Test july_6_started_in_the_work"""
-        line = "July 6, Started in the work"
-        result = handle_location_only(text_fixes(line), self.countries)
-        self.assertEqual(result['state'], '--United States--')
-        self.assertEqual(result['country'], '--United States--')
-        self.assertEqual(result['location'], '--United States--')
-        self.assertEqual(result['note'], 'July 6, Started in the work')
-        self.assertEqual(result['month'], 'July')
-        self.assertEqual(result['start_date'], '07/06')
-
-
+    # Rocanville Saskatchewan Special Meeting (Dec. 19th)
+    def test_rocanville_saskatchewan_special_meeting_dec_19th(self):
+        """Test rocanville_saskatchewan_special_meeting_dec_19th"""
+        line = "Rocanville Saskatchewan Special Meeting (Dec. 19th)"
+        result = handle_special_meeting(text_fixes(line), self.countries)
+        self.assertEqual(result['country'], 'Canada')
+        self.assertEqual(result['state'], 'Saskatchewan')
+        self.assertEqual(result['location'], 'Rocanville')
+        self.assertEqual(result['note'], 'Dec. 19th Special Meeting')
+        self.assertEqual(result['month'], 'Dec')
+        self.assertEqual(result['start_date'], '12/19')
 
 
 

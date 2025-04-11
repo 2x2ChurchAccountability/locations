@@ -273,9 +273,9 @@ class TestGetStateCountry(unittest.TestCase):
         """Test oct_started_in_the_work"""
         line = "Oct Started in the work"
         result = handle_started_work(text_fixes(line), self.countries)
-        self.assertEqual(result['state'], '')  # Should match the state
-        self.assertEqual(result['country'], '')
-        self.assertEqual(result['location'], '')
+        self.assertEqual(result['state'], '--United States--')  # Should match the state
+        self.assertEqual(result['country'], '--United States--')
+        self.assertEqual(result['location'], '--United States--')
         self.assertEqual(result['note'], 'Started in the work')
 
     #New York *Started in the work*
@@ -322,11 +322,13 @@ class TestGetStateCountry(unittest.TestCase):
     def test_july_6_started_in_the_work(self):
         """Test july_6_started_in_the_work"""
         line = "July 6, Started in the work"
-        result = handle_started_work(text_fixes(line), self.countries)
-        self.assertEqual(result['state'], '')  # Should match the state
-        self.assertEqual(result['country'], '')
-        self.assertEqual(result['location'], '')
-        self.assertEqual(result['note'], 'Started in the work')
+        result = handle_location_only(text_fixes(line), self.countries)
+        self.assertEqual(result['state'], '--United States--')
+        self.assertEqual(result['country'], '--United States--')
+        self.assertEqual(result['location'], '--United States--')
+        self.assertEqual(result['note'], 'July 6, Started in the work')
+        self.assertEqual(result['month'], 'July')
+        self.assertEqual(result['start_date'], '07/06')
 
     # Knoxsville Tennessee Workers Meeting
     def test_knoxsville_tennessee_workers_meeting(self):
@@ -815,9 +817,9 @@ class TestGetStateCountry(unittest.TestCase):
         """Test jan_changing_fields"""
         line = "Jan Changing Fields"
         result = handle_location_only(text_fixes(line), self.countries)
-        self.assertEqual(result['state'], None)
-        self.assertEqual(result['country'], None)
-        self.assertEqual(result['location'], None)
+        self.assertEqual(result['state'], '--United States--')
+        self.assertEqual(result['country'], '--United States--')
+        self.assertEqual(result['location'], '--United States--')
         self.assertEqual(result['note'], 'Jan Changing Fields')
 
     # Olmos Peru Preps

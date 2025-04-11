@@ -46,7 +46,9 @@ def get_perp_home_country() -> str:
         'Luther Raine': 'United States',
         'Mark Huddle': 'United States',
         'Jack Reddekopp': 'Canada',
-        'Albert Clark': 'Canada'
+        'Albert Clark': 'Canada',
+        'Brad Holman': 'United States',
+        'Michael Payne': 'United States'
         # Add more mappings as needed
     }
 
@@ -759,6 +761,7 @@ def handle_special_meeting(line: str, countries: Dict) -> Optional[Dict]:
         month_pattern = r'\b(?:Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|Jun(?:e)?|Jul(?:y)?|Aug(?:ust)?|Sep(?:tember)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?)\b'
         season_pattern = r'\b(?:Spring|Summer|Fall|Autumn|Winter)\b'
         
+        #GOOBER
         if re.search(month_pattern, date_visit_note, re.IGNORECASE) or re.search(season_pattern, date_visit_note, re.IGNORECASE):
             date_note = date_visit_note
             date_pieces = date_visit_note.split()
@@ -766,8 +769,12 @@ def handle_special_meeting(line: str, countries: Dict) -> Optional[Dict]:
                 result['month'] = date_pieces[0]
             else:
                 result['month'] = date_pieces[0]
-                month = MONTH_MAP.get(date_pieces[0], date_pieces[0])
-                day = date_pieces[1].zfill(2)  # Pad day with leading zero if needed
+                # Handle month with period (e.g., "Dec.")
+                result['month'] = date_pieces[0].rstrip('.')
+                month = MONTH_MAP.get(result['month'], result['month'])
+                # Handle day with ordinal (e.g., "19th")
+                day = re.sub(r'(\d+)(?:st|nd|rd|th)', r'\1', date_pieces[1])
+                day = day.zfill(2)  # Pad day with leading zero if needed
                 result['start_date'] = f"{month}/{day}"
             print_debug(f"BOB SM 1.1 - month: {result['month']}  |  start_date: {result['start_date']}")
         else:

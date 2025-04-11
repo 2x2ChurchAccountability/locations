@@ -917,6 +917,7 @@ countries = {
         'Renfrew': ['Ontario/Quebec'],
         'Richmond': ['Quebec'],
         'Rimbey': ['Alberta'],
+        'Rocanville': ['Saskatchewan'],
         'Saskatoon': ['Saskatchewan'],
         'Seagrave': ['Canada'],
         'Smeaton': ['Canada'],
