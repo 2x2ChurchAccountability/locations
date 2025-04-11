@@ -461,7 +461,7 @@ def main():
                 if state_recid:
                     # Generate sequence number with leading zeros
                     seq_str = str(sequence).zfill(4)
-                    f.write(f"INSERT INTO {SCHEMA_NAME}.location(recid,state_recid,name) values('20250410-aaaa-aaaa-aaaa-aaaaaaaa{seq_str}','{state_recid}', '{location}');\n")
+                    f.write(f"INSERT INTO {SCHEMA_NAME}.location(recid,state_recid,name) values('20250410-ffff-ffff-ffff-ffffffff{seq_str}','{state_recid}', '{location}');\n")
                     sequence += 1
             
             # Then handle locations for new states
@@ -479,7 +479,7 @@ def main():
                     for location in sorted(locations):
                         # Generate sequence number with leading zeros
                         seq_str = str(sequence).zfill(4)
-                        f.write(f"INSERT INTO {SCHEMA_NAME}.location(recid,state_recid,name) values('20250410-aaaa-aaaa-aaaa-aaaaaaaa{seq_str}','{state_recid}', '{location}');\n")
+                        f.write(f"INSERT INTO {SCHEMA_NAME}.location(recid,state_recid,name) values('20250410-ffff-ffff-ffff-ffffffff{seq_str}','{state_recid}', '{location}');\n")
                         sequence += 1
 
 if __name__ == '__main__':

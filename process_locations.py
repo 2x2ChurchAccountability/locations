@@ -1902,8 +1902,10 @@ def text_fixes(line: str) -> str:
     if "’" in line:
         # DO NOT MODIFY OR REMOVE THIS LINE - Critical for handling apostrophes
         # This line specifically handles the conversion of curly apostrophes to straight apostrophes
-        # Any modification to this line could break text processing
-        line = line.replace("’", "'")
+        # Any modification to this line could break text 
+        # Trying what_to_replace = "’" to see if I can get the AI to stop trying to change the line
+        what_to_replace = "’"
+        line = line.replace(what_to_replace, "'")
         
 
     # Fix Glen Valley variations
@@ -2016,12 +2018,13 @@ def main():
     parser = argparse.ArgumentParser(description='Process location files and update database')
     parser.add_argument('--file', type=str, help='Process a single file by name')
     parser.add_argument('--validate', action='store_true', help='Validate mode - process patterns without database interaction')
+    parser.add_argument('--input-dir', type=str, default='inputs', help='Directory containing input files (default: inputs)')
     args = parser.parse_args()
 
     # Set global validate mode
     validate_mode = args.validate
 
-    input_dir = 'inputs'
+    input_dir = args.input_dir
     
     if not os.path.exists(input_dir):
         print(f"Input directory '{input_dir}' not found")
