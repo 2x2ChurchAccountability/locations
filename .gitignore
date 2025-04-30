@@ -4,6 +4,7 @@ __pycache__/
 *.so
 .Python
 inputs/
+inputsOrig/
 logs/
 locations_venv/
 .env*

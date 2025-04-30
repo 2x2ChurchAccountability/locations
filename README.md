@@ -10,18 +10,19 @@ source locations_venv/bin/activate
 pip install -r requirements.txt
 ```
 
-TODO: Create a .env.local file with logging settings
+TODO: Create a .env.local file with supabase settings
 ```bash
-echo -e "LOG_LEVEL=INFO  # Options: DEBUG, INFO, WARNING, ERROR, CRITICAL\n\
-LOG_FORMAT=%(asctime)s - %(levelname)s - %(message)s\n\
-LOG_DIR=logs" > .env.local
+echo -e "NEXT_PUBLIC_SUPABASE_URL=https://<yourSupabaseUrlPrevix>.supabase.co\n\
+NEXT_PUBLIC_SUPABASE_ANON_KEY=<yourSupabaseAPIKey>\n\
+NEXT_PUBLIC_DB_SCHEMA=public" > .env.local
 ```
+
 TODO: From the above .env.local, the LOG_DIR states a directory that logs will be written to.  The way the logger is setup in process_locations.py, all logs will go to the console as well.
 
 #### Running the location formatting POC
 
 ```bash
-python src/process_locations.py
+python process_locations.py
 ```
 ### How this POC works
 
