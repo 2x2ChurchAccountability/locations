@@ -16,6 +16,7 @@ load_dotenv('.env.local')
 # Supabase configuration
 SUPABASE_URL = os.getenv('NEXT_PUBLIC_SUPABASE_URL')
 SUPABASE_KEY = os.getenv('NEXT_PUBLIC_SUPABASE_ANON_KEY')
+SUPABASE_SERVICE_ROLE_KEY = os.getenv('NEXT_PUBLIC_SUPABASE_SERVICE_ROLE_KEY')
 SCHEMA_NAME = os.getenv('NEXT_PUBLIC_DB_SCHEMA', 'test')
 
 # Global debug flag
@@ -43,7 +44,7 @@ def debug(message: str) -> None:
 if not SUPABASE_URL:
     print("Error: NEXT_PUBLIC_SUPABASE_URL is not set in .env.local", file=sys.stderr)
     sys.exit(1)
-if not SUPABASE_KEY:
+if not SUPABASE_SERVICE_ROLE_KEY:
     print("Error: NEXT_PUBLIC_SUPABASE_ANON_KEY is not set in .env.local", file=sys.stderr)
     sys.exit(1)
 
@@ -51,10 +52,10 @@ if not SUPABASE_KEY:
 try:
     supabase: Client = create_client(
         SUPABASE_URL, 
-        SUPABASE_KEY
+        SUPABASE_SERVICE_ROLE_KEY
     )
     # Set the schema through headers
-    supabase.postgrest.auth(SUPABASE_KEY)
+    supabase.postgrest.auth(SUPABASE_SERVICE_ROLE_KEY)
     supabase.postgrest.schema(SCHEMA_NAME)
     debug("Supabase client initialized successfully")
 except Exception as e:

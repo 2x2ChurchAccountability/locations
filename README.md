@@ -12,8 +12,9 @@ pip install -r requirements.txt
 
 TODO: Create a .env.local file with supabase settings
 ```bash
-echo -e "NEXT_PUBLIC_SUPABASE_URL=https://<yourSupabaseUrlPrevix>.supabase.co\n\
-NEXT_PUBLIC_SUPABASE_ANON_KEY=<yourSupabaseAPIKey>\n\
+echo -e "NEXT_PUBLIC_SUPABASE_URL=https://<yourSupabaseUrlPrefix>.supabase.co\n\
+NEXT_PUBLIC_SUPABASE_ANON_KEY=<yourSupabaseANONKey>\n\
+NEXT_PUBLIC_SUPABASE_SERVICE_ROLE_KEY=<yourSupabaseServiceRoleKey\n\
 NEXT_PUBLIC_DB_SCHEMA=public" > .env.local
 ```
 
